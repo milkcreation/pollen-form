@@ -1,6 +1,6 @@
 <?php
 /**
- * @var tiFy\Contracts\Form\FormView $this
+ * @var Pollen\Form\FormViewTemplateInterface $this
  */
 if ($errors = $this->get('notices.error', [])) :
     echo partial('notice', [

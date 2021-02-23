@@ -25,12 +25,12 @@ interface FieldDriverInterface
      * Définition d'un message de notification associé au champ.
      *
      * @param string $message
-     * @param string $type
+     * @param string $level
      * @param array $datas Liste des données associées au message.
      *
      * @return static
      */
-    public function addNotice(string $message, string $type = 'error', array $datas = []): FieldDriverInterface;
+    public function addNotice(string $message, string $level = 'error', array $datas = []): FieldDriverInterface;
 
     /**
      * Récupération du pré-affichage.
@@ -204,11 +204,11 @@ interface FieldDriverInterface
     /**
      * Vérification si le champ est associé à des messages de notifications.
      *
-     * @param string|null $type error|success|notice|warning
+     * @param string|null $level error|success|notice|warning
      *
      * @return bool
      */
-    public function hasNotices(?string $type = null): bool;
+    public function hasNotices(?string $level = null): bool;
 
     /**
      * Vérification d'existance d'encapsuleur HTML.

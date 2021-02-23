@@ -1,7 +1,7 @@
 <?php
 /**
- * @var tiFy\Contracts\Form\FormView $this
- * @var tiFy\Contracts\Form\ButtonDriver[] $buttons
+ * @var Pollen\Form\FormViewTemplateInterface $this
+ * @var Pollen\Form\ButtonDriverInterface[] $buttons
  */
 ?>
 <?php if ($buttons = $this->get('buttons', [])) : ?>

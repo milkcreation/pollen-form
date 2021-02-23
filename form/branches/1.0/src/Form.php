@@ -19,10 +19,10 @@ use Pollen\Form\Factory\SessionFactory;
 use Pollen\Form\Factory\ValidateFactory;
 use Pollen\Support\Concerns\BootableTrait;
 use Pollen\Support\Concerns\BuildableTrait;
-//use tiFy\Support\Concerns\LabelsBagTrait;
-//use tiFy\Support\Concerns\MessagesBagTrait;
+use Pollen\Support\Concerns\MessagesBagTrait;
 use Pollen\Support\Concerns\ParamsBagTrait;
-//use tiFy\Support\LabelsBag;
+use Pollen\Support\MessagesBag;
+use Pollen\Translation\Concerns\LabelsBagAwareTrait;
 use RuntimeException;
 
 class Form implements FormInterface
@@ -30,8 +30,8 @@ class Form implements FormInterface
     use BootableTrait;
     use BuildableTrait;
     use FactoryBagTrait;
-    //use LabelsBagTrait;
-    //use MessagesBagTrait;
+    use LabelsBagAwareTrait;
+    use MessagesBagTrait;
     use ParamsBagTrait;
 
     /**
@@ -62,12 +62,6 @@ class Form implements FormInterface
      * @var int|null
      */
     protected $index;
-
-    /**
-     * Instance de gestion des intitulés.
-     //LabelsBag|null
-     */
-    //protected $labelsBag;
 
     /**
      * Instance de la requête de traitement .
@@ -120,7 +114,7 @@ class Form implements FormInterface
                 'handle',
                 'options',
                 'session',
-                'validate'
+                'validate',
             ];
 
             foreach ($services as $service) {
@@ -293,7 +287,7 @@ class Form implements FormInterface
      */
     public function error(string $message, array $datas = []): string
     {
-        return $this->messages($message, 'error', $datas);
+        return $this->messages($message, MessagesBag::ERROR, $datas);
     }
 
     /**
@@ -400,7 +394,7 @@ class Form implements FormInterface
      */
     public function hasError(): bool
     {
-        return $this->messages()->has('error');
+        return $this->messages()->exists(MessagesBag::ERROR);
     }
 
     /**
@@ -469,12 +463,14 @@ class Form implements FormInterface
         $groups = $this->groups();
         $fields = $this->fields()->preRender();
         $buttons = $this->buttons();
-        $notices = $this->messages()->fetchRenderMessages([
-            $this->messages()::ERROR   => 'error',
-            $this->messages()::INFO    => 'info',
-            $this->messages()::NOTICE  => 'success',
-            $this->messages()::WARNING => 'warning'
-        ]);
+        $notices = $this->messages()->fetchMessages(
+            [
+                MessagesBag::ERROR,
+                MessagesBag::INFO,
+                MessagesBag::SUCCESS,
+                MessagesBag::WARNING,
+            ]
+        );
 
         return $this->view('index', compact('buttons', 'fields', 'groups', 'notices'));
     }
@@ -551,34 +547,34 @@ class Form implements FormInterface
         if ($this->renderBuild['notices'] === false) {
             /**
              * @todo
-            if ($this->messages()->count()) {
-                $this->session()->forget('notices');
-            } elseif ($notices = $this->session()->pull('notices')) {
-                foreach ($notices as $type => $items) {
-                    foreach ($items as $item) {
-                        $this->messages()->add($type, $item['message'] ?? '', $item['datas'] ?? []);
-                    }
-                }
-            }
-
-            if ($this->isSuccessful()) {
-                if (!$this->messages()->has('success')) {
-                    $this->messages()->success($this->option('success.message', ''));
-                }
-                $this->session()->destroy();
-            } else {
-                $this->session()->forget('notices');
-            }
-            */
+             * if ($this->messages()->count()) {
+             * $this->session()->forget('notices');
+             * } elseif ($notices = $this->session()->pull('notices')) {
+             * foreach ($notices as $type => $items) {
+             * foreach ($items as $item) {
+             * $this->messages()->add($type, $item['message'] ?? '', $item['datas'] ?? []);
+             * }
+             * }
+             * }
+             *
+             * if ($this->isSuccessful()) {
+             * if (!$this->messages()->has('success')) {
+             * $this->messages()->success($this->option('success.message', ''));
+             * }
+             * $this->session()->destroy();
+             * } else {
+             * $this->session()->forget('notices');
+             * }
+             */
 
             /**
              * @todo
-            Asset::setInlineJs(
-                'window.addEventListener("load", (event) => {' .
-                'if(window.location.href.split("#")[1] === "' . $this->getAnchor() . '"){' .
-                'window.history.pushState("", document.title, window.location.pathname + window.location.search);' .
-                '}});', true);
-            */
+             * Asset::setInlineJs(
+             * 'window.addEventListener("load", (event) => {' .
+             * 'if(window.location.href.split("#")[1] === "' . $this->getAnchor() . '"){' .
+             * 'window.history.pushState("", document.title, window.location.pathname + window.location.search);' .
+             * '}});', true);
+             */
             $this->renderBuild['successful'] = true;
         }
 
@@ -596,9 +592,15 @@ class Form implements FormInterface
             $wrapper = $param->get('wrapper');
 
             if ($wrapper !== false) {
-                $param->set('wrapper', array_merge([
-                    'tag' => 'div',
-                ], is_array($wrapper) ? $wrapper : []));
+                $param->set(
+                    'wrapper',
+                    array_merge(
+                        [
+                            'tag' => 'div',
+                        ],
+                        is_array($wrapper) ? $wrapper : []
+                    )
+                );
 
                 if (!$param->has('wrapper.attrs.id')) {
                     $param->set('wrapper.attrs.id', 'Form--' . $this->tagName());
@@ -704,7 +706,7 @@ class Form implements FormInterface
             }
 
             $this->viewEngine = $this->formManager()->containerHas(FormViewEngine::class)
-                ? $this->formManager()->containerGet(FormViewEngine::class): new FormViewEngine();
+                ? $this->formManager()->containerGet(FormViewEngine::class) : new FormViewEngine();
 
             $this->viewEngine->setDirectory($directory)->setDelegate($this);
 

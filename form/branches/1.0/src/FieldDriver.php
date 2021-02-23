@@ -12,6 +12,7 @@ use Pollen\Support\Arr;
 use Pollen\Support\Concerns\BootableTrait;
 use Pollen\Support\Concerns\BuildableTrait;
 use Pollen\Support\Concerns\ParamsBagTrait;
+use Pollen\Support\MessagesBag;
 
 class FieldDriver implements FieldDriverInterface
 {
@@ -129,9 +130,9 @@ class FieldDriver implements FieldDriverInterface
     /**
      * @inheritDoc
      */
-    public function addNotice(string $message, string $type = 'error', array $datas = []): FieldDriverInterface
+    public function addNotice(string $message, string $level = 'error', array $datas = []): FieldDriverInterface
     {
-        $this->form()->messages($message, $type, array_merge($datas, ['field' => $this->getSlug()]));
+        $this->form()->messages($message, $level, array_merge($datas, ['field' => $this->getSlug()]));
 
         return $this;
     }
@@ -428,11 +429,12 @@ class FieldDriver implements FieldDriverInterface
     /**
      * @inheritDoc
      */
-    public function hasNotices(?string $type = null): bool
+    public function hasNotices(?string $level = null): bool
     {
-        $messageBag = $this->form()->messages();
-
-        return $messageBag->hasMessages($type ? $messageBag::convertLevel($type) : null, ['field' => $this->getSlug()]);
+        return $this->form()->messages()->existsForContext(
+            ['field' => $this->getSlug()],
+            MessagesBag::toMessageBagLevel($level)
+        );
     }
 
     /**
