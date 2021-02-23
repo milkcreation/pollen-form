@@ -1,6 +1,6 @@
 <?php
 /**
- * @var tiFy\Contracts\Form\FormView $this
+ * @var Pollen\Form\FormViewTemplateInterface $this
  */
 ?>
 <?php if ($this->form()->params('wrapper')) : ?>

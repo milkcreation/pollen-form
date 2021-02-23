@@ -1,7 +1,7 @@
 <?php
 /**
- * @var tiFy\Contracts\Form\FormView $this
- * @var tiFy\Contracts\Form\FieldGroupDriver $group
+ * @var Pollen\Form\FormViewTemplateInterface $this
+ * @var Pollen\Form\FieldGroupDriverInterface $group
  */
 ?>
 <?php echo $group->before(); ?>

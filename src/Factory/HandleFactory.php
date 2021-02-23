@@ -96,7 +96,7 @@ class HandleFactory implements HandleFactoryInterface
 
         $this->form()->session()->forget('notices');
 
-        foreach ($this->form()->messages()->all() as $type => $notices) {
+        foreach ($this->form()->messages()->allMessages() as $type => $notices) {
             $this->form()->session()->put("notices.{$type}", $notices);
         }
 
@@ -147,10 +147,10 @@ class HandleFactory implements HandleFactoryInterface
      */
     public function isValidated(): bool
     {
-        if (!$this->form()->messages()->has('error')) {
+        if (!$this->form()->hasError()) {
             $this->form()->event('handle.validated', [&$this]);
 
-            return !$this->form()->messages()->has('error');
+            return !$this->form()->hasError();
         }
 
         return false;

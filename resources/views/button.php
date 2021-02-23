@@ -1,7 +1,7 @@
 <?php
 /**
- * @var tiFy\Contracts\Form\FormView $this
- * @var tiFy\Contracts\Form\ButtonDriver $button
+ * @var Pollen\Form\FormViewTemplateInterface $this
+ * @var Pollen\Form\ButtonDriverInterface $button
  */
 ?>
 <?php if ($button->hasWrapper()) : $this->layout('wrapper-button', $this->all()); endif; ?>

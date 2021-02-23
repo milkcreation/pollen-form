@@ -1,7 +1,7 @@
 <?php
 /**
- * @var tiFy\Contracts\Form\FormView $this
- * @var tiFy\Contracts\Form\ButtonDriver $button
+ * @var Pollen\Form\FormViewTemplateInterface $this
+ * @var Pollen\Form\ButtonDriverInterface $button
  */
 echo partial('tag', array_merge($button->params('wrapper', []), [
     'content' => $this->section('content')

@@ -1,7 +1,7 @@
 <?php
 /**
- * @var tiFy\Contracts\Form\FormView $this
- * @var tiFy\Contracts\Form\FieldDriver $field
+ * @var Pollen\Form\FormViewTemplateInterface $this
+ * @var Pollen\Form\FieldDriverInterface $field
  */
 ?>
 <?php if ($field->hasWrapper()) : $this->layout('wrapper-field', $this->all()); endif; ?>

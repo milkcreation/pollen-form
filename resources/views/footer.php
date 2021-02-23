@@ -1,5 +1,5 @@
 <?php
 /**
- * @var tiFy\Contracts\Form\FormView $this
+ * @var Pollen\Form\FormViewTemplateInterface $this
  */
 $this->insert('buttons', $this->all());

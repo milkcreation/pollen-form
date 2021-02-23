@@ -6,14 +6,13 @@ namespace Pollen\Form;
 
 use Pollen\Http\RequestInterface;
 
-//@mixin \tiFy\Support\Concerns\LabelsBagTrait
-//@mixin \tiFy\Support\Concerns\MessagesBagTrait
-
 /**
  * @mixin \Pollen\Form\Concerns\FactoryBagTrait
  * @mixin \Pollen\Support\Concerns\BootableTrait
  * @mixin \Pollen\Support\Concerns\BuildableTrait
+ * @mixin \Pollen\Support\Concerns\MessagesBagTrait
  * @mixin \Pollen\Support\Concerns\ParamsBagTrait
+ * @mixin \Pollen\Translation\Concerns\LabelsBagAwareTrait
  */
 interface FormInterface
 {

@@ -1,7 +1,7 @@
 <?php
 /**
- * @var tiFy\Contracts\Form\FormView $this
- * @var tiFy\Contracts\Form\FieldsFactory $fields
+ * @var Pollen\Form\FormViewTemplateInterface $this
+ * @var Pollen\Form\Factory\FieldsFactoryInterface $fields
  */
 ?>
 <?php if ($fields->count()) : ?>

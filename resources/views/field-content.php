@@ -1,7 +1,7 @@
 <?php
 /**
- * @var tiFy\Contracts\Form\FormView $this
- * @var tiFy\Contracts\Form\FieldDriver $field
+ * @var Pollen\Form\FormViewTemplateInterface $this
+ * @var Pollen\Form\FieldDriverInterface $field
  */
 echo ($field->params('label.position') === 'before')
     ? $this->fetch('field-label', compact('field')) . $field
