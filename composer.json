@@ -27,7 +27,6 @@
     "composer/composer": "^2.0",
     "composer/installers": "~1.0",
     "pollen-solutions/http": "^1.0",
-    "pollen-solutions/session": "^1.0",
     "pollen-solutions/support": "^1.0",
     "pollen-solutions/validation": "^1.0",
     "pollen-solutions/view": "^1.0"
