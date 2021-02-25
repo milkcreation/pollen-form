@@ -8,7 +8,7 @@ namespace Pollen\Form;
  * @mixin \Pollen\Form\Concerns\FormAwareTrait
  * @mixin \Pollen\Support\Concerns\BootableTrait
  * @mixin \Pollen\Support\Concerns\BuildableTrait
- * @mixin \Pollen\Support\Concerns\ParamsBagTrait
+ * @mixin \Pollen\Support\Concerns\ParamsBagAwareTrait
  */
 interface AddonDriverInterface
 {

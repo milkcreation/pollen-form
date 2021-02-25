@@ -12,7 +12,7 @@
 <?php $this->insert('notices', $this->all()); ?>
 
     <form <?php echo $this->htmlAttrs($this->form()->params('attrs', [])); ?>>
-        <?php echo field('hidden', [
+        <?php echo $this->field('hidden', [
             'name'  => '_token',
             'value' => $this->csrf(),
             'attrs' => [

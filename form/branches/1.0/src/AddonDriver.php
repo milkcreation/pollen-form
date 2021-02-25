@@ -8,14 +8,14 @@ use LogicException;
 use Pollen\Form\Concerns\FormAwareTrait;
 use Pollen\Support\Concerns\BootableTrait;
 use Pollen\Support\Concerns\BuildableTrait;
-use Pollen\Support\Concerns\ParamsBagTrait;
+use Pollen\Support\Concerns\ParamsBagAwareTrait;
 
 class AddonDriver implements AddonDriverInterface
 {
     use BootableTrait;
     use BuildableTrait;
     use FormAwareTrait;
-    use ParamsBagTrait;
+    use ParamsBagAwareTrait;
 
     /**
      * Alias de qualification.
@@ -79,22 +79,6 @@ class AddonDriver implements AddonDriverInterface
     public function getAlias(): string
     {
         return $this->alias;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function isBooted(): bool
-    {
-        return $this->booted;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function isBuilt(): bool
-    {
-        return $this->built;
     }
 
     /**

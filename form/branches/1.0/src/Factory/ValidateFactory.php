@@ -27,7 +27,7 @@ class ValidateFactory implements ValidateFactoryInterface
      */
     public function boot(): ValidateFactoryInterface
     {
-        if ($this->booted === false) {
+        if (!$this->isBooted()) {
             if (!$this->form() instanceof FormInterface) {
                 throw new RuntimeException('Form ValidateFactory requires a valid related Form instance');
             }

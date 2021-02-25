@@ -8,8 +8,12 @@ use Closure;
 
 /**
  * @mixin \Pollen\Support\Concerns\BootableTrait
- * @mixin \Pollen\Support\Concerns\ConfigBagTrait
+ * @mixin \Pollen\Support\Concerns\ConfigBagAwareTrait
  * @mixin \Pollen\Support\Concerns\ContainerAwareTrait
+ * @mixin \Pollen\Support\Concerns\EventDispatcherAwareTrait
+ * @mixin \Pollen\Support\Concerns\FieldManagerAwareTrait
+ * @mixin \Pollen\Support\Concerns\PartialManagerAwareTrait
+ * @mixin \Pollen\Support\Concerns\SessionManagerAwareTrait
  */
 interface FormManagerInterface
 {
@@ -26,6 +30,15 @@ interface FormManagerInterface
      * @return static
      */
     public function boot(): FormManagerInterface;
+
+    /**
+     * Création d'un formulaire.
+     *
+     * @param string|array|FormInterface $definition
+     *
+     * @return FormBuilderInterface
+     */
+    public function buildForm($definition): FormBuilderInterface;
 
     /**
      * Récupération d'une instance de formulaire associé à son alias de qualification.

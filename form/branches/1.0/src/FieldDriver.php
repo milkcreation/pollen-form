@@ -5,21 +5,21 @@ declare(strict_types=1);
 namespace Pollen\Form;
 
 use Closure;
-use LogicException;
 use Pollen\Form\Concerns\FormAwareTrait;
 use Pollen\Form\Exception\FieldValidateException;
 use Pollen\Support\Arr;
 use Pollen\Support\Concerns\BootableTrait;
 use Pollen\Support\Concerns\BuildableTrait;
-use Pollen\Support\Concerns\ParamsBagTrait;
+use Pollen\Support\Concerns\ParamsBagAwareTrait;
 use Pollen\Support\MessagesBag;
+use RuntimeException;
 
 class FieldDriver implements FieldDriverInterface
 {
     use BootableTrait;
     use BuildableTrait;
     use FormAwareTrait;
-    use ParamsBagTrait;
+    use ParamsBagAwareTrait;
 
     /**
      * Liste des propriétés de support par défaut.
@@ -71,7 +71,7 @@ class FieldDriver implements FieldDriverInterface
      * Indicateur de pré-traitement du rendu.
      * @bool
      */
-    protected $renderable = false;
+    protected $rendering = false;
 
     /**
      * Identifiant de qualification du champ.
@@ -94,7 +94,7 @@ class FieldDriver implements FieldDriverInterface
     {
         if (!$this->isBooted()) {
             if (!$this->form() instanceof FormInterface) {
-                throw new LogicException('Invalid related FormFactory');
+                throw new RuntimeException('Form Field Driver requires a valid related Form instance');
             }
 
             $this->form()->event('field.boot.' . $this->getType(), [&$this]);
@@ -118,7 +118,7 @@ class FieldDriver implements FieldDriverInterface
     {
         if (!$this->isBuilt()) {
             if ($this->alias === null) {
-                throw new LogicException('Missing alias');
+                throw new RuntimeException('Form Field Driver requires must have a valid alias');
             }
 
             $this->setBuilt();
@@ -448,9 +448,9 @@ class FieldDriver implements FieldDriverInterface
     /**
      * @inheritDoc
      */
-    public function isRenderable(): bool
+    public function isRendering(): bool
     {
-        return $this->renderable;
+        return $this->rendering;
     }
 
     /**
@@ -519,7 +519,7 @@ class FieldDriver implements FieldDriverInterface
             if ($tagged = $required['tagged']) {
                 if (is_string($tagged)) {
                     $tagged = ['content' => $tagged];
-                } elseif (!is_array($required)) {
+                } elseif (!is_array($tagged)) {
                     $tagged = [];
                 }
 
@@ -596,7 +596,7 @@ class FieldDriver implements FieldDriverInterface
      */
     public function preRender(): FieldDriverInterface
     {
-        if (!$this->isRenderable()) {
+        if (!$this->isRendering()) {
             $param = $this->params();
 
             if (!$param->has('attrs.id')) {
@@ -730,7 +730,7 @@ class FieldDriver implements FieldDriverInterface
                     $param->pull('label.content');
                 }
 
-                if (($require = $param->pull('label.require')) && $param->get('required.tagged')) {
+                if (($param->pull('label.require')) && $param->get('required.tagged')) {
                     $content = $param->get('label.content');
 
                     $param->set('label.content', $content . $this->form()->view('field-required', ['field' => $this]));
@@ -753,7 +753,7 @@ class FieldDriver implements FieldDriverInterface
                 }
             }
 
-            $this->renderable = true;
+            $this->rendering = true;
         }
 
         return $this;
@@ -778,7 +778,7 @@ class FieldDriver implements FieldDriverInterface
 
         $args['value'] = $this->getValue();
 
-        return Field::get($this->getType(), $args)->render();
+        return (string)$this->form()->fieldManager()->get($this->getType(), $args);
     }
 
     /**

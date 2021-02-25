@@ -6,27 +6,29 @@ namespace Pollen\Form;
 
 use Closure;
 use LogicException;
+use Pollen\Support\Concerns\EventDispatcherAwareTrait;
+use Pollen\Support\Concerns\FieldManagerAwareTrait;
+use Pollen\Support\Concerns\PartialManagerAwareTrait;
+use Pollen\Support\Concerns\SessionManagerAwareTrait;
 use Pollen\Support\Filesystem;
 use Psr\Container\ContainerInterface as Container;
 use Pollen\Form\Buttons\SubmitButton;
 use Pollen\Form\Fields\HtmlField;
 use Pollen\Form\Fields\TagField;
 use Pollen\Support\Concerns\BootableTrait;
-use Pollen\Support\Concerns\ConfigBagTrait;
+use Pollen\Support\Concerns\ConfigBagAwareTrait;
 use Pollen\Support\Concerns\ContainerAwareTrait;
 use RuntimeException;
 
 class FormManager implements FormManagerInterface
 {
     use BootableTrait;
-    use ConfigBagTrait;
+    use ConfigBagAwareTrait;
     use ContainerAwareTrait;
-
-    /**
-     * Instance du formulaire courant.
-     * @var FormInterface|null
-     */
-    protected $currentForm;
+    use EventDispatcherAwareTrait;
+    use FieldManagerAwareTrait;
+    use PartialManagerAwareTrait;
+    use SessionManagerAwareTrait;
 
     /**
      * Liste des pilotes d'addons par défaut.
@@ -50,6 +52,12 @@ class FormManager implements FormManagerInterface
         'html' => HtmlField::class,
         'tag'  => TagField::class,
     ];
+
+    /**
+     * Instance du formulaire courant.
+     * @var FormInterface|null
+     */
+    protected $currentForm;
 
     /**
      * Liste des définitions de pilotes d'addons déclarés.
@@ -159,6 +167,42 @@ class FormManager implements FormManagerInterface
     /**
      * @inheritDoc
      */
+    public function buildForm($definition): FormBuilderInterface
+    {
+        if (!$form = $this->resolve($definition, FormInterface::class, $this->getContainer(), Form::class)) {
+            throw new RuntimeException('Unable to build the Form');
+        }
+
+        if (is_array($definition)) {
+            $alias = $definition['alias'] ?? null;
+            unset($definition['alias']);
+            $params = $definition;
+        } else {
+            $alias = $form->getAlias();
+            $params = [];
+        }
+
+        if (empty($alias)) {
+            throw new RuntimeException('Form requires an alias to work');
+        }
+
+        if (!empty($this->forms[$alias])) {
+            throw new RuntimeException(
+                sprintf('Another form with alias [%s] already exists', $alias)
+            );
+        }
+
+        $this->forms[$alias] = $form;
+
+        return new FormBuilder($form->setAlias($alias)
+            ->setFormManager($this)
+            ->setParams($params)
+            ->build());
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function get(string $alias): FormInterface
     {
         return $this->forms[$alias] ?? $this->resolveForm($alias);
@@ -169,7 +213,7 @@ class FormManager implements FormManagerInterface
      */
     public function getAddonDriver(string $alias): AddonDriverInterface
     {
-        return $this->resolvedAddonDrivers[$alias] ?? $this->resolveAddonDriver($alias);
+        return $this->resolveAddonDriver($alias);
     }
 
     /**
@@ -177,7 +221,7 @@ class FormManager implements FormManagerInterface
      */
     public function getButtonDriver(string $alias): ButtonDriverInterface
     {
-        return $this->resolvedButtonDrivers[$alias] ?? $this->resolveButtonDriver($alias);
+        return $this->resolveButtonDriver($alias);
     }
 
     /**
@@ -193,7 +237,7 @@ class FormManager implements FormManagerInterface
      */
     public function getFieldDriver(string $alias): FieldDriverInterface
     {
-        return $this->resolvedFieldDrivers[$alias] ?? $this->resolveFieldDriver($alias);
+        return $this->resolveFieldDriver($alias);
     }
 
     /**
@@ -318,10 +362,10 @@ class FormManager implements FormManagerInterface
     protected function resolveAddonDriver(string $alias): AddonDriverInterface
     {
         if (!empty($this->resolvedAddonDrivers[$alias])) {
-            return $this->resolvedAddonDrivers[$alias];
+            return clone $this->resolvedAddonDrivers[$alias];
         }
 
-        if (!$def = $this->addonDriverDefinitions[$alias] ?: null) {
+        if (!$def = $this->addonDriverDefinitions[$alias] ?? null) {
             throw new RuntimeException(sprintf('Form Addon Driver [%s] unresolvable', $alias));
         }
 
@@ -344,10 +388,10 @@ class FormManager implements FormManagerInterface
     protected function resolveButtonDriver(string $alias): ButtonDriverInterface
     {
         if (!empty($this->resolvedButtonDrivers[$alias])) {
-            return $this->resolvedButtonDrivers[$alias];
+            return clone $this->resolvedButtonDrivers[$alias];
         }
 
-        if (!$def = $this->buttonDriverDefinitions[$alias] ?: null) {
+        if (!$def = $this->buttonDriverDefinitions[$alias] ?? null) {
             throw new RuntimeException(sprintf('Form Button Driver [%s] unresolvable', $alias));
         }
 
@@ -357,7 +401,9 @@ class FormManager implements FormManagerInterface
 
         unset($this->buttonDriverDefinitions[$alias]);
 
-        return $this->resolvedButtonDrivers[$alias] = $buttonDriver;
+        return $this->resolvedButtonDrivers[$alias] = $buttonDriver
+            ->setAlias($alias)
+            ->build();
     }
 
     /**
@@ -370,11 +416,11 @@ class FormManager implements FormManagerInterface
     protected function resolveFieldDriver(string $alias): FieldDriverInterface
     {
         if (!empty($this->resolvedFieldDrivers[$alias])) {
-            return $this->resolvedFieldDrivers[$alias];
+            return clone $this->resolvedFieldDrivers[$alias];
         }
 
-        if (!$def = $this->fieldDriverDefinitions[$alias] ?: null) {
-            throw new RuntimeException(sprintf('Form Field Driver [%s] unresolvable', $alias));
+        if (!$def = $this->fieldDriverDefinitions[$alias] ?? null) {
+            $def = new FieldDriver();
         }
 
         if (!$fieldDriver = $this->resolve($def, FieldDriverInterface::class, $this->getContainer())) {
@@ -383,7 +429,9 @@ class FormManager implements FormManagerInterface
 
         unset($this->fieldDriverDefinitions[$alias]);
 
-        return $this->resolvedFieldDrivers[$alias] = $fieldDriver;
+        return $this->resolvedFieldDrivers[$alias] = $fieldDriver
+            ->setAlias($alias)
+            ->build();
     }
 
     /**
@@ -399,7 +447,7 @@ class FormManager implements FormManagerInterface
             return $this->forms[$alias];
         }
 
-        if (!$def = $this->fieldDriverDefinitions[$alias] ?: null) {
+        if (!$def = $this->formDefinitions[$alias] ?? null) {
             throw new RuntimeException(sprintf('Form [%s] unresolvable', $alias));
         }
 
@@ -407,9 +455,15 @@ class FormManager implements FormManagerInterface
             throw new RuntimeException(sprintf('Form [%s] unresolvable', $alias));
         }
 
-        unset($this->fieldDriverDefinitions[$alias]);
+        $params = is_array($def) ? $def : [];
 
-        return $this->forms[$alias] = $form;
+        unset($this->formDefinitions[$alias]);
+
+        return $this->forms[$alias] = $form
+            ->setAlias($alias)
+            ->setFormManager($this)
+            ->setParams($params)
+            ->build();
     }
 
     /**
@@ -434,12 +488,12 @@ class FormManager implements FormManagerInterface
             $object = $definition;
         }
 
-        if ($container === null && is_string($definition) && class_exists($definition)) {
-            $object = new $definition();
-        }
-
         if ($container !== null && is_string($definition) && $container->has($definition)) {
             $object = $container->get($definition);
+        }
+
+        if ($object === null && is_string($definition) && class_exists($definition)) {
+            $object = new $definition();
         }
 
         if ($object === null && $fallbackClass !== null) {
@@ -459,7 +513,7 @@ class FormManager implements FormManagerInterface
     public function resources(?string $path = null): string
     {
         if ($this->resourcesBaseDir === null) {
-            $this->resourcesBaseDir = Filesystem::normalizePath(__DIR__ . '/../resources/');
+            $this->resourcesBaseDir = Filesystem::normalizePath(realpath(dirname(__DIR__) . '/resources/'));
 
             if (!file_exists($this->resourcesBaseDir)) {
                 throw new RuntimeException('Partial ressources directory unreachable');

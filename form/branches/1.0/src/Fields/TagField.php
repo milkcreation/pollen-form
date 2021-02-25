@@ -25,6 +25,6 @@ class TagField extends FieldDriver implements TagFieldInterface
             'content' => $this->getValue(),
         ], $this->getExtras());
 
-        return Partial::get('tag', $args)->render();
+        return (string)$this->form()->partialManager()->get('tag', $args);
     }
 }

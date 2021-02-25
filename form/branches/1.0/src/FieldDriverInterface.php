@@ -10,7 +10,7 @@ use Pollen\Form\Exception\FieldValidateException;
  * @mixin \Pollen\Form\Concerns\FormAwareTrait
  * @mixin \Pollen\Support\Concerns\BootableTrait
  * @mixin \Pollen\Support\Concerns\BuildableTrait
- * @mixin \Pollen\Support\Concerns\ParamsBagTrait
+ * @mixin \Pollen\Support\Concerns\ParamsBagAwareTrait
  */
 interface FieldDriverInterface
 {
@@ -222,7 +222,7 @@ interface FieldDriverInterface
      *
      * @return bool
      */
-    public function isRenderable(): bool;
+    public function isRendering(): bool;
 
     /**
      * Traitement récursif des tests de validation.
