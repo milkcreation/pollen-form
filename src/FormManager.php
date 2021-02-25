@@ -31,6 +31,12 @@ class FormManager implements FormManagerInterface
     use SessionManagerAwareTrait;
 
     /**
+     * Instance principale.
+     * @var static|null
+     */
+    private static $instance;
+
+    /**
      * Liste des pilotes d'addons par défaut.
      * @var string[]
      */
@@ -130,6 +136,23 @@ class FormManager implements FormManagerInterface
         if ($this->config('boot_enabled', true)) {
             $this->boot();
         }
+
+        if (!self::$instance instanceof static) {
+            self::$instance = $this;
+        }
+    }
+
+    /**
+     * Récupération de l'instance principale.
+     *
+     * @return static
+     */
+    public static function getInstance(): FormManagerInterface
+    {
+        if (self::$instance instanceof self) {
+            return self::$instance;
+        }
+        throw new RuntimeException(sprintf('Unavailable [%s] instance', __CLASS__));
     }
 
     /**
