@@ -5,5 +5,5 @@
  */
 ?>
 <?php if ($required = $field->params('required.tagged')) : ?>
-    <?php echo field('required', $required); ?>
+    <?php echo $this->field('required', $required); ?>
 <?php endif; ?>

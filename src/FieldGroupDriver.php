@@ -9,13 +9,13 @@ use Pollen\Form\Concerns\FormAwareTrait;
 use Pollen\Form\Factory\FieldGroupsFactoryInterface;
 use Pollen\Support\HtmlAttrs;
 use Pollen\Support\Concerns\BootableTrait;
-use Pollen\Support\Concerns\ParamsBagTrait;
+use Pollen\Support\Concerns\ParamsBagAwareTrait;
 
 class FieldGroupDriver implements FieldGroupDriverInterface
 {
     use BootableTrait;
     use FormAwareTrait;
-    use ParamsBagTrait;
+    use ParamsBagAwareTrait;
 
     /**
      * Identifiant d'indexation.

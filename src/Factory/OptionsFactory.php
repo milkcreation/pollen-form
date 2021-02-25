@@ -8,7 +8,7 @@ use BadMethodCallException;
 use Pollen\Form\Concerns\FormAwareTrait;
 use Pollen\Form\FormInterface;
 use Pollen\Support\Concerns\BootableTrait;
-use Pollen\Support\Concerns\ParamsBagTrait;
+use Pollen\Support\Concerns\ParamsBagAwareTrait;
 use RuntimeException;
 use Throwable;
 
@@ -19,7 +19,7 @@ class OptionsFactory implements OptionsFactoryInterface
 {
     use BootableTrait;
     use FormAwareTrait;
-    use ParamsBagTrait;
+    use ParamsBagAwareTrait;
 
     /**
      * @inheritDoc
@@ -44,7 +44,7 @@ class OptionsFactory implements OptionsFactoryInterface
      */
     public function boot(): OptionsFactoryInterface
     {
-        if ($this->booted === false) {
+        if (!$this->isBooted()) {
             if (!$this->form() instanceof FormInterface) {
                 throw new RuntimeException('Form OptionsFactory requires a valid related Form instance');
             }
@@ -56,7 +56,7 @@ class OptionsFactory implements OptionsFactoryInterface
 
             $this->form()->event('options.booted');
 
-            $this->booted = true;
+            $this->setBooted();
         }
 
         return $this;

@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Pollen\Form;
 
-use LogicException;
 use Pollen\Form\Concerns\FormAwareTrait;
 use Pollen\Support\Concerns\BootableTrait;
 use Pollen\Support\Concerns\BuildableTrait;
-use Pollen\Support\Concerns\ParamsBagTrait;
+use Pollen\Support\Concerns\ParamsBagAwareTrait;
+use RuntimeException;
 
 class ButtonDriver implements ButtonDriverInterface
 {
     use BootableTrait;
     use BuildableTrait;
     use FormAwareTrait;
-    use ParamsBagTrait;
+    use ParamsBagAwareTrait;
 
     /**
      * Alias de qualification.
@@ -38,7 +38,7 @@ class ButtonDriver implements ButtonDriverInterface
     {
         if (!$this->isBooted()) {
             if (!$this->form() instanceof FormInterface) {
-                throw new LogicException('Invalid related FormFactory');
+                throw new RuntimeException('Form Button Driver requires a valid related Form instance');
             }
 
             $this->parseParams();
@@ -56,7 +56,7 @@ class ButtonDriver implements ButtonDriverInterface
     {
         if (!$this->isBuilt()) {
             if ($this->alias === null) {
-                throw new LogicException('Missing alias');
+                throw new RuntimeException('Form Button Driver requires must have a valid alias');
             }
 
             $this->setBuilt();
@@ -148,6 +148,6 @@ class ButtonDriver implements ButtonDriverInterface
             }
         }
 
-        return Field::get('button', $this->params()->all())->render();
+        return (string)$this->form()->fieldManager()->get('button', $this->params()->all());
     }
 }

@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Pollen\Form;
 
-use Pollen\View\ViewTemplate;
 use Closure;
+use Pollen\View\ViewTemplate;
+use RuntimeException;
 
 /**
  * @method string csrf()
@@ -52,6 +53,32 @@ class FormViewTemplate extends ViewTemplate implements FormViewTemplateInterface
      */
     public function form(): FormInterface
     {
-        return $this->engine->params('form');
+        /** @var FormInterface|object|null $delegate */
+        $delegate = $this->engine->getDelegate();
+        if ($delegate instanceof FormInterface) {
+            return $delegate;
+        }
+
+        throw new RuntimeException('FormViewTemplate must have a delegation Form instance');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function field(string $alias, $idOrParams = null, array $params = []): string
+    {
+        $manager = $this->form()->fieldManager();
+
+        return (string)$manager->get($alias, $idOrParams, $params);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function partial(string $alias, $idOrParams = null, array $params = []): string
+    {
+        $manager = $this->form()->partialManager();
+
+        return (string)$manager->get($alias, $idOrParams, $params);
     }
 }

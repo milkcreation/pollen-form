@@ -9,7 +9,7 @@ use Pollen\Http\RedirectResponse;
 /**
  * @mixin \Pollen\Form\Concerns\FormAwareTrait
  * @mixin \Pollen\Support\Concerns\BootableTrait
- * @mixin \Pollen\Support\Concerns\ParamsBagTrait
+ * @mixin \Pollen\Support\Concerns\ParamsBagAwareTrait
  */
 interface HandleFactoryInterface
 {
@@ -56,18 +56,18 @@ interface HandleFactoryInterface
     public function isValidated(): bool;
 
     /**
-     * Traitement de la requête de soumission du formulaire.
+     * Processus de traitement de la requête de soumission du formulaire.
      *
      * @return RedirectResponse|null
      */
-    public function response(): ?RedirectResponse;
+    public function proceed(): ?RedirectResponse;
 
     /**
      * Redirection de la requête de traitement du formulaire.
      *
      * @return RedirectResponse
      */
-    public function redirect(): RedirectResponse;
+    public function redirectResponse(): RedirectResponse;
 
     /**
      * Définition de l'url de redirection.

@@ -40,13 +40,6 @@ interface ButtonsFactoryInterface extends ArrayAccess, Countable, IteratorAggreg
     public function collect(?array $items = null): iterable;
 
     /**
-     * Récupération de la liste des éléments par ordre d'affichage.
-     *
-     * @return Collection|ButtonDriverInterface[]|iterable
-     */
-    public function collectByPosition(): iterable;
-
-    /**
      * Récupération d'un pilote déclaré selon son alias.
      *
      * @param string $alias

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Pollen\Form\Factory;
 
-use Pollen\Event\EventDispatcher;
 use Pollen\Event\EventDispatcherInterface;
 use Pollen\Form\FormInterface;
 use Pollen\Form\Concerns\FormAwareTrait;
@@ -19,7 +18,7 @@ class EventsFactory implements EventsFactoryInterface
     /**
      * @param EventDispatcherInterface
      */
-    protected $eventDispatcher;
+    private $eventDispatcher;
 
     /**
      * @inheritDoc
@@ -28,6 +27,10 @@ class EventsFactory implements EventsFactoryInterface
     {
         if (!$this->isBooted()) {
             if (!$this->form() instanceof FormInterface) {
+                throw new RuntimeException('Form EventsFactory requires a valid related Form instance');
+            }
+
+            if (!$this->eventDispatcher instanceof EventDispatcherInterface) {
                 throw new RuntimeException('Form EventsFactory requires a valid related Form instance');
             }
 
@@ -50,18 +53,6 @@ class EventsFactory implements EventsFactoryInterface
         }
 
         return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getEventDispatcher(): EventDispatcherInterface
-    {
-        if ($this->eventDispatcher === null) {
-            $this->eventDispatcher = new EventDispatcher();
-        }
-
-        return $this->eventDispatcher;
     }
 
     /**

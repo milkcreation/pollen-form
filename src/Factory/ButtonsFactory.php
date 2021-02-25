@@ -62,7 +62,7 @@ class ButtonsFactory implements ButtonsFactoryInterface
 
                 if ($params !== false) {
                     $_buttons[$alias] = $this->form()->formManager()->getButtonDriver($alias);
-                    $_buttons[$alias]->setForm($this->form())->setParams($params)->boot();
+                    $_buttons[$alias]->setForm($this->form())->setParams(is_array($params) ? $params : [])->boot();
                 }
             }
 
@@ -79,7 +79,9 @@ class ButtonsFactory implements ButtonsFactoryInterface
                 });
             }
 
-            $this->buttonDrivers = $this->collectByPosition()->all();
+            $this->buttonDrivers = $this->collect($_buttons)->sortBy(function (ButtonDriverInterface $button) {
+                return $button->getPosition();
+            })->all();
 
             $this->setBooted();
 
@@ -95,16 +97,6 @@ class ButtonsFactory implements ButtonsFactoryInterface
     public function collect(?array $items = null): iterable
     {
         return new Collection($items ?? $this->buttonDrivers);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function collectByPosition(): iterable
-    {
-        return $this->collect()->sortBy(function (ButtonDriverInterface $button) {
-            return $button->getPosition();
-        });
     }
 
     /**

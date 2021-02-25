@@ -10,14 +10,14 @@ use Pollen\Form\Concerns\FormAwareTrait;
 use Pollen\Form\Exception\FieldValidateException;
 use Pollen\Form\FormInterface;
 use Pollen\Support\Concerns\BootableTrait;
-use Pollen\Support\Concerns\ParamsBagTrait;
+use Pollen\Support\Concerns\ParamsBagAwareTrait;
 use RuntimeException;
 
 class HandleFactory implements HandleFactoryInterface
 {
     use BootableTrait;
     use FormAwareTrait;
-    use ParamsBagTrait;
+    use ParamsBagAwareTrait;
 
     /**
      * Url de redirection.
@@ -70,7 +70,7 @@ class HandleFactory implements HandleFactoryInterface
                     $field->setValue($value);
 
                     if ($field->supports('session') && $this->form()->supports('session')) {
-                        $this->form()->session()->put("request.{$field->getName()}", $value);
+                        $this->form()->session()->set("request.{$field->getName()}", $value);
                     }
                 }
             }
@@ -94,10 +94,10 @@ class HandleFactory implements HandleFactoryInterface
             }
         }
 
-        $this->form()->session()->forget('notices');
+        $this->form()->session()->remove('notices');
 
         foreach ($this->form()->messages()->allMessages() as $type => $notices) {
-            $this->form()->session()->put("notices.{$type}", $notices);
+            $this->form()->session()->set("notices.{$type}", $notices);
         }
 
         $this->form()->event('handle.failed', [&$this]);
@@ -135,7 +135,7 @@ class HandleFactory implements HandleFactoryInterface
     public function isSubmitted(): bool
     {
         if ($this->submitted === null) {
-            $this->submitted = !!wp_verify_nonce($this->getToken(), 'Form' . $this->form()->getAlias())
+            $this->submitted = (bool)wp_verify_nonce($this->getToken(), 'Form' . $this->form()->getAlias())
                 && $this->form()->getHandleRequest()->isMethod($this->form()->getMethod());
         }
 
@@ -159,13 +159,11 @@ class HandleFactory implements HandleFactoryInterface
     /**
      * @inheritDoc
      */
-    public function response(): ?RedirectResponse
+    public function proceed(): ?RedirectResponse
     {
-        if (!$this->isValidated()) {
+        if (!$this->isSubmitted()) {
             return null;
         }
-
-        $this->boot();
 
         $this->validate();
 
@@ -177,13 +175,13 @@ class HandleFactory implements HandleFactoryInterface
 
         $this->success();
 
-        return $this->redirect();
+        return $this->redirectResponse()->prepare($this->form()->getHandleRequest());
     }
 
     /**
      * @inheritDoc
      */
-    public function redirect(): RedirectResponse
+    public function redirectResponse(): RedirectResponse
     {
         return new RedirectResponse($this->getRedirectUrl());
     }
@@ -193,8 +191,8 @@ class HandleFactory implements HandleFactoryInterface
      */
     public function success(): HandleFactoryInterface
     {
-        $this->form()->session()->flush();
-        $this->form()->setSuccessful()->session()->put('successful', true);
+        $this->form()->session()->clear();
+        $this->form()->setSuccessful()->session()->set('successful', true);
 
         $this->form()->messages()->success($this->form()->option('success.message', ''));
 

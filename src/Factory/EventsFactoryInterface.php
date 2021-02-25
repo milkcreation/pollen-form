@@ -21,13 +21,6 @@ interface EventsFactoryInterface
     public function boot(): EventsFactoryInterface;
 
     /**
-     * Récupération de l'instance du répartiteur d'événement.
-     *
-     * @return EventDispatcherInterface
-     */
-    public function getEventDispatcher(): EventDispatcherInterface;
-
-    /**
      * Déclaration d'un événement.
      *
      * @param string $name Identifiant de qualification de l'événement.

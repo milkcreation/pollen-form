@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pollen\Form;
 
 use InvalidArgumentException;
+use Pollen\Field\FieldManagerInterface;
 use Pollen\Http\Request;
 use Pollen\Http\RequestInterface;
 use Pollen\Form\Concerns\FactoryBagTrait;
@@ -17,10 +18,11 @@ use Pollen\Form\Factory\HandleFactory;
 use Pollen\Form\Factory\OptionsFactory;
 use Pollen\Form\Factory\SessionFactory;
 use Pollen\Form\Factory\ValidateFactory;
+use Pollen\Partial\PartialManagerInterface;
 use Pollen\Support\Concerns\BootableTrait;
 use Pollen\Support\Concerns\BuildableTrait;
-use Pollen\Support\Concerns\MessagesBagTrait;
-use Pollen\Support\Concerns\ParamsBagTrait;
+use Pollen\Support\Concerns\MessagesBagAwareTrait;
+use Pollen\Support\Concerns\ParamsBagAwareTrait;
 use Pollen\Support\MessagesBag;
 use Pollen\Translation\Concerns\LabelsBagAwareTrait;
 use RuntimeException;
@@ -31,8 +33,8 @@ class Form implements FormInterface
     use BuildableTrait;
     use FactoryBagTrait;
     use LabelsBagAwareTrait;
-    use MessagesBagTrait;
-    use ParamsBagTrait;
+    use MessagesBagAwareTrait;
+    use ParamsBagAwareTrait;
 
     /**
      * Instance du gestionnaire de formulaire.
@@ -118,11 +120,12 @@ class Form implements FormInterface
             ];
 
             foreach ($services as $service) {
+                $service .=  'Factory';
+
                 $this->{$service}->boot();
             }
 
-            // @todo
-            //$this->setSuccessful(!!$this->session()->pull('successful', false));
+            $this->setSuccessful((bool)$this->session()->pull('successful', false));
 
             $this->setBooted();
 
@@ -153,7 +156,9 @@ class Form implements FormInterface
             $this->buttons()->setForm($this);
 
             if ($this->eventsFactory === null) {
-                $this->setEventsFactory(new EventsFactory());
+                $this->setEventsFactory(
+                    (new EventsFactory())->setEventDispatcher($this->formManager->eventDispatcher())
+                );
             }
             $this->events()->setForm($this);
 
@@ -178,7 +183,10 @@ class Form implements FormInterface
             $this->options()->setForm($this);
 
             if ($this->sessionFactory === null) {
-                $this->setSessionFactory(new SessionFactory());
+                $this->setSessionFactory(
+                    (new SessionFactory(md5('Form' . $this->getAlias())))
+                        ->setSessionManager($this->formManager->sessionManager())
+                );
             }
             $this->session()->setForm($this);
 
@@ -293,6 +301,14 @@ class Form implements FormInterface
     /**
      * @inheritDoc
      */
+    public function fieldManager(): FieldManagerInterface
+    {
+        return $this->formManager()->fieldManager();
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function formManager(): FormManagerInterface
     {
         return $this->formManager;
@@ -400,22 +416,6 @@ class Form implements FormInterface
     /**
      * @inheritDoc
      */
-    public function isBooted(): bool
-    {
-        return $this->booted;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function isBuilt(): bool
-    {
-        return $this->built;
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function isSubmitted(): bool
     {
         return $this->handle()->isSubmitted();
@@ -451,6 +451,14 @@ class Form implements FormInterface
     public function onResetCurrent(): void
     {
         $this->event('form.reset.current', [&$this]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function partialManager(): PartialManagerInterface
+    {
+        return $this->formManager()->partialManager();
     }
 
     /**
@@ -545,27 +553,23 @@ class Form implements FormInterface
     public function renderBuildNotices(): FormInterface
     {
         if ($this->renderBuild['notices'] === false) {
-            /**
-             * @todo
-             * if ($this->messages()->count()) {
-             * $this->session()->forget('notices');
-             * } elseif ($notices = $this->session()->pull('notices')) {
-             * foreach ($notices as $type => $items) {
-             * foreach ($items as $item) {
-             * $this->messages()->add($type, $item['message'] ?? '', $item['datas'] ?? []);
-             * }
-             * }
-             * }
-             *
-             * if ($this->isSuccessful()) {
-             * if (!$this->messages()->has('success')) {
-             * $this->messages()->success($this->option('success.message', ''));
-             * }
-             * $this->session()->destroy();
-             * } else {
-             * $this->session()->forget('notices');
-             * }
-             */
+            if ($this->messages()->count()) {
+                $this->session()->remove('notices');
+            } elseif ($notices = $this->session()->pull('notices')) {
+                foreach ($notices as $type => $items) {
+                    foreach ($items as $item) {
+                        $this->messages()->log($type, $item['message'] ?? '', $item['datas'] ?? []);
+                    }
+                }
+            }
+            if ($this->isSuccessful()) {
+                if (!$this->messages()->exists(MessagesBag::SUCCESS)) {
+                    $this->messages()->success($this->option('success.message', ''));
+                }
+                $this->session()->clear();
+            } else {
+                $this->session()->remove('notices');
+            }
 
             /**
              * @todo
@@ -700,9 +704,12 @@ class Form implements FormInterface
             }
 
             if ($directory === null) {
-                throw new InvalidArgumentException(
-                    sprintf('Form [%s] must have an accessible view directory', $this->getAlias())
-                );
+                $directory = $this->formManager()->resources('/views');
+                if (!file_exists($directory)) {
+                    throw new InvalidArgumentException(
+                        sprintf('Field [%s] must have an accessible view directory', $this->getAlias())
+                    );
+                }
             }
 
             $this->viewEngine = $this->formManager()->containerHas(FormViewEngine::class)

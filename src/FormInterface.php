@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace Pollen\Form;
 
+use Pollen\Field\FieldManagerInterface;
 use Pollen\Http\RequestInterface;
+use Pollen\Partial\PartialManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @mixin \Pollen\Form\Concerns\FactoryBagTrait
  * @mixin \Pollen\Support\Concerns\BootableTrait
  * @mixin \Pollen\Support\Concerns\BuildableTrait
- * @mixin \Pollen\Support\Concerns\MessagesBagTrait
- * @mixin \Pollen\Support\Concerns\ParamsBagTrait
+ * @mixin \Pollen\Support\Concerns\MessagesBagAwareTrait
+ * @mixin \Pollen\Support\Concerns\ParamsBagAwareTrait
  * @mixin \Pollen\Translation\Concerns\LabelsBagAwareTrait
  */
 interface FormInterface
@@ -62,6 +65,13 @@ interface FormInterface
     public function error(string $message, array $datas = []): string;
 
     /**
+     * Récupération de l'instance du gestionnaire de champs.
+     *
+     * @return FieldManagerInterface
+     */
+    public function fieldManager(): FieldManagerInterface;
+
+    /**
      * Récupération de l'instance du gestionnaire de formulaire.
      *
      * @return FormManagerInterface
@@ -92,7 +102,7 @@ interface FormInterface
     /**
      * Instance de la requête HTTP de traitement du formulaire.
      *
-     * @return RequestInterface
+     * @return RequestInterface|Request
      */
     public function getHandleRequest(): RequestInterface;
 
@@ -158,6 +168,13 @@ interface FormInterface
      * @return void
      */
     public function onResetCurrent(): void;
+
+    /**
+     * Récupération de l'instance du gestionnaire de partial.
+     *
+     * @return PartialManagerInterface
+     */
+    public function partialManager(): PartialManagerInterface;
 
     /**
      * Affichage.
