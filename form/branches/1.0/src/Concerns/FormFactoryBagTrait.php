@@ -18,7 +18,7 @@ use Pollen\Form\Factory\ValidateFactoryInterface;
 use Pollen\Form\FieldDriverInterface;
 use Pollen\Form\FieldGroupDriverInterface;
 
-trait FactoryBagTrait
+trait FormFactoryBagTrait
 {
     /**
      * Instance du gestionnaire d'addons.
@@ -245,7 +245,7 @@ trait FactoryBagTrait
      *
      * @return static
      */
-    public function setAddonsFactory(AddonsFactoryInterface $addonsFactory): self
+    public function setAddonsFactory(AddonsFactoryInterface $addonsFactory): FormFactoryBagTrait
     {
         $this->addonsFactory = $addonsFactory;
 
@@ -259,7 +259,7 @@ trait FactoryBagTrait
      *
      * @return static
      */
-    public function setButtonsFactory(ButtonsFactoryInterface $buttonsFactory): self
+    public function setButtonsFactory(ButtonsFactoryInterface $buttonsFactory): FormFactoryBagTrait
     {
         $this->buttonsFactory = $buttonsFactory;
 
@@ -273,7 +273,7 @@ trait FactoryBagTrait
      *
      * @return static
      */
-    public function setEventsFactory(EventsFactoryInterface $eventsFactory): self
+    public function setEventsFactory(EventsFactoryInterface $eventsFactory): FormFactoryBagTrait
     {
         $this->eventsFactory = $eventsFactory;
 
@@ -287,7 +287,7 @@ trait FactoryBagTrait
      *
      * @return static
      */
-    public function setFieldsFactory(FieldsFactoryInterface $fieldsFactory): self
+    public function setFieldsFactory(FieldsFactoryInterface $fieldsFactory): FormFactoryBagTrait
     {
         $this->fieldsFactory = $fieldsFactory;
 
@@ -301,7 +301,7 @@ trait FactoryBagTrait
      *
      * @return static
      */
-    public function setGroupsFactory(FieldGroupsFactoryInterface $groupsFactory): self
+    public function setGroupsFactory(FieldGroupsFactoryInterface $groupsFactory): FormFactoryBagTrait
     {
         $this->groupsFactory = $groupsFactory;
 
@@ -315,7 +315,7 @@ trait FactoryBagTrait
      *
      * @return static
      */
-    public function setHandleFactory(HandleFactoryInterface $handleFactory): self
+    public function setHandleFactory(HandleFactoryInterface $handleFactory): FormFactoryBagTrait
     {
         $this->handleFactory = $handleFactory;
 
@@ -329,7 +329,7 @@ trait FactoryBagTrait
      *
      * @return static
      */
-    public function setOptionsFactory(OptionsFactoryInterface $optionsFactory): self
+    public function setOptionsFactory(OptionsFactoryInterface $optionsFactory): FormFactoryBagTrait
     {
         $this->optionsFactory = $optionsFactory;
 
@@ -343,7 +343,7 @@ trait FactoryBagTrait
      *
      * @return static
      */
-    public function setSessionFactory(SessionFactoryInterface $sessionFactory): self
+    public function setSessionFactory(SessionFactoryInterface $sessionFactory): FormFactoryBagTrait
     {
         $this->sessionFactory = $sessionFactory;
 
@@ -357,7 +357,7 @@ trait FactoryBagTrait
      *
      * @return static
      */
-    public function setValidateFactory(ValidateFactoryInterface $validateFactory): self
+    public function setValidateFactory(ValidateFactoryInterface $validateFactory): FormFactoryBagTrait
     {
         $this->validateFactory = $validateFactory;
 

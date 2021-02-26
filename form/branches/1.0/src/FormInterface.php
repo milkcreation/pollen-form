@@ -5,19 +5,23 @@ declare(strict_types=1);
 namespace Pollen\Form;
 
 use Pollen\Field\FieldManagerInterface;
+use Pollen\Form\Concerns\FormFactoryBagTraitInterface;
 use Pollen\Http\RequestInterface;
 use Pollen\Partial\PartialManagerInterface;
+use Pollen\Support\Concerns\BootableTraitInterface;
+use Pollen\Support\Concerns\BuildableTraitInterface;
+use Pollen\Support\Concerns\MessagesBagAwareTraitInterface;
+use Pollen\Support\Concerns\ParamsBagAwareTraitInterface;
+use Pollen\Translation\Concerns\LabelsBagAwareTraitInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @mixin \Pollen\Form\Concerns\FactoryBagTrait
- * @mixin \Pollen\Support\Concerns\BootableTrait
- * @mixin \Pollen\Support\Concerns\BuildableTrait
- * @mixin \Pollen\Support\Concerns\MessagesBagAwareTrait
- * @mixin \Pollen\Support\Concerns\ParamsBagAwareTrait
- * @mixin \Pollen\Translation\Concerns\LabelsBagAwareTrait
- */
-interface FormInterface
+interface FormInterface extends
+    BootableTraitInterface,
+    BuildableTraitInterface,
+    FormFactoryBagTraitInterface,
+    LabelsBagAwareTraitInterface,
+    MessagesBagAwareTraitInterface,
+    ParamsBagAwareTraitInterface
 {
     /**
      * Résolution de sortie de l'affichage du formulaire.

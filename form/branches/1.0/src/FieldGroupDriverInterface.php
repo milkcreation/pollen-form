@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace Pollen\Form;
 
 use Illuminate\Support\Collection;
+use Pollen\Form\Concerns\FormAwareTraitInterface;
 use Pollen\Form\Factory\FieldGroupsFactoryInterface;
+use Pollen\Support\Concerns\BootableTraitInterface;
+use Pollen\Support\Concerns\ParamsBagAwareTraitInterface;
 
-/**
- * @mixin \Pollen\Form\Concerns\FormAwareTrait
- * @mixin \Pollen\Support\Concerns\BootableTrait
- * @mixin \Pollen\Support\Concerns\ParamsBagAwareTrait
- */
-interface FieldGroupDriverInterface
+interface FieldGroupDriverInterface extends
+    BootableTraitInterface,
+    FormAwareTraitInterface,
+    ParamsBagAwareTraitInterface
 {
     /**
      * Chargement.

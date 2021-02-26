@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Pollen\Form\Factory;
 
+use Pollen\Form\Concerns\FormAwareTraitInterface;
 use Pollen\Http\RedirectResponse;
+use Pollen\Support\Concerns\BootableTraitInterface;
+use Pollen\Support\Concerns\ParamsBagAwareTraitInterface;
 
-/**
- * @mixin \Pollen\Form\Concerns\FormAwareTrait
- * @mixin \Pollen\Support\Concerns\BootableTrait
- * @mixin \Pollen\Support\Concerns\ParamsBagAwareTrait
- */
-interface HandleFactoryInterface
+interface HandleFactoryInterface extends BootableTraitInterface, FormAwareTraitInterface, ParamsBagAwareTraitInterface
 {
     /**
      * Chargement.

@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use Pollen\Field\FieldManagerInterface;
 use Pollen\Http\Request;
 use Pollen\Http\RequestInterface;
-use Pollen\Form\Concerns\FactoryBagTrait;
+use Pollen\Form\Concerns\FormFactoryBagTrait;
 use Pollen\Form\Factory\AddonsFactory;
 use Pollen\Form\Factory\ButtonsFactory;
 use Pollen\Form\Factory\EventsFactory;
@@ -31,7 +31,7 @@ class Form implements FormInterface
 {
     use BootableTrait;
     use BuildableTrait;
-    use FactoryBagTrait;
+    use FormFactoryBagTrait;
     use LabelsBagAwareTrait;
     use MessagesBagAwareTrait;
     use ParamsBagAwareTrait;
@@ -432,9 +432,9 @@ class Form implements FormInterface
     /**
      * @inheritDoc
      */
-    public function parseParams(): FormInterface
+    public function parseParams(): void
     {
-        return $this->parseLabels();
+        $this->parseLabels();
     }
 
     /**

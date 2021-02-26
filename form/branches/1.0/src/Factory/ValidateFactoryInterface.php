@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Pollen\Form\Factory;
 
-/**
- * @mixin \Pollen\Form\Concerns\FormAwareTrait
- * @mixin \Pollen\Support\Concerns\BootableTrait
- */
-interface ValidateFactoryInterface
+use Pollen\Form\Concerns\FormAwareTraitInterface;
+use Pollen\Support\Concerns\BootableTraitInterface;
+
+interface ValidateFactoryInterface extends BootableTraitInterface, FormAwareTraitInterface
 {
     /**
      * Chargement.

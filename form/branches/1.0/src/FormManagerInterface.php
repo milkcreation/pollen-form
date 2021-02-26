@@ -5,17 +5,25 @@ declare(strict_types=1);
 namespace Pollen\Form;
 
 use Closure;
+use Pollen\Support\Concerns\BootableTraitInterface;
+use Pollen\Support\Concerns\ConfigBagAwareTraitInterface;
+use Pollen\Support\Proxy\ContainerProxyInterface;
+use Pollen\Support\Proxy\EventDispatcherProxyInterface;
+use Pollen\Support\Proxy\FieldManagerProxyInterface;
+use Pollen\Support\Proxy\PartialManagerProxyInterface;
+use Pollen\Support\Proxy\SessionManagerProxyInterface;
 
 /**
- * @mixin \Pollen\Support\Concerns\BootableTrait
- * @mixin \Pollen\Support\Concerns\ConfigBagAwareTrait
- * @mixin \Pollen\Support\Concerns\ContainerAwareTrait
- * @mixin \Pollen\Support\Concerns\EventDispatcherAwareTrait
- * @mixin \Pollen\Support\Concerns\FieldManagerAwareTrait
- * @mixin \Pollen\Support\Concerns\PartialManagerAwareTrait
- * @mixin \Pollen\Support\Concerns\SessionManagerAwareTrait
+
  */
-interface FormManagerInterface
+interface FormManagerInterface extends
+    BootableTraitInterface,
+    ConfigBagAwareTraitInterface,
+    ContainerProxyInterface,
+    EventDispatcherProxyInterface,
+    FieldManagerProxyInterface,
+    PartialManagerProxyInterface,
+    SessionManagerProxyInterface
 {
     /**
      * Récupération de la liste des formulaires déclarés.

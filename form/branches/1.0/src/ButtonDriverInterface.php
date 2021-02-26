@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace Pollen\Form;
 
-/**
- * @mixin \Pollen\Form\Concerns\FormAwareTrait
- * @mixin \Pollen\Support\Concerns\BootableTrait
- * @mixin \Pollen\Support\Concerns\BuildableTrait
- * @mixin \Pollen\Support\Concerns\ParamsBagAwareTrait
- */
-interface ButtonDriverInterface
+use Pollen\Form\Concerns\FormAwareTraitInterface;
+use Pollen\Support\Concerns\BootableTraitInterface;
+use Pollen\Support\Concerns\BuildableTraitInterface;
+use Pollen\Support\Concerns\ParamsBagAwareTraitInterface;
+
+interface ButtonDriverInterface extends
+    BootableTraitInterface,
+    BuildableTraitInterface,
+    FormAwareTraitInterface,
+    ParamsBagAwareTraitInterface
 {
     /**
      * Résolution de sortie de l'affichage du contrôleur.
