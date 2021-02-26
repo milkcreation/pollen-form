@@ -456,7 +456,7 @@ class FieldDriver implements FieldDriverInterface
     /**
      * @inheritDoc
      */
-    public function parseParams(): FieldDriver
+    public function parseParams(): void
     {
         $param = $this->params();
 
@@ -554,8 +554,6 @@ class FieldDriver implements FieldDriverInterface
                 )
             );
         }
-
-        return $this;
     }
 
     /**

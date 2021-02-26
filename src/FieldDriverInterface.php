@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace Pollen\Form;
 
+use Pollen\Form\Concerns\FormAwareTraitInterface;
 use Pollen\Form\Exception\FieldValidateException;
+use Pollen\Support\Concerns\BootableTraitInterface;
+use Pollen\Support\Concerns\BuildableTraitInterface;
+use Pollen\Support\Concerns\ParamsBagAwareTraitInterface;
 
-/**
- * @mixin \Pollen\Form\Concerns\FormAwareTrait
- * @mixin \Pollen\Support\Concerns\BootableTrait
- * @mixin \Pollen\Support\Concerns\BuildableTrait
- * @mixin \Pollen\Support\Concerns\ParamsBagAwareTrait
- */
-interface FieldDriverInterface
+interface FieldDriverInterface extends
+    BootableTraitInterface,
+    BuildableTraitInterface,
+    FormAwareTraitInterface,
+    ParamsBagAwareTraitInterface
 {
     /**
      * Résolution de sortie sous forme d'une chaîne de caractères.

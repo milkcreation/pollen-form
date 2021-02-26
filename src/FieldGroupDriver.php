@@ -156,16 +156,16 @@ class FieldGroupDriver implements FieldGroupDriverInterface
     /**
      * @inheritDoc
      */
-    public function parseParams(): FieldGroupDriverInterface
+    public function parseParams(): void
     {
-        $param = $this->params();
+        $params = $this->params();
 
         $class = 'FormFieldsGroup FormFieldsGroup--' . $this->getAlias();
 
-        if (!$param->has('attrs.class')) {
-            $param->set('attrs.class', $class);
+        if (!$params->has('attrs.class')) {
+            $params->set('attrs.class', $class);
         } else {
-            $param->set('attrs.class', sprintf($param->get('attrs.class'), $class));
+            $params->set('attrs.class', sprintf($params->get('attrs.class'), $class));
         }
 
         $position = $this->getPosition();
@@ -173,9 +173,7 @@ class FieldGroupDriver implements FieldGroupDriverInterface
             $position = $this->index;
         }
 
-        $this->params('position', $position);
-
-        return $this;
+        $params->set('position', $position);
     }
 
     /**

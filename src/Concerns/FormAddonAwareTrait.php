@@ -8,32 +8,32 @@ use LogicException;
 use Pollen\Form\AddonDriverInterface;
 use Pollen\Form\FormInterface;
 
-trait AddonAwareTrait
+trait FormAddonAwareTrait
 {
     /**
      * Instance de l'addon de formulaire associé.
      * @var AddonDriverInterface|null
      */
-    protected $addon;
+    private $formAddon;
 
     /**
      * Instance du formulaire associé.
      * @var FormInterface|null
      */
-    protected $form;
+    private $form;
 
     /**
      * Récupération de l'instance de l'addon associé.
      *
      * @return AddonDriverInterface
      */
-    public function addon(): AddonDriverInterface
+    public function formAddon(): AddonDriverInterface
     {
-        if ($this->addon instanceof AddonDriverInterface) {
-            return $this->addon;
+        if ($this->formAddon instanceof AddonDriverInterface) {
+            return $this->formAddon;
         }
 
-        throw new LogicException('Unavailable related addon');
+        throw new LogicException('Unavailable related Form addon');
     }
 
     /**
@@ -43,19 +43,19 @@ trait AddonAwareTrait
      */
     public function form(): FormInterface
     {
-        return $this->addon()->form();
+        return $this->formAddon()->form();
     }
 
     /**
      * Définition de l'addon associé.
      *
-     * @param AddonDriverInterface $addon
+     * @param AddonDriverInterface $formAddon
      *
      * @return static
      */
-    public function setAddon(AddonDriverInterface $addon): AddonAwareTrait
+    public function setFormAddon(AddonDriverInterface $formAddon): FormAddonAwareTrait
     {
-        $this->addon = $addon;
+        $this->formAddon = $formAddon;
 
         return $this;
     }

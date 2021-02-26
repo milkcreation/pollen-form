@@ -8,13 +8,16 @@ use ArrayAccess;
 use Countable;
 use IteratorAggregate;
 use Illuminate\Support\Collection;
+use Pollen\Form\Concerns\FormAwareTraitInterface;
 use Pollen\Form\FieldDriverInterface;
+use Pollen\Support\Concerns\BootableTraitInterface;
 
-/**
- * @mixin \Pollen\Form\Concerns\FormAwareTrait
- * @mixin \Pollen\Support\Concerns\BootableTrait
- */
-interface FieldsFactoryInterface extends ArrayAccess, Countable, IteratorAggregate
+interface FieldsFactoryInterface extends
+    ArrayAccess,
+    BootableTraitInterface,
+    Countable,
+    FormAwareTraitInterface,
+    IteratorAggregate
 {
     /**
      * Récupération de la liste des pilotes déclarés.

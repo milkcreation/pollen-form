@@ -6,29 +6,29 @@ namespace Pollen\Form;
 
 use Closure;
 use LogicException;
-use Pollen\Support\Concerns\EventDispatcherAwareTrait;
-use Pollen\Support\Concerns\FieldManagerAwareTrait;
-use Pollen\Support\Concerns\PartialManagerAwareTrait;
-use Pollen\Support\Concerns\SessionManagerAwareTrait;
-use Pollen\Support\Filesystem;
-use Psr\Container\ContainerInterface as Container;
 use Pollen\Form\Buttons\SubmitButton;
 use Pollen\Form\Fields\HtmlField;
 use Pollen\Form\Fields\TagField;
 use Pollen\Support\Concerns\BootableTrait;
 use Pollen\Support\Concerns\ConfigBagAwareTrait;
-use Pollen\Support\Concerns\ContainerAwareTrait;
+use Pollen\Support\Proxy\ContainerProxy;
+use Pollen\Support\Proxy\EventDispatcherProxy;
+use Pollen\Support\Proxy\FieldManagerProxy;
+use Pollen\Support\Proxy\PartialManagerProxy;
+use Pollen\Support\Proxy\SessionManagerProxy;
+use Pollen\Support\Filesystem;
+use Psr\Container\ContainerInterface as Container;
 use RuntimeException;
 
 class FormManager implements FormManagerInterface
 {
     use BootableTrait;
     use ConfigBagAwareTrait;
-    use ContainerAwareTrait;
-    use EventDispatcherAwareTrait;
-    use FieldManagerAwareTrait;
-    use PartialManagerAwareTrait;
-    use SessionManagerAwareTrait;
+    use ContainerProxy;
+    use EventDispatcherProxy;
+    use FieldManagerProxy;
+    use PartialManagerProxy;
+    use SessionManagerProxy;
 
     /**
      * Instance principale.

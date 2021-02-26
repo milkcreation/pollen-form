@@ -6,12 +6,10 @@ namespace Pollen\Form\Factory;
 
 use Pollen\Event\EventDispatcherInterface;
 use Pollen\Event\TriggeredListenerInterface;
+use Pollen\Form\Concerns\FormAwareTraitInterface;
+use Pollen\Support\Concerns\BootableTraitInterface;
 
-/**
- * @mixin \Pollen\Form\Concerns\FormAwareTrait
- * @mixin \Pollen\Support\Concerns\BootableTrait
- */
-interface EventsFactoryInterface
+interface EventsFactoryInterface extends BootableTraitInterface, FormAwareTraitInterface
 {
     /**
      * Chargement.

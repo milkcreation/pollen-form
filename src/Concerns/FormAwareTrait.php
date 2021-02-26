@@ -12,7 +12,7 @@ trait FormAwareTrait
      * Instance du formulaire associé.
      * @var FormInterface|null
      */
-    protected $form;
+    private $form;
 
     /**
      * Récupération de l'instance du formulaire associé.

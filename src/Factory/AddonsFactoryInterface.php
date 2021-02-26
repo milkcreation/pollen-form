@@ -9,12 +9,15 @@ use Countable;
 use IteratorAggregate;
 use Illuminate\Support\Collection;
 use Pollen\Form\AddonDriverInterface;
+use Pollen\Form\Concerns\FormAwareTraitInterface;
+use Pollen\Support\Concerns\BootableTraitInterface;
 
-/**
- * @mixin \Pollen\Form\Concerns\FormAwareTrait
- * @mixin \Pollen\Support\Concerns\BootableTrait
- */
-interface AddonsFactoryInterface extends ArrayAccess, Countable, IteratorAggregate
+interface AddonsFactoryInterface extends
+    ArrayAccess,
+    BootableTraitInterface,
+    Countable,
+    FormAwareTraitInterface,
+    IteratorAggregate
 {
     /**
      * Récupération de la liste des pilotes déclarés.

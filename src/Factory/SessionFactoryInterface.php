@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Pollen\Form\Factory;
 
+use Pollen\Form\Concerns\FormAwareTraitInterface;
 use Pollen\Session\AttributeKeyBagInterface;
 use Pollen\Session\SessionManagerInterface;
+use Pollen\Support\Concerns\BootableTraitInterface;
 
-/**
- * @mixin \Pollen\Support\Concerns\BootableTrait
- * @mixin \Pollen\Form\Concerns\FormAwareTrait
- */
-interface SessionFactoryInterface extends AttributeKeyBagInterface
+interface SessionFactoryInterface extends AttributeKeyBagInterface, BootableTraitInterface, FormAwareTraitInterface
 {
     /**
      * Chargement.
