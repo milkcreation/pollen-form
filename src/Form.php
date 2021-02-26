@@ -689,15 +689,25 @@ class Form implements FormInterface
             $overrideDir = null;
             $default = $this->formManager()->config('default.viewer', []);
 
-            if (isset($default['directory'])) {
-                $default['directory'] = rtrim($default['directory'], '/') . '/';
+            $directory = $this->params('viewer.directory');
+            if ($directory && !file_exists($directory)) {
+                $directory = null;
+            }
+
+            $overrideDir = $this->params('viewer.override_dir');
+            if ($overrideDir && !file_exists($overrideDir)) {
+                $overrideDir = null;
+            }
+
+            if ($directory === null && isset($default['directory'])) {
+                $default['directory'] = rtrim($default['directory'], '/');
                 if (file_exists($default['directory'])) {
                     $directory = $default['directory'];
                 }
             }
 
-            if (isset($default['override_dir'])) {
-                $default['override_dir'] = rtrim($default['override_dir'], '/') . '/';
+            if ($overrideDir === null && isset($default['override_dir'])) {
+                $default['override_dir'] = rtrim($default['override_dir'], '/');
                 if (file_exists($default['override_dir'])) {
                     $overrideDir = $default['override_dir'];
                 }
@@ -707,7 +717,7 @@ class Form implements FormInterface
                 $directory = $this->formManager()->resources('/views');
                 if (!file_exists($directory)) {
                     throw new InvalidArgumentException(
-                        sprintf('Field [%s] must have an accessible view directory', $this->getAlias())
+                        sprintf('Form [%s] must have an accessible view directory', $this->getAlias())
                     );
                 }
             }
