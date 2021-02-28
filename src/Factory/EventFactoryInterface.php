@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Pollen\Form\Factory;
 
-use Pollen\Event\EventDispatcherInterface;
 use Pollen\Event\TriggeredListenerInterface;
 use Pollen\Form\Concerns\FormAwareTraitInterface;
 use Pollen\Support\Concerns\BootableTraitInterface;
+use Pollen\Support\Proxy\EventProxyInterface;
 
-interface EventsFactoryInterface extends BootableTraitInterface, FormAwareTraitInterface
+interface EventFactoryInterface extends BootableTraitInterface, FormAwareTraitInterface, EventProxyInterface
 {
     /**
      * Chargement.
      *
      * @return static
      */
-    public function boot(): EventsFactoryInterface;
+    public function boot(): EventFactoryInterface;
 
     /**
      * Déclaration d'un événement.
@@ -27,7 +27,7 @@ interface EventsFactoryInterface extends BootableTraitInterface, FormAwareTraitI
      *
      * @return static
      */
-    public function on(string $name, $listener, int $priority = 0): EventsFactoryInterface;
+    public function on(string $name, $listener, int $priority = 0): EventFactoryInterface;
 
     /**
      * Déclenchement d'un événement.
@@ -38,13 +38,4 @@ interface EventsFactoryInterface extends BootableTraitInterface, FormAwareTraitI
      * @return void
      */
     public function trigger(string $name, array $args = []): void;
-
-    /**
-     * Définition de l'instance du répartiteur d'événements.
-     *
-     * @param EventDispatcherInterface $eventDispatcher
-     *
-     * @return EventsFactoryInterface
-     */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): EventsFactoryInterface;
 }

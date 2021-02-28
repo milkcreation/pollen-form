@@ -4,24 +4,29 @@ declare(strict_types=1);
 
 namespace Pollen\Form;
 
-use Pollen\Field\FieldManagerInterface;
 use Pollen\Form\Concerns\FormFactoryBagTraitInterface;
 use Pollen\Http\RequestInterface;
-use Pollen\Partial\PartialManagerInterface;
 use Pollen\Support\Concerns\BootableTraitInterface;
 use Pollen\Support\Concerns\BuildableTraitInterface;
 use Pollen\Support\Concerns\MessagesBagAwareTraitInterface;
 use Pollen\Support\Concerns\ParamsBagAwareTraitInterface;
+use Pollen\Support\Proxy\FieldProxyInterface;
+use Pollen\Support\Proxy\HttpRequestProxyInterface;
+use Pollen\Support\Proxy\PartialProxyInterface;
 use Pollen\Translation\Concerns\LabelsBagAwareTraitInterface;
+use Pollen\View\ViewEngineInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 interface FormInterface extends
     BootableTraitInterface,
     BuildableTraitInterface,
+    FieldProxyInterface,
     FormFactoryBagTraitInterface,
+    HttpRequestProxyInterface,
     LabelsBagAwareTraitInterface,
     MessagesBagAwareTraitInterface,
-    ParamsBagAwareTraitInterface
+    ParamsBagAwareTraitInterface,
+    PartialProxyInterface
 {
     /**
      * Résolution de sortie de l'affichage du formulaire.
@@ -67,13 +72,6 @@ interface FormInterface extends
      * @return string Identifiant de qualification du message d'erreur
      */
     public function error(string $message, array $datas = []): string;
-
-    /**
-     * Récupération de l'instance du gestionnaire de champs.
-     *
-     * @return FieldManagerInterface
-     */
-    public function fieldManager(): FieldManagerInterface;
 
     /**
      * Récupération de l'instance du gestionnaire de formulaire.
@@ -172,13 +170,6 @@ interface FormInterface extends
      * @return void
      */
     public function onResetCurrent(): void;
-
-    /**
-     * Récupération de l'instance du gestionnaire de partial.
-     *
-     * @return PartialManagerInterface
-     */
-    public function partialManager(): PartialManagerInterface;
 
     /**
      * Affichage.
@@ -280,7 +271,7 @@ interface FormInterface extends
      * @param string|null view Nom de qualification du gabarit.
      * @param array $data Liste des variables passées en argument.
      *
-     * @return FormViewEngineInterface|string
+     * @return ViewEngineInterface|string
      */
     public function view(?string $view = null, array $data = []);
 }

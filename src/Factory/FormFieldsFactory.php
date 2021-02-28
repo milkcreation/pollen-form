@@ -7,20 +7,20 @@ namespace Pollen\Form\Factory;
 use ArrayIterator;
 use LogicException;
 use Illuminate\Support\Collection;
-use Pollen\Form\FieldDriverInterface;
+use Pollen\Form\FormFieldDriverInterface;
 use Pollen\Form\FormInterface;
 use Pollen\Form\Concerns\FormAwareTrait;
 use Pollen\Support\Concerns\BootableTrait;
 use RuntimeException;
 
-class FieldsFactory implements FieldsFactoryInterface
+class FormFieldsFactory implements FormFieldsFactoryInterface
 {
     use BootableTrait;
     use FormAwareTrait;
 
     /**
      * Liste des éléments associés au formulaire.
-     * @var FieldDriverInterface[]
+     * @var FormFieldDriverInterface[]
      */
     protected $fieldDrivers = [];
 
@@ -35,7 +35,7 @@ class FieldsFactory implements FieldsFactoryInterface
     /**
      * @inheritDoc
      */
-    public function boot(): FieldsFactoryInterface
+    public function boot(): FormFieldsFactoryInterface
     {
         if (!$this->isBooted()) {
             if (!$this->form() instanceof FormInterface) {
@@ -54,7 +54,7 @@ class FieldsFactory implements FieldsFactoryInterface
                         );
                     }
 
-                    $this->fieldDrivers[$slug] = $this->form()->formManager()->getFieldDriver($alias);
+                    $this->fieldDrivers[$slug] = $this->form()->formManager()->getFormFieldDriver($alias);
                     $this->fieldDrivers[$slug]->setSlug($slug)->setForm($this->form())->setParams($params)->boot();
 
                     if (!$this->fieldDrivers[$slug]->getGroup()) {
@@ -90,7 +90,7 @@ class FieldsFactory implements FieldsFactoryInterface
     /**
      * @inheritDoc
      */
-    public function get(string $alias): ?FieldDriverInterface
+    public function get(string $alias): ?FormFieldDriverInterface
     {
         return $this->fieldDrivers[$alias] ?? null;
     }
@@ -108,7 +108,7 @@ class FieldsFactory implements FieldsFactoryInterface
      */
     public function fromGroup(string $groupAlias): ?iterable
     {
-        return $this->collect()->filter(function (FieldDriverInterface $field) use ($groupAlias) {
+        return $this->collect()->filter(function (FormFieldDriverInterface $field) use ($groupAlias) {
             return ($group = $field->getGroup()) && $group->getAlias() === $groupAlias;
         });
     }
@@ -146,7 +146,7 @@ class FieldsFactory implements FieldsFactoryInterface
     /**
      * @inheritDoc
      */
-    public function offsetGet($offset): ?FieldDriverInterface
+    public function offsetGet($offset): ?FormFieldDriverInterface
     {
         return $this->fieldDrivers[$offset] ?? null;
     }
@@ -174,7 +174,7 @@ class FieldsFactory implements FieldsFactoryInterface
     /**
      * @inheritDoc
      */
-    public function preRender(): FieldsFactoryInterface
+    public function preRender(): FormFieldsFactoryInterface
     {
         foreach($this->all() as $fieldDriver) {
             $fieldDriver->preRender();

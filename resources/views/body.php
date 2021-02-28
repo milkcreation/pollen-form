@@ -1,7 +1,7 @@
 <?php
 /**
- * @var Pollen\Form\FormViewTemplateInterface $this
- * @var Pollen\Form\Factory\FieldsFactoryInterface $fields
+ * @var Pollen\Form\FormViewLoaderInterface $this
+ * @var Pollen\Form\Factory\FormFieldsFactoryInterface $fields
  */
 ?>
 <?php if ($fields->count()) : ?>

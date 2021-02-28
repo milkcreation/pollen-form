@@ -8,22 +8,13 @@ use Closure;
 use Pollen\Support\Concerns\BootableTraitInterface;
 use Pollen\Support\Concerns\ConfigBagAwareTraitInterface;
 use Pollen\Support\Proxy\ContainerProxyInterface;
-use Pollen\Support\Proxy\EventDispatcherProxyInterface;
-use Pollen\Support\Proxy\FieldManagerProxyInterface;
-use Pollen\Support\Proxy\PartialManagerProxyInterface;
-use Pollen\Support\Proxy\SessionManagerProxyInterface;
+use Pollen\Support\Proxy\EventProxyInterface;
 
-/**
-
- */
 interface FormManagerInterface extends
     BootableTraitInterface,
     ConfigBagAwareTraitInterface,
     ContainerProxyInterface,
-    EventDispatcherProxyInterface,
-    FieldManagerProxyInterface,
-    PartialManagerProxyInterface,
-    SessionManagerProxyInterface
+    EventProxyInterface
 {
     /**
      * Récupération de la liste des formulaires déclarés.
@@ -87,9 +78,9 @@ interface FormManagerInterface extends
      *
      * @param string $alias
      *
-     * @return FieldDriverInterface
+     * @return FormFieldDriverInterface
      */
-    public function getFieldDriver(string $alias): FieldDriverInterface;
+    public function getFormFieldDriver(string $alias): FormFieldDriverInterface;
 
     /**
      * Récupération de l'indice de déclaration d'un formulaire.
@@ -134,12 +125,12 @@ interface FormManagerInterface extends
      * Déclaration d'un pilote de champ.
      *
      * @param string $alias
-     * @param string|array|FieldDriverInterface $fieldDriverDefinition
+     * @param string|array|FormFieldDriverInterface $fieldDriverDefinition
      * @param Closure|null $registerCallback
      *
      * @return FormManagerInterface
      */
-    public function registerFieldDriver(
+    public function registerFormFieldDriver(
         string $alias,
         $fieldDriverDefinition,
         ?Closure $registerCallback = null

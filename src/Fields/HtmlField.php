@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Pollen\Form\Fields;
 
 use Closure;
-use Pollen\Form\FieldDriver;
+use Pollen\Form\FormFieldDriver;
 
-class HtmlField extends FieldDriver implements HtmlFieldInterface
+class HtmlField extends FormFieldDriver implements HtmlFieldInterface
 {
     /**
      * Liste des propriétés de formulaire supportées.

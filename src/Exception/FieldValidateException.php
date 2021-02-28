@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pollen\Form\Exception;
 
 use InvalidArgumentException;
-use Pollen\Form\FieldDriverInterface;
+use Pollen\Form\FormFieldDriverInterface;
 
 class FieldValidateException extends InvalidArgumentException
 {
@@ -17,9 +17,9 @@ class FieldValidateException extends InvalidArgumentException
 
     /**
      * Instance du champ associé.
-     * @var FieldDriverInterface|null
+     * @var FormFieldDriverInterface|null
      */
-    private $field;
+    private $formField;
 
     /**
      * Récupération de l'alias de qualification.
@@ -34,11 +34,11 @@ class FieldValidateException extends InvalidArgumentException
     /**
      * Récupération de l'instance du pilote de champ.
      *
-     * @return FieldDriverInterface
+     * @return FormFieldDriverInterface
      */
-    public function getField(): FieldDriverInterface
+    public function getFormField(): FormFieldDriverInterface
     {
-        return $this->field;
+        return $this->formField;
     }
 
     /**
@@ -80,13 +80,13 @@ class FieldValidateException extends InvalidArgumentException
     /**
      * Définition de l'instance du champ associé.
      *
-     * @param FieldDriverInterface $field
+     * @param FormFieldDriverInterface $formField
      *
      * @return static
      */
-    public function setField(FieldDriverInterface $field): self
+    public function setFormField(FormFieldDriverInterface $formField): self
     {
-        $this->field = $field;
+        $this->formField = $formField;
 
         return $this;
     }

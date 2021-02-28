@@ -10,7 +10,7 @@ use Pollen\Support\Concerns\BootableTraitInterface;
 use Pollen\Support\Concerns\BuildableTraitInterface;
 use Pollen\Support\Concerns\ParamsBagAwareTraitInterface;
 
-interface FieldDriverInterface extends
+interface FormFieldDriverInterface extends
     BootableTraitInterface,
     BuildableTraitInterface,
     FormAwareTraitInterface,
@@ -32,7 +32,7 @@ interface FieldDriverInterface extends
      *
      * @return static
      */
-    public function addNotice(string $message, string $level = 'error', array $datas = []): FieldDriverInterface;
+    public function addNotice(string $message, string $level = 'error', array $datas = []): FormFieldDriverInterface;
 
     /**
      * Récupération du pré-affichage.
@@ -53,14 +53,14 @@ interface FieldDriverInterface extends
      *
      * @return static
      */
-    public function boot(): FieldDriverInterface;
+    public function boot(): FormFieldDriverInterface;
 
     /**
      * Initialisation.
      *
      * @return static
      */
-    public function build(): FieldDriverInterface;
+    public function build(): FormFieldDriverInterface;
 
     /**
      * Définition d'un message d'erreur associé au champ.
@@ -70,7 +70,7 @@ interface FieldDriverInterface extends
      *
      * @return static
      */
-    public function error(string $message, array $datas = []): FieldDriverInterface;
+    public function error(string $message, array $datas = []): FormFieldDriverInterface;
 
     /**
      * Récupération de l'alias de qualification.
@@ -241,7 +241,7 @@ interface FieldDriverInterface extends
      *
      * @return static
      */
-    public function preRender(): FieldDriverInterface;
+    public function preRender(): FormFieldDriverInterface;
 
     /**
      * Affichage.
@@ -255,7 +255,7 @@ interface FieldDriverInterface extends
      *
      * @return static
      */
-    public function resetValue(): FieldDriverInterface;
+    public function resetValue(): FormFieldDriverInterface;
 
     /**
      * Définition de l'alias de qualification.
@@ -264,7 +264,7 @@ interface FieldDriverInterface extends
      *
      * @return static
      */
-    public function setAlias(string $alias): FieldDriverInterface;
+    public function setAlias(string $alias): FormFieldDriverInterface;
 
     /**
      * Définition de la valeur par défaut.
@@ -273,7 +273,7 @@ interface FieldDriverInterface extends
      *
      * @return static
      */
-    public function setDefault($default): FieldDriverInterface;
+    public function setDefault($default): FormFieldDriverInterface;
 
     /**
      * Définition d'une attributs de configuration complémentaire.
@@ -283,7 +283,7 @@ interface FieldDriverInterface extends
      *
      * @return static
      */
-    public function setExtra(string $key, $value): FieldDriverInterface;
+    public function setExtra(string $key, $value): FormFieldDriverInterface;
 
     /**
      * Définition de l'ordre d'affichage.
@@ -292,14 +292,14 @@ interface FieldDriverInterface extends
      *
      * @return $this
      */
-    public function setPosition(int $position = 0): FieldDriverInterface;
+    public function setPosition(int $position = 0): FormFieldDriverInterface;
 
     /**
      * Définition de la valeur du champ basée sur la donnée en correspondance stockée en session.
      *
      * @return static
      */
-    public function setSessionValue(): FieldDriverInterface;
+    public function setSessionValue(): FormFieldDriverInterface;
 
     /**
      * Définition de l'identifiant de qualification.
@@ -308,7 +308,7 @@ interface FieldDriverInterface extends
      *
      * @return static
      */
-    public function setSlug(string $slug): FieldDriverInterface;
+    public function setSlug(string $slug): FormFieldDriverInterface;
 
     /**
      * Définition de la valeur du champ.
@@ -317,7 +317,7 @@ interface FieldDriverInterface extends
      *
      * @return static
      */
-    public function setValue($value): FieldDriverInterface;
+    public function setValue($value): FormFieldDriverInterface;
 
     /**
      * Vérification de support.

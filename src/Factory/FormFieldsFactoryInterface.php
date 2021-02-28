@@ -9,10 +9,10 @@ use Countable;
 use IteratorAggregate;
 use Illuminate\Support\Collection;
 use Pollen\Form\Concerns\FormAwareTraitInterface;
-use Pollen\Form\FieldDriverInterface;
+use Pollen\Form\FormFieldDriverInterface;
 use Pollen\Support\Concerns\BootableTraitInterface;
 
-interface FieldsFactoryInterface extends
+interface FormFieldsFactoryInterface extends
     ArrayAccess,
     BootableTraitInterface,
     Countable,
@@ -22,7 +22,7 @@ interface FieldsFactoryInterface extends
     /**
      * Récupération de la liste des pilotes déclarés.
      *
-     * @return FieldDriverInterface[]|array
+     * @return FormFieldDriverInterface[]|array
      */
     public function all(): array;
 
@@ -31,14 +31,14 @@ interface FieldsFactoryInterface extends
      *
      * @return static
      */
-    public function boot(): FieldsFactoryInterface;
+    public function boot(): FormFieldsFactoryInterface;
 
     /**
      * Collection.
      *
      * @param array|null $items Si null, liste des pilotes déclarés
      *
-     * @return Collection|FieldDriverInterface[]|iterable
+     * @return Collection|FormFieldDriverInterface[]|iterable
      */
     public function collect(?array $items = null): iterable;
 
@@ -47,16 +47,16 @@ interface FieldsFactoryInterface extends
      *
      * @param string $alias
      *
-     * @return FieldDriverInterface|null
+     * @return FormFieldDriverInterface|null
      */
-    public function get(string $alias): ?FieldDriverInterface;
+    public function get(string $alias): ?FormFieldDriverInterface;
 
     /**
      * Récupération de la liste des champs par groupe d'appartenance.
      *
      * @param string $groupAlias Alias de qualification du groupe.
      *
-     * @return Collection|FieldDriverInterface[]|null
+     * @return Collection|FormFieldDriverInterface[]|null
      */
     public function fromGroup(string $groupAlias): ?iterable;
 
@@ -75,7 +75,7 @@ interface FieldsFactoryInterface extends
     /**
      * Pré-traitement de la liste des champs en vue d'un affichage du rendu.
      *
-     * @return FieldsFactoryInterface
+     * @return FormFieldsFactoryInterface
      */
-    public function preRender(): FieldsFactoryInterface;
+    public function preRender(): FormFieldsFactoryInterface;
 }

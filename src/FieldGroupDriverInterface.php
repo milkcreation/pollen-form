@@ -55,9 +55,9 @@ interface FieldGroupDriverInterface extends
     /**
      * Récupération de la liste des champs associé au groupe.
      *
-     * @return Collection|FieldDriver[]|array
+     * @return Collection|FormFieldDriver[]|array
      */
-    public function getFields(): iterable;
+    public function getFormFields(): iterable;
 
     /**
      * Récupération du groupe parent

@@ -12,10 +12,7 @@ use Pollen\Form\Fields\TagField;
 use Pollen\Support\Concerns\BootableTrait;
 use Pollen\Support\Concerns\ConfigBagAwareTrait;
 use Pollen\Support\Proxy\ContainerProxy;
-use Pollen\Support\Proxy\EventDispatcherProxy;
-use Pollen\Support\Proxy\FieldManagerProxy;
-use Pollen\Support\Proxy\PartialManagerProxy;
-use Pollen\Support\Proxy\SessionManagerProxy;
+use Pollen\Support\Proxy\EventProxy;
 use Pollen\Support\Filesystem;
 use Psr\Container\ContainerInterface as Container;
 use RuntimeException;
@@ -25,10 +22,7 @@ class FormManager implements FormManagerInterface
     use BootableTrait;
     use ConfigBagAwareTrait;
     use ContainerProxy;
-    use EventDispatcherProxy;
-    use FieldManagerProxy;
-    use PartialManagerProxy;
-    use SessionManagerProxy;
+    use EventProxy;
 
     /**
      * Instance principale.
@@ -54,7 +48,7 @@ class FormManager implements FormManagerInterface
      * Liste des pilotes de champs par défaut.
      * @var string[]
      */
-    private $defaultFieldDrivers = [
+    private $defaultFormFieldDrivers = [
         'html' => HtmlField::class,
         'tag'  => TagField::class,
     ];
@@ -91,15 +85,15 @@ class FormManager implements FormManagerInterface
 
     /**
      * Liste des définitions de pilotes de champs déclarés.
-     * @var FieldDriverInterface[][]|string[][]|array
+     * @var FormFieldDriverInterface[][]|string[][]|array
      */
     protected $fieldDriverDefinitions = [];
 
     /**
      * Liste des instances de pilotes champs déclarés.
-     * @var FieldDriverInterface[]|array
+     * @var FormFieldDriverInterface[]|array
      */
-    protected $resolvedFieldDrivers = [];
+    protected $resolvedFormFieldDrivers = [];
 
     /**
      * Liste des définitions de formulaires déclarés.
@@ -177,7 +171,7 @@ class FormManager implements FormManagerInterface
                 $this->buttonDriverDefinitions[$alias] = $abstract;
             }
 
-            foreach ($this->defaultFieldDrivers as $alias => $abstract) {
+            foreach ($this->defaultFormFieldDrivers as $alias => $abstract) {
                 $this->fieldDriverDefinitions[$alias] = $abstract;
             }
 
@@ -258,9 +252,9 @@ class FormManager implements FormManagerInterface
     /**
      * @inheritDoc
      */
-    public function getFieldDriver(string $alias): FieldDriverInterface
+    public function getFormFieldDriver(string $alias): FormFieldDriverInterface
     {
-        return $this->resolveFieldDriver($alias);
+        return $this->resolveFormFieldDriver($alias);
     }
 
     /**
@@ -326,7 +320,7 @@ class FormManager implements FormManagerInterface
     /**
      * @inheritDoc
      */
-    public function registerFieldDriver(
+    public function registerFormFieldDriver(
         string $alias,
         $fieldDriverDefinition,
         ?Closure $registerCallback = null
@@ -434,25 +428,25 @@ class FormManager implements FormManagerInterface
      *
      * @param string $alias
      *
-     * @return FieldDriverInterface
+     * @return FormFieldDriverInterface
      */
-    protected function resolveFieldDriver(string $alias): FieldDriverInterface
+    protected function resolveFormFieldDriver(string $alias): FormFieldDriverInterface
     {
-        if (!empty($this->resolvedFieldDrivers[$alias])) {
-            return clone $this->resolvedFieldDrivers[$alias];
+        if (!empty($this->resolvedFormFieldDrivers[$alias])) {
+            return clone $this->resolvedFormFieldDrivers[$alias];
         }
 
         if (!$def = $this->fieldDriverDefinitions[$alias] ?? null) {
-            $def = new FieldDriver();
+            $def = new FormFieldDriver();
         }
 
-        if (!$fieldDriver = $this->resolve($def, FieldDriverInterface::class, $this->getContainer())) {
+        if (!$fieldDriver = $this->resolve($def, FormFieldDriverInterface::class, $this->getContainer())) {
             throw new RuntimeException(sprintf('Form [%s] unresolvable', $alias));
         }
 
         unset($this->fieldDriverDefinitions[$alias]);
 
-        return $this->resolvedFieldDrivers[$alias] = $fieldDriver
+        return $this->resolvedFormFieldDrivers[$alias] = $fieldDriver
             ->setAlias($alias)
             ->build();
     }
@@ -497,7 +491,7 @@ class FormManager implements FormManagerInterface
      * @param Container|null $container
      * @param string|null $fallbackClass
      *
-     * @return AddonDriverInterface|ButtonDriverInterface|FieldDriverInterface|FormInterface|null
+     * @return AddonDriverInterface|ButtonDriverInterface|FormFieldDriverInterface|FormInterface|null
      */
     protected function resolve(
         $definition,

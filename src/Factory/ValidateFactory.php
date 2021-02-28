@@ -88,6 +88,6 @@ class ValidateFactory implements ValidateFactoryInterface
      */
     public function compare($value, $tags, $raw = true): bool
     {
-        return v::equals($this->form()->fields()->metatagsValue($tags, $raw))->validate($value);
+        return v::equals($this->form()->formFields()->metatagsValue($tags, $raw))->validate($value);
     }
 }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Pollen\Form\Fields;
 
-use Pollen\Form\FieldDriverInterface;
+use Pollen\Form\FormFieldDriverInterface;
 
-interface TagFieldInterface extends FieldDriverInterface
+interface TagFieldInterface extends FormFieldDriverInterface
 {
 }

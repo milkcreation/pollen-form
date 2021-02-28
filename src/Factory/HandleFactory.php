@@ -63,7 +63,7 @@ class HandleFactory implements HandleFactoryInterface
 
             $this->params($this->form()->getHandleRequest()->{$accessor}->all());
 
-            foreach ($this->form()->fields() as $field) {
+            foreach ($this->form()->formFields() as $field) {
                 $value = $this->params($field->getName());
 
                 if ($value !== null) {
@@ -88,7 +88,7 @@ class HandleFactory implements HandleFactoryInterface
      */
     public function fail(): HandleFactoryInterface
     {
-        foreach ($this->form()->fields() as $field) {
+        foreach ($this->form()->formFields() as $field) {
             if (!$field->supports('transport')) {
                 $field->resetValue();
             }
@@ -211,7 +211,7 @@ class HandleFactory implements HandleFactoryInterface
 
             if ($this->form()->getMethod() === 'get') {
                 $without = ['_token'];
-                foreach ($this->form()->fields() as $field) {
+                foreach ($this->form()->formFields() as $field) {
                     $without[] = $field->getName();
                 }
                 $uri = $uri->without($without);
@@ -230,7 +230,7 @@ class HandleFactory implements HandleFactoryInterface
      */
     public function validate(): HandleFactoryInterface
     {
-        foreach ($this->form()->fields() as $name => $field) {
+        foreach ($this->form()->formFields() as $name => $field) {
             try {
                 $field->validate();
             } catch (FieldValidateException $e) {

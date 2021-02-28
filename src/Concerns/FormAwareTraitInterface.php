@@ -20,7 +20,7 @@ interface FormAwareTraitInterface
      *
      * @param FormInterface $form
      *
-     * @return FormAwareTrait
+     * @return FormAwareTrait|static
      */
     public function setForm(FormInterface $form): FormAwareTrait;
 }
