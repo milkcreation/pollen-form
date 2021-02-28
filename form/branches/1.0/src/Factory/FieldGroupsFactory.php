@@ -6,7 +6,7 @@ namespace Pollen\Form\Factory;
 
 use ArrayIterator;
 use Illuminate\Support\Collection;
-use Pollen\Form\FieldDriverInterface;
+use Pollen\Form\FormFieldDriverInterface;
 use Pollen\Form\FieldGroupDriver;
 use Pollen\Form\FieldGroupDriverInterface;
 use Pollen\Form\FormInterface;
@@ -61,13 +61,13 @@ class FieldGroupsFactory implements FieldGroupsFactoryInterface
 
                 $group->params('position', $group->getPosition() ?: ++$pad + $max);
 
-                if ($fields = $group->getFields()) {
-                    $max = $fields->max(function (FieldDriverInterface $field) {
+                if ($fields = $group->getFormFields()) {
+                    $max = $fields->max(function (FormFieldDriverInterface $field) {
                         return $field->getPosition();
                     });
                     $pad = 0;
 
-                    $fields->each(function (FieldDriverInterface $field) use (&$pad, $max) {
+                    $fields->each(function (FormFieldDriverInterface $field) use (&$pad, $max) {
                         $group = $field->getGroup();
                         $number = 10000 * (($group ? $group->getPosition() : 0) + 1);
                         $position = $field->getPosition() ?: ++$pad + $max;

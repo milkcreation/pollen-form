@@ -116,9 +116,9 @@ class FieldGroupDriver implements FieldGroupDriverInterface
     /**
      * @inheritDoc
      */
-    public function getFields(): iterable
+    public function getFormFields(): iterable
     {
-        return $this->form()->fields()->fromGroup($this->getAlias()) ?: [];
+        return $this->form()->formFields()->fromGroup($this->getAlias()) ?: [];
     }
 
     /**

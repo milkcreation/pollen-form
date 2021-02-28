@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Pollen\Form\Fields;
 
-use Pollen\Form\FieldDriver;
+use Pollen\Form\FormFieldDriver;
 
-class TagField extends FieldDriver implements TagFieldInterface
+class TagField extends FormFieldDriver implements TagFieldInterface
 {
     /**
      * Liste des propriétés de formulaire supportées.
@@ -25,6 +25,6 @@ class TagField extends FieldDriver implements TagFieldInterface
             'content' => $this->getValue(),
         ], $this->getExtras());
 
-        return (string)$this->form()->partialManager()->get('tag', $args);
+        return (string)$this->form()->partial('tag', $args);
     }
 }

@@ -4,34 +4,26 @@ declare(strict_types=1);
 
 namespace Pollen\Form\Factory;
 
-use Pollen\Event\EventDispatcherInterface;
 use Pollen\Form\FormInterface;
 use Pollen\Form\Concerns\FormAwareTrait;
 use Pollen\Support\Concerns\BootableTrait;
+use Pollen\Support\Proxy\EventProxy;
 use RuntimeException;
 
-class EventsFactory implements EventsFactoryInterface
+class EventFactory implements EventFactoryInterface
 {
     use BootableTrait;
     use FormAwareTrait;
-
-    /**
-     * @param EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    use EventProxy;
 
     /**
      * @inheritDoc
      */
-    public function boot(): EventsFactoryInterface
+    public function boot(): EventFactoryInterface
     {
         if (!$this->isBooted()) {
             if (!$this->form() instanceof FormInterface) {
-                throw new RuntimeException('Form EventsFactory requires a valid related Form instance');
-            }
-
-            if (!$this->eventDispatcher instanceof EventDispatcherInterface) {
-                throw new RuntimeException('Form EventsFactory requires a valid related Form instance');
+                throw new RuntimeException('Form EventFactory requires a valid related Form instance');
             }
 
             $events = (array)$this->form()->params('events', []);
@@ -58,9 +50,9 @@ class EventsFactory implements EventsFactoryInterface
     /**
      * @inheritDoc
      */
-    public function on($name, $listener, $priority = 0): EventsFactoryInterface
+    public function on($name, $listener, $priority = 0): EventFactoryInterface
     {
-        $this->eventDispatcher->on("form.factory.events.{$this->form()->getAlias()}.{$name}", $listener, $priority);
+        $this->event()->on("form.factory.events.{$this->form()->getAlias()}.{$name}", $listener, $priority);
 
         return $this;
     }
@@ -72,16 +64,6 @@ class EventsFactory implements EventsFactoryInterface
     {
         $name = "form.factory.events.{$this->form()->getAlias()}.{$name}";
 
-        $this->eventDispatcher->trigger($name, $args);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): EventsFactoryInterface
-    {
-        $this->eventDispatcher = $eventDispatcher;
-
-        return $this;
+        $this->event()->trigger($name, $args);
     }
 }

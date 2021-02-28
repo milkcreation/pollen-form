@@ -6,10 +6,14 @@ namespace Pollen\Form\Factory;
 
 use Pollen\Form\Concerns\FormAwareTraitInterface;
 use Pollen\Session\AttributeKeyBagInterface;
-use Pollen\Session\SessionManagerInterface;
 use Pollen\Support\Concerns\BootableTraitInterface;
+use Pollen\Support\Proxy\SessionProxyInterface;
 
-interface SessionFactoryInterface extends AttributeKeyBagInterface, BootableTraitInterface, FormAwareTraitInterface
+interface SessionFactoryInterface extends
+    AttributeKeyBagInterface,
+    BootableTraitInterface,
+    FormAwareTraitInterface,
+    SessionProxyInterface
 {
     /**
      * Chargement.
@@ -17,13 +21,4 @@ interface SessionFactoryInterface extends AttributeKeyBagInterface, BootableTrai
      * @return SessionFactoryInterface
      */
     public function boot(): SessionFactoryInterface;
-
-    /**
-     * Définition de l'instance du gestionnaire de session.
-     *
-     * @param SessionManagerInterface $sessionManager
-     *
-     * @return SessionFactoryInterface
-     */
-    public function setSessionManager(SessionManagerInterface $sessionManager): SessionFactoryInterface;
 }

@@ -8,14 +8,14 @@ use Pollen\Form\AddonDriverInterface;
 use Pollen\Form\ButtonDriverInterface;
 use Pollen\Form\Factory\AddonsFactoryInterface;
 use Pollen\Form\Factory\ButtonsFactoryInterface;
-use Pollen\Form\Factory\EventsFactoryInterface;
-use Pollen\Form\Factory\FieldsFactoryInterface;
+use Pollen\Form\Factory\EventFactoryInterface;
+use Pollen\Form\Factory\FormFieldsFactoryInterface;
 use Pollen\Form\Factory\FieldGroupsFactoryInterface;
 use Pollen\Form\Factory\HandleFactoryInterface;
 use Pollen\Form\Factory\OptionsFactoryInterface;
 use Pollen\Form\Factory\SessionFactoryInterface;
 use Pollen\Form\Factory\ValidateFactoryInterface;
-use Pollen\Form\FieldDriverInterface;
+use Pollen\Form\FormFieldDriverInterface;
 use Pollen\Form\FieldGroupDriverInterface;
 
 interface FormFactoryBagTraitInterface
@@ -65,25 +65,25 @@ interface FormFactoryBagTraitInterface
     /**
      * Récupération du gestionnaire d'événenements.
      *
-     * @return EventsFactoryInterface
+     * @return EventFactoryInterface
      */
-    public function events(): EventsFactoryInterface;
+    public function events(): EventFactoryInterface;
 
     /**
      * Récupération d'un champs selon son alias.
      *
      * @param string $slug
      *
-     * @return FieldDriverInterface
+     * @return FormFieldDriverInterface
      */
-    public function field(string $slug): ?FieldDriverInterface;
+    public function formField(string $slug): ?FormFieldDriverInterface;
 
     /**
      * Récupération du gestionnaire de champs.
      *
-     * @return FieldsFactoryInterface|FieldDriverInterface[]
+     * @return FormFieldsFactoryInterface|FormFieldDriverInterface[]
      */
-    public function fields(): FieldsFactoryInterface;
+    public function formFields(): FormFieldsFactoryInterface;
 
     /**
      * Récupération du groupe selon son alias.
@@ -160,20 +160,20 @@ interface FormFactoryBagTraitInterface
     /**
      * Définition du gestionnaire d'événements.
      *
-     * @param EventsFactoryInterface $eventsFactory
+     * @param EventFactoryInterface $eventsFactory
      *
      * @return FormFactoryBagTrait
      */
-    public function setEventsFactory(EventsFactoryInterface $eventsFactory): FormFactoryBagTrait;
+    public function setEventFactory(EventFactoryInterface $eventsFactory): FormFactoryBagTrait;
 
     /**
      * Définition du gestionnaire de champs.
      *
-     * @param FieldsFactoryInterface $fieldsFactory
+     * @param FormFieldsFactoryInterface $formFieldsFactory
      *
      * @return FormFactoryBagTrait
      */
-    public function setFieldsFactory(FieldsFactoryInterface $fieldsFactory): FormFactoryBagTrait;
+    public function setFormFieldsFactory(FormFieldsFactoryInterface $formFieldsFactory): FormFactoryBagTrait;
 
     /**
      * Définition du gestionnaire de groupe de champs.

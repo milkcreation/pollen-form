@@ -1,12 +1,12 @@
 <?php
 /**
- * @var Pollen\Form\FormViewTemplateInterface $this
+ * @var Pollen\Form\FormViewLoaderInterface $this
  * @var Pollen\Form\FieldGroupDriverInterface $group
  */
 ?>
 <?php echo $group->before(); ?>
 <div <?php echo $group->getAttrs(); ?>>
-    <?php foreach ($group->getFields() as $field) : ?>
+    <?php foreach ($group->getFormFields() as $field) : ?>
         <?php $this->insert('field', compact('field')); ?>
     <?php endforeach; ?>
 </div>

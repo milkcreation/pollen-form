@@ -1,6 +1,6 @@
 <?php
 /**
- * @var Pollen\Form\FormViewTemplateInterface $this
+ * @var Pollen\Form\FormViewLoaderInterface $this
  * @var Pollen\Form\FieldGroupDriverInterface $group
  */
 ?>

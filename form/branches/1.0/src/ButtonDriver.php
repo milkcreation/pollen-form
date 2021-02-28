@@ -148,6 +148,6 @@ class ButtonDriver implements ButtonDriverInterface
             }
         }
 
-        return (string)$this->form()->fieldManager()->get('button', $this->params()->all());
+        return (string)$this->form()->field('button', $this->params()->all());
     }
 }

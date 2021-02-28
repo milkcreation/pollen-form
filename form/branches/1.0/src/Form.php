@@ -5,36 +5,41 @@ declare(strict_types=1);
 namespace Pollen\Form;
 
 use InvalidArgumentException;
-use Pollen\Field\FieldManagerInterface;
-use Pollen\Http\Request;
 use Pollen\Http\RequestInterface;
 use Pollen\Form\Concerns\FormFactoryBagTrait;
 use Pollen\Form\Factory\AddonsFactory;
 use Pollen\Form\Factory\ButtonsFactory;
-use Pollen\Form\Factory\EventsFactory;
-use Pollen\Form\Factory\FieldsFactory;
+use Pollen\Form\Factory\EventFactory;
+use Pollen\Form\Factory\FormFieldsFactory;
 use Pollen\Form\Factory\FieldGroupsFactory;
 use Pollen\Form\Factory\HandleFactory;
 use Pollen\Form\Factory\OptionsFactory;
 use Pollen\Form\Factory\SessionFactory;
 use Pollen\Form\Factory\ValidateFactory;
-use Pollen\Partial\PartialManagerInterface;
 use Pollen\Support\Concerns\BootableTrait;
 use Pollen\Support\Concerns\BuildableTrait;
 use Pollen\Support\Concerns\MessagesBagAwareTrait;
 use Pollen\Support\Concerns\ParamsBagAwareTrait;
 use Pollen\Support\MessagesBag;
+use Pollen\Support\Proxy\HttpRequestProxy;
+use Pollen\Support\Proxy\FieldProxy;
+use Pollen\Support\Proxy\PartialProxy;
 use Pollen\Translation\Concerns\LabelsBagAwareTrait;
+use Pollen\View\ViewEngine;
+use Pollen\View\ViewEngineInterface;
 use RuntimeException;
 
 class Form implements FormInterface
 {
     use BootableTrait;
     use BuildableTrait;
+    use FieldProxy;
     use FormFactoryBagTrait;
+    use HttpRequestProxy;
     use LabelsBagAwareTrait;
     use MessagesBagAwareTrait;
     use ParamsBagAwareTrait;
+    use PartialProxy;
 
     /**
      * Instance du gestionnaire de formulaire.
@@ -85,7 +90,7 @@ class Form implements FormInterface
 
     /**
      * Instance du moteur des gabarits d'affichage.
-     * @var FormViewEngineInterface
+     * @var ViewEngineInterface
      */
     protected $viewEngine;
 
@@ -110,7 +115,7 @@ class Form implements FormInterface
             $services = [
                 'events',
                 'addons',
-                'fields',
+                'formFields',
                 'groups',
                 'buttons',
                 'handle',
@@ -120,7 +125,7 @@ class Form implements FormInterface
             ];
 
             foreach ($services as $service) {
-                $service .=  'Factory';
+                $service .= 'Factory';
 
                 $this->{$service}->boot();
             }
@@ -156,16 +161,14 @@ class Form implements FormInterface
             $this->buttons()->setForm($this);
 
             if ($this->eventsFactory === null) {
-                $this->setEventsFactory(
-                    (new EventsFactory())->setEventDispatcher($this->formManager->eventDispatcher())
-                );
+                $this->setEventFactory(new EventFactory());
             }
             $this->events()->setForm($this);
 
-            if ($this->fieldsFactory === null) {
-                $this->setFieldsFactory(new FieldsFactory());
+            if ($this->formFieldsFactory === null) {
+                $this->setFormFieldsFactory(new FormFieldsFactory());
             }
-            $this->fields()->setForm($this);
+            $this->formFields()->setForm($this);
 
             if ($this->groupsFactory === null) {
                 $this->setGroupsFactory(new FieldGroupsFactory());
@@ -184,8 +187,7 @@ class Form implements FormInterface
 
             if ($this->sessionFactory === null) {
                 $this->setSessionFactory(
-                    (new SessionFactory(md5('Form' . $this->getAlias())))
-                        ->setSessionManager($this->formManager->sessionManager())
+                    new SessionFactory(md5('Form' . $this->getAlias()))
                 );
             }
             $this->session()->setForm($this);
@@ -301,14 +303,6 @@ class Form implements FormInterface
     /**
      * @inheritDoc
      */
-    public function fieldManager(): FieldManagerInterface
-    {
-        return $this->formManager()->fieldManager();
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function formManager(): FormManagerInterface
     {
         return $this->formManager;
@@ -360,9 +354,7 @@ class Form implements FormInterface
     public function getHandleRequest(): RequestInterface
     {
         if ($this->handleRequest === null) {
-            $this->handleRequest = $this->formManager()->containerHas(RequestInterface::class)
-                ? $this->formManager()->containerGet(RequestInterface::class)
-                : Request::createFromGlobals();
+            $this->handleRequest = $this->httpRequest();
         }
 
         return $this->handleRequest;
@@ -456,20 +448,12 @@ class Form implements FormInterface
     /**
      * @inheritDoc
      */
-    public function partialManager(): PartialManagerInterface
-    {
-        return $this->formManager()->partialManager();
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function render(): string
     {
         $this->renderBuild();
 
         $groups = $this->groups();
-        $fields = $this->fields()->preRender();
+        $fields = $this->formFields()->preRender();
         $buttons = $this->buttons();
         $notices = $this->messages()->fetchMessages(
             [
@@ -722,13 +706,25 @@ class Form implements FormInterface
                 }
             }
 
-            $this->viewEngine = $this->formManager()->containerHas(FormViewEngine::class)
-                ? $this->formManager()->containerGet(FormViewEngine::class) : new FormViewEngine();
+            $this->viewEngine = new ViewEngine();
+            if ($container = $this->formManager()->getContainer()) {
+                $this->viewEngine->setContainer($container);
+            }
 
-            $this->viewEngine->setDirectory($directory)->setDelegate($this);
+            $this->viewEngine->setDirectory($directory)->setDelegate($this)->setLoader(FormViewLoader::class);
 
             if ($overrideDir !== null) {
                 $this->viewEngine->addFolder('_override_dir', $overrideDir, true);
+            }
+
+            $mixins = [
+                'csrf',
+                'isSuccessful',
+                'tagName',
+            ];
+
+            foreach ($mixins as $mixin) {
+                $this->viewEngine->setDelegateMixin($mixin);
             }
         }
 

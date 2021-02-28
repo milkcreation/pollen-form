@@ -8,14 +8,14 @@ use Pollen\Form\AddonDriverInterface;
 use Pollen\Form\ButtonDriverInterface;
 use Pollen\Form\Factory\AddonsFactoryInterface;
 use Pollen\Form\Factory\ButtonsFactoryInterface;
-use Pollen\Form\Factory\EventsFactoryInterface;
-use Pollen\Form\Factory\FieldsFactoryInterface;
+use Pollen\Form\Factory\EventFactoryInterface;
+use Pollen\Form\Factory\FormFieldsFactoryInterface;
 use Pollen\Form\Factory\FieldGroupsFactoryInterface;
 use Pollen\Form\Factory\HandleFactoryInterface;
 use Pollen\Form\Factory\OptionsFactoryInterface;
 use Pollen\Form\Factory\SessionFactoryInterface;
 use Pollen\Form\Factory\ValidateFactoryInterface;
-use Pollen\Form\FieldDriverInterface;
+use Pollen\Form\FormFieldDriverInterface;
 use Pollen\Form\FieldGroupDriverInterface;
 
 trait FormFactoryBagTrait
@@ -34,15 +34,15 @@ trait FormFactoryBagTrait
 
     /**
      * Instance du gestionnaire d'évenenements.
-     * @var EventsFactoryInterface|null
+     * @var EventFactoryInterface|null
      */
     private $eventsFactory;
 
     /**
      * Instance du gestionnaire de groupes de champs.
-     * @var FieldsFactoryInterface|null
+     * @var FormFieldsFactoryInterface|null
      */
-    private $fieldsFactory;
+    private $formFieldsFactory;
 
     /**
      * Instance du gestionnaire de groupes de champs.
@@ -134,9 +134,9 @@ trait FormFactoryBagTrait
     /**
      * Récupération du gestionnaire d'événenements.
      *
-     * @return EventsFactoryInterface
+     * @return EventFactoryInterface
      */
-    public function events(): EventsFactoryInterface
+    public function events(): EventFactoryInterface
     {
         return $this->eventsFactory;
     }
@@ -146,21 +146,21 @@ trait FormFactoryBagTrait
      *
      * @param string $slug
      *
-     * @return FieldDriverInterface
+     * @return FormFieldDriverInterface
      */
-    public function field(string $slug): ?FieldDriverInterface
+    public function formField(string $slug): ?FormFieldDriverInterface
     {
-        return $this->fields()->get($slug);
+        return $this->formFields()->get($slug);
     }
 
     /**
      * Récupération du gestionnaire de champs.
      *
-     * @return FieldsFactoryInterface|FieldDriverInterface[]
+     * @return FormFieldsFactoryInterface|FormFieldDriverInterface[]
      */
-    public function fields(): FieldsFactoryInterface
+    public function formFields(): FormFieldsFactoryInterface
     {
-        return $this->fieldsFactory;
+        return $this->formFieldsFactory;
     }
 
     /**
@@ -269,11 +269,11 @@ trait FormFactoryBagTrait
     /**
      * Définition du gestionnaire d'événements.
      *
-     * @param EventsFactoryInterface $eventsFactory
+     * @param EventFactoryInterface $eventsFactory
      *
      * @return static
      */
-    public function setEventsFactory(EventsFactoryInterface $eventsFactory): FormFactoryBagTrait
+    public function setEventFactory(EventFactoryInterface $eventsFactory): FormFactoryBagTrait
     {
         $this->eventsFactory = $eventsFactory;
 
@@ -283,13 +283,13 @@ trait FormFactoryBagTrait
     /**
      * Définition du gestionnaire de champs.
      *
-     * @param FieldsFactoryInterface $fieldsFactory
+     * @param FormFieldsFactoryInterface $formFieldsFactory
      *
      * @return static
      */
-    public function setFieldsFactory(FieldsFactoryInterface $fieldsFactory): FormFactoryBagTrait
+    public function setFormFieldsFactory(FormFieldsFactoryInterface $formFieldsFactory): FormFactoryBagTrait
     {
-        $this->fieldsFactory = $fieldsFactory;
+        $this->formFieldsFactory = $formFieldsFactory;
 
         return $this;
     }

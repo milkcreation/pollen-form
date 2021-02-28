@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Pollen\Form;
 
 use Closure;
-use Pollen\View\ViewTemplate;
+use Pollen\View\FieldAwareViewLoader;
+use Pollen\View\PartialAwareViewLoader;
+use Pollen\View\ViewLoader;
 use RuntimeException;
 
 /**
@@ -13,8 +15,11 @@ use RuntimeException;
  * @method bool isSuccessful()
  * @method string tagName()
  */
-class FormViewTemplate extends ViewTemplate implements FormViewTemplateInterface
+class FormViewLoader extends ViewLoader implements FormViewLoaderInterface
 {
+    use FieldAwareViewLoader;
+    use PartialAwareViewLoader;
+
     /**
      * @inheritDoc
      */
@@ -58,27 +63,6 @@ class FormViewTemplate extends ViewTemplate implements FormViewTemplateInterface
         if ($delegate instanceof FormInterface) {
             return $delegate;
         }
-
-        throw new RuntimeException('FormViewTemplate must have a delegation Form instance');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function field(string $alias, $idOrParams = null, array $params = []): string
-    {
-        $manager = $this->form()->fieldManager();
-
-        return (string)$manager->get($alias, $idOrParams, $params);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function partial(string $alias, $idOrParams = null, array $params = []): string
-    {
-        $manager = $this->form()->partialManager();
-
-        return (string)$manager->get($alias, $idOrParams, $params);
+        throw new RuntimeException('FormViewLoader must have a delegation Form instance');
     }
 }
