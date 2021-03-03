@@ -268,7 +268,7 @@ interface FormInterface extends
     /**
      * Instance du gestionnaire de gabarits d'affichage ou rendu du gabarit d'affichage.
      *
-     * @param string|null view Nom de qualification du gabarit.
+     * @param string|null $view Nom de qualification du gabarit.
      * @param array $data Liste des variables passées en argument.
      *
      * @return ViewEngineInterface|string
