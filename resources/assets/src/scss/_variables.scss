@@ -1,0 +1,425 @@
+@use "sass:map";
+
+@import "~pollen-solutions/partial/resources/assets/src/scss/notice/variables";
+
+$form-colors: (
+    "transparent": transparent,
+    "white": #FFF,
+    "black": #000,
+    "light": #C4C4C4,
+    "lighter": #F4F4F4,
+    "dark": #4B4B4B,
+    "darker": #2B2B2B,
+    "regular": #3B3B3B,
+    "highlight": #FFFA90,
+    "highlight-alt": #DAD55E,
+    "link": DodgerBlue
+) !default;
+
+@function formColor($alias) {
+  @if type-of($alias) != string {
+    $alias: "#{$alias}";
+  }
+
+  @return map.get($form-colors, #{$alias});
+}
+
+// Définition des variables
+/**
+ * Global
+ */
+$form-global-color: formColor(regular) !default;
+
+// Activation des éléments
+$form-styles-enabled: (
+    clearfix: true,
+    gutters: true,
+    fields: true,
+    label: true,
+    notice: true,
+    required: true,
+    width: true,
+) !default;
+// Activation des type de champ
+$form-field_types-enabled: (
+    checkbox: true,
+    checkbox-collection: true,
+    datepicker: true,
+    input-email: true,
+    input-file: true,
+    input-password: true,
+    input-tel: true,
+    input-text: true,
+    radio: true,
+    radio-collection: true,
+    select: true,
+    select-js: true,
+    textarea: true
+) !default;
+
+/**
+ * Goutières
+ */
+$form-gutters: 15 !default;
+$form-gutters-top: $form-gutters !default;
+$form-gutters-right: $form-gutters !default;
+$form-gutters-bottom: $form-gutters !default;
+$form-gutters-left: $form-gutters !default;
+
+/**
+ * Notification
+ */
+$form-notice-border-radius: $notice-border-radius !default;
+$form-notice-border-radius-tl: $form-notice-border-radius !default;
+$form-notice-border-radius-tr: $form-notice-border-radius !default;
+$form-notice-border-radius-br: $form-notice-border-radius !default;
+$form-notice-border-radius-bl: $form-notice-border-radius !default;
+$form-notice-border-style: $notice-border-style !default;
+$form-notice-border-style-top: $notice-border-style-top !default;
+$form-notice-border-style-right: $notice-border-style-right !default;
+$form-notice-border-style-bottom: $notice-border-style-bottom !default;
+$form-notice-border-style-left: $form-notice-border-style !default;
+$form-notice-border-width: $notice-border-width !default;
+$form-notice-border-width-top: $form-notice-border-width !default;
+$form-notice-border-width-right: $form-notice-border-width !default;
+$form-notice-border-width-bottom: $form-notice-border-width !default;
+$form-notice-border-width-left: $form-notice-border-width !default;
+$form-notice-color: $notice-color !default;
+// notice--error
+$form-notice-error-color: $notice-error-color !default;
+$form-notice-error-background-color: $notice-error-background-color !default;
+$form-notice-error-border-color: $notice-error-border-color !default;
+// notice--info
+$form-notice-info-color: $notice-info-color !default;
+$form-notice-info-background-color: $notice-info-background-color !default;
+$form-notice-info-border-color: $notice-info-border-color !default;
+// notice--success
+$form-notice-success-color: $notice-success-color !default;
+$form-notice-success-background-color: $notice-success-background-color !default;
+$form-notice-success-border-color: $notice-success-border-color !default;
+// notice--warning
+$form-notice-warning-color: $notice-warning-color !default;
+$form-notice-warning-background-color: $notice-warning-background-color !default;
+$form-notice-warning-border-color: $notice-warning-border-color !default;
+
+/**
+ * Etiquette
+ */
+$form-label-color: $form-global-color !default;
+
+/**
+ * Indicateur de champ requis
+ */
+$form-required-color: $form-global-color !default;
+
+/**
+ * Champs
+ */
+// - Configuration Globale
+// --CSS Color
+$form-field-color: $form-global-color !default;
+// --CSS BackgroundColor
+$form-field-background-color: formColor(lighter) !default;
+// -- CSS Border
+$form-field-border-color: formColor(light) !default;
+$form-field-border-radius: 5 !default;
+$form-field-border-radius-tl: $form-field-border-radius !default;
+$form-field-border-radius-tr: $form-field-border-radius !default;
+$form-field-border-radius-br: $form-field-border-radius !default;
+$form-field-border-radius-bl: $form-field-border-radius !default;
+$form-field-border-style: solid !default;
+$form-field-border-style-top: $form-field-border-style !default;
+$form-field-border-style-right: $form-field-border-style !default;
+$form-field-border-style-bottom: $form-field-border-style !default;
+$form-field-border-style-left: $form-field-border-style !default;
+$form-field-border-width: 1 !default;
+$form-field-border-width-top: $form-field-border-width !default;
+$form-field-border-width-right: $form-field-border-width !default;
+$form-field-border-width-bottom: $form-field-border-width !default;
+$form-field-border-width-left: $form-field-border-width !default;
+// -- CSS Padding
+$form-field-padding: 1em !default;
+$form-field-padding-top: $form-field-padding !default;
+$form-field-padding-right: $form-field-padding !default;
+$form-field-padding-bottom: $form-field-padding !default;
+$form-field-padding-left: $form-field-padding !default;
+// -- CSS Placeholder
+$form-field-placeholder-color: lighten($form-global-color, 20%) !default;
+// -- Style champ en erreur
+$form-field-error-border-width: $form-notice-border-width !default;
+$form-field-error-border-color: $form-notice-error-border-color !default;
+
+// - Configuration Case à cocher
+$form-field-checkbox-color: $form-global-color !default;
+$form-field-checkbox-checked-color: $form-global-color !default;
+$form-field-checkbox-background-color: $form-field-background-color !default;
+$form-field-checkbox-border-color: $form-field-border-color !default;
+
+// - Configuration Collection de cases à cocher
+$form-field-checkbox-collection-color: $form-field-checkbox-color !default;
+$form-field-checkbox-collection-checked-color: $form-field-checkbox-checked-color !default;
+$form-field-checkbox-collection-background-color: $form-field-checkbox-background-color !default;
+$form-field-checkbox-collection-border-color: $form-field-checkbox-border-color !default;
+
+// - Configuration Selecteur de date
+$form-field-datepicker-color: $form-field-color !default;
+$form-field-datepicker-background-color: $form-field-background-color !default;
+$form-field-datepicker-border-color: $form-field-border-color !default;
+$form-field-datepicker-border-radius: $form-field-border-radius !default;
+$form-field-datepicker-border-radius-tl: $form-field-border-radius-tl !default;
+$form-field-datepicker-border-radius-tr: $form-field-border-radius-tr !default;
+$form-field-datepicker-border-radius-br: $form-field-border-radius-br !default;
+$form-field-datepicker-border-radius-bl: $form-field-border-radius-bl !default;
+$form-field-datepicker-border-style: $form-field-border-style !default;
+$form-field-datepicker-border-style-top: $form-field-border-style-top !default;
+$form-field-datepicker-border-style-right: $form-field-border-style-right !default;
+$form-field-datepicker-border-style-bottom: $form-field-border-style-bottom !default;
+$form-field-datepicker-border-style-left: $form-field-border-style-left !default;
+$form-field-datepicker-border-width: $form-field-border-width !default;
+$form-field-datepicker-border-width-top: $form-field-border-width-top !default;
+$form-field-datepicker-border-width-right: $form-field-border-width-right !default;
+$form-field-datepicker-border-width-bottom: $form-field-border-width-bottom !default;
+$form-field-datepicker-border-width-left: $form-field-border-width-left !default;
+$form-field-datepicker-padding: $form-field-padding !default;
+$form-field-datepicker-padding-top: $form-field-padding-top !default;
+$form-field-datepicker-padding-right: $form-field-padding-right !default;
+$form-field-datepicker-padding-bottom: $form-field-padding-bottom !default;
+$form-field-datepicker-padding-left: $form-field-padding-left !default;
+$form-field-datepicker-error-border-width: $form-field-error-border-width !default;
+$form-field-datepicker-error-border-color: $form-field-error-border-color !default;
+$form-field-datepicker-placeholder-color: $form-field-placeholder-color !default;
+
+// - Configuration Champ email
+$form-field-input-email-color: $form-field-color !default;
+$form-field-input-email-background-color: $form-field-background-color !default;
+$form-field-input-email-border-color: $form-field-border-color !default;
+$form-field-input-email-border-radius: $form-field-border-radius !default;
+$form-field-input-email-border-radius-tl: $form-field-border-radius-tl !default;
+$form-field-input-email-border-radius-tr: $form-field-border-radius-tr !default;
+$form-field-input-email-border-radius-br: $form-field-border-radius-br !default;
+$form-field-input-email-border-radius-bl: $form-field-border-radius-bl !default;
+$form-field-input-email-border-style: $form-field-border-style !default;
+$form-field-input-email-border-style-top: $form-field-border-style-top !default;
+$form-field-input-email-border-style-right: $form-field-border-style-right !default;
+$form-field-input-email-border-style-bottom: $form-field-border-style-bottom !default;
+$form-field-input-email-border-style-left: $form-field-border-style-left !default;
+$form-field-input-email-border-width: $form-field-border-width !default;
+$form-field-input-email-border-width-top: $form-field-border-width-top !default;
+$form-field-input-email-border-width-right: $form-field-border-width-right !default;
+$form-field-input-email-border-width-bottom: $form-field-border-width-bottom !default;
+$form-field-input-email-border-width-left: $form-field-border-width-left !default;
+$form-field-input-email-padding: $form-field-padding !default;
+$form-field-input-email-padding-top: $form-field-padding-top !default;
+$form-field-input-email-padding-right: $form-field-padding-right !default;
+$form-field-input-email-padding-bottom: $form-field-padding-bottom !default;
+$form-field-input-email-padding-left: $form-field-padding-left !default;
+$form-field-input-email-error-border-width: $form-field-error-border-width !default;
+$form-field-input-email-error-border-color: $form-field-error-border-color !default;
+$form-field-input-email-placeholder-color: $form-field-placeholder-color !default;
+
+// - Configuration Champ de téléchargement de fichier
+$form-field-input-file-color: $form-field-color !default;
+$form-field-input-file-background-color: $form-field-background-color !default;
+$form-field-input-file-border-color: $form-field-border-color !default;
+$form-field-input-file-border-radius: $form-field-border-radius !default;
+$form-field-input-file-border-radius-tl: $form-field-border-radius-tl !default;
+$form-field-input-file-border-radius-tr: $form-field-border-radius-tr !default;
+$form-field-input-file-border-radius-br: $form-field-border-radius-br !default;
+$form-field-input-file-border-radius-bl: $form-field-border-radius-bl !default;
+$form-field-input-file-border-style: $form-field-border-style !default;
+$form-field-input-file-border-style-top: $form-field-border-style-top !default;
+$form-field-input-file-border-style-right: $form-field-border-style-right !default;
+$form-field-input-file-border-style-bottom: $form-field-border-style-bottom !default;
+$form-field-input-file-border-style-left: $form-field-border-style-left !default;
+$form-field-input-file-border-width: $form-field-border-width !default;
+$form-field-input-file-border-width-top: $form-field-border-width-top !default;
+$form-field-input-file-border-width-right: $form-field-border-width-right !default;
+$form-field-input-file-border-width-bottom: $form-field-border-width-bottom !default;
+$form-field-input-file-border-width-left: $form-field-border-width-left !default;
+$form-field-input-file-padding: $form-field-padding !default;
+$form-field-input-file-padding-top: $form-field-padding-top !default;
+$form-field-input-file-padding-right: $form-field-padding-right !default;
+$form-field-input-file-padding-bottom: $form-field-padding-bottom !default;
+$form-field-input-file-padding-left: $form-field-padding-left !default;
+$form-field-input-file-error-border-width: $form-field-error-border-width !default;
+$form-field-input-file-error-border-color: $form-field-error-border-color !default;
+$form-field-input-file-placeholder-color: $form-field-placeholder-color !default;
+
+// - Configuration Champ mot de passe
+$form-field-input-password-color: $form-field-color !default;
+$form-field-input-password-background-color: $form-field-background-color !default;
+$form-field-input-password-border-color: $form-field-border-color !default;
+$form-field-input-password-border-radius: $form-field-border-radius !default;
+$form-field-input-password-border-radius-tl: $form-field-border-radius-tl !default;
+$form-field-input-password-border-radius-tr: $form-field-border-radius-tr !default;
+$form-field-input-password-border-radius-br: $form-field-border-radius-br !default;
+$form-field-input-password-border-radius-bl: $form-field-border-radius-bl !default;
+$form-field-input-password-border-style: $form-field-border-style !default;
+$form-field-input-password-border-style-top: $form-field-border-style-top !default;
+$form-field-input-password-border-style-right: $form-field-border-style-right !default;
+$form-field-input-password-border-style-bottom: $form-field-border-style-bottom !default;
+$form-field-input-password-border-style-left: $form-field-border-style-left !default;
+$form-field-input-password-border-width: $form-field-border-width !default;
+$form-field-input-password-border-width-top: $form-field-border-width-top !default;
+$form-field-input-password-border-width-right: $form-field-border-width-right !default;
+$form-field-input-password-border-width-bottom: $form-field-border-width-bottom !default;
+$form-field-input-password-border-width-left: $form-field-border-width-left !default;
+$form-field-input-password-padding: $form-field-padding !default;
+$form-field-input-password-padding-top: $form-field-padding-top !default;
+$form-field-input-password-padding-right: $form-field-padding-right !default;
+$form-field-input-password-padding-bottom: $form-field-padding-bottom !default;
+$form-field-input-password-padding-left: $form-field-padding-left !default;
+$form-field-input-password-error-border-width: $form-field-error-border-width !default;
+$form-field-input-password-error-border-color: $form-field-error-border-color !default;
+$form-field-input-password-placeholder-color: $form-field-placeholder-color !default;
+
+// - Configuration Champ téléphone
+$form-field-input-tel-color: $form-field-color !default;
+$form-field-input-tel-background-color: $form-field-background-color !default;
+$form-field-input-tel-border-color: $form-field-border-color !default;
+$form-field-input-tel-border-radius: $form-field-border-radius !default;
+$form-field-input-tel-border-radius-tl: $form-field-border-radius-tl !default;
+$form-field-input-tel-border-radius-tr: $form-field-border-radius-tr !default;
+$form-field-input-tel-border-radius-br: $form-field-border-radius-br !default;
+$form-field-input-tel-border-radius-bl: $form-field-border-radius-bl !default;
+$form-field-input-tel-border-style: $form-field-border-style !default;
+$form-field-input-tel-border-style-top: $form-field-border-style-top !default;
+$form-field-input-tel-border-style-right: $form-field-border-style-right !default;
+$form-field-input-tel-border-style-bottom: $form-field-border-style-bottom !default;
+$form-field-input-tel-border-style-left: $form-field-border-style-left !default;
+$form-field-input-tel-border-width: $form-field-border-width !default;
+$form-field-input-tel-border-width-top: $form-field-border-width-top !default;
+$form-field-input-tel-border-width-right: $form-field-border-width-right !default;
+$form-field-input-tel-border-width-bottom: $form-field-border-width-bottom !default;
+$form-field-input-tel-border-width-left: $form-field-border-width-left !default;
+$form-field-input-tel-padding: $form-field-padding !default;
+$form-field-input-tel-padding-top: $form-field-padding-top !default;
+$form-field-input-tel-padding-right: $form-field-padding-right !default;
+$form-field-input-tel-padding-bottom: $form-field-padding-bottom !default;
+$form-field-input-tel-padding-left: $form-field-padding-left !default;
+$form-field-input-tel-error-border-width: $form-field-error-border-width !default;
+$form-field-input-tel-error-border-color: $form-field-error-border-color !default;
+$form-field-input-tel-placeholder-color: $form-field-placeholder-color !default;
+
+// - Configuration Champ text
+$form-field-input-text-color: $form-field-color !default;
+$form-field-input-text-background-color: $form-field-background-color!default;
+$form-field-input-text-border-color: $form-field-border-color !default;
+$form-field-input-text-border-radius: $form-field-border-radius !default;
+$form-field-input-text-border-radius-tl: $form-field-border-radius-tl !default;
+$form-field-input-text-border-radius-tr: $form-field-border-radius-tr !default;
+$form-field-input-text-border-radius-br: $form-field-border-radius-br !default;
+$form-field-input-text-border-radius-bl: $form-field-border-radius-bl !default;
+$form-field-input-text-border-style: $form-field-border-style !default;
+$form-field-input-text-border-style-top: $form-field-border-style-top !default;
+$form-field-input-text-border-style-right: $form-field-border-style-right !default;
+$form-field-input-text-border-style-bottom: $form-field-border-style-bottom !default;
+$form-field-input-text-border-style-left: $form-field-border-style-left !default;
+$form-field-input-text-border-width: $form-field-border-width !default;
+$form-field-input-text-border-width-top: $form-field-border-width-top !default;
+$form-field-input-text-border-width-right: $form-field-border-width-right !default;
+$form-field-input-text-border-width-bottom: $form-field-border-width-bottom !default;
+$form-field-input-text-border-width-left: $form-field-border-width-left !default;
+$form-field-input-text-padding: $form-field-padding !default;
+$form-field-input-text-padding-top: $form-field-padding-top !default;
+$form-field-input-text-padding-right: $form-field-padding-right !default;
+$form-field-input-text-padding-bottom: $form-field-padding-bottom !default;
+$form-field-input-text-padding-left: $form-field-padding-left !default;
+$form-field-input-text-error-border-width: $form-field-error-border-width !default;
+$form-field-input-text-error-border-color: $form-field-error-border-color !default;
+$form-field-input-text-placeholder-color: $form-field-placeholder-color !default;
+
+// - Configuration Liste de selection
+$form-field-select-color: $form-field-color !default;
+$form-field-select-background-color: $form-field-background-color !default;
+$form-field-select-border-color: $form-field-border-color !default;
+$form-field-select-border-radius: $form-field-border-radius !default;
+$form-field-select-border-radius-tl: $form-field-border-radius-tl !default;
+$form-field-select-border-radius-tr: $form-field-border-radius-tr !default;
+$form-field-select-border-radius-br: $form-field-border-radius-br !default;
+$form-field-select-border-radius-bl: $form-field-border-radius-bl !default;
+$form-field-select-border-style: $form-field-border-style !default;
+$form-field-select-border-style-top: $form-field-border-style-top !default;
+$form-field-select-border-style-right: $form-field-border-style-right !default;
+$form-field-select-border-style-bottom: $form-field-border-style-bottom !default;
+$form-field-select-border-style-left: $form-field-border-style-left !default;
+$form-field-select-border-width: $form-field-border-width !default;
+$form-field-select-border-width-top: $form-field-border-width-top !default;
+$form-field-select-border-width-right: $form-field-border-width-right !default;
+$form-field-select-border-width-bottom: $form-field-border-width-bottom !default;
+$form-field-select-border-width-left: $form-field-border-width-left !default;
+$form-field-select-padding: $form-field-padding !default;
+$form-field-select-padding-top: $form-field-padding-top !default;
+$form-field-select-padding-right: $form-field-padding-right !default;
+$form-field-select-padding-bottom: $form-field-padding-bottom !default;
+$form-field-select-padding-left: $form-field-padding-left !default;
+$form-field-select-error-border-width: $form-field-error-border-width !default;
+$form-field-select-error-border-color: $form-field-error-border-color !default;
+
+// - Configuration Liste de selection JS
+$form-field-select-js-color: $form-field-color !default;
+$form-field-select-js-background-color: $form-field-background-color !default;
+$form-field-select-js-border-color: $form-field-border-color !default;
+$form-field-select-js-border-radius: $form-field-border-radius !default;
+$form-field-select-js-border-radius-tl: $form-field-border-radius-tl !default;
+$form-field-select-js-border-radius-tr: $form-field-border-radius-tr !default;
+$form-field-select-js-border-radius-br: $form-field-border-radius-br !default;
+$form-field-select-js-border-radius-bl: $form-field-border-radius-bl !default;
+$form-field-select-js-border-style: $form-field-border-style !default;
+$form-field-select-js-border-style-top: $form-field-border-style-top !default;
+$form-field-select-js-border-style-right: $form-field-border-style-right !default;
+$form-field-select-js-border-style-bottom: $form-field-border-style-bottom !default;
+$form-field-select-js-border-style-left: $form-field-border-style-left !default;
+$form-field-select-js-border-width: $form-field-border-width !default;
+$form-field-select-js-border-width-top: $form-field-border-width-top !default;
+$form-field-select-js-border-width-right: $form-field-border-width-right !default;
+$form-field-select-js-border-width-bottom: $form-field-border-width-bottom !default;
+$form-field-select-js-border-width-left: $form-field-border-width-left !default;
+$form-field-select-js-padding: $form-field-padding !default;
+$form-field-select-js-padding-top: $form-field-padding-top !default;
+$form-field-select-js-padding-right: $form-field-padding-right !default;
+$form-field-select-js-padding-bottom: $form-field-padding-bottom !default;
+$form-field-select-js-padding-left: $form-field-padding-left !default;
+$form-field-select-js-error-border-width: $form-field-error-border-width !default;
+$form-field-select-js-error-border-color: $form-field-error-border-color !default;
+
+// - Configuration Zone de saisie libre
+$form-field-textarea-color: $form-field-color !default;
+$form-field-textarea-background-color: $form-field-background-color !default;
+$form-field-textarea-border-color: $form-field-border-color !default;
+$form-field-textarea-border-radius: $form-field-border-radius !default;
+$form-field-textarea-border-radius-tl: $form-field-border-radius-tl !default;
+$form-field-textarea-border-radius-tr: $form-field-border-radius-tr !default;
+$form-field-textarea-border-radius-br: $form-field-border-radius-br !default;
+$form-field-textarea-border-radius-bl: $form-field-border-radius-bl !default;
+$form-field-textarea-border-style: $form-field-border-style !default;
+$form-field-textarea-border-style-top: $form-field-border-style-top !default;
+$form-field-textarea-border-style-right: $form-field-border-style-right !default;
+$form-field-textarea-border-style-bottom: $form-field-border-style-bottom !default;
+$form-field-textarea-border-style-left: $form-field-border-style-left !default;
+$form-field-textarea-border-width: $form-field-border-width !default;
+$form-field-textarea-border-width-top: $form-field-border-width-top !default;
+$form-field-textarea-border-width-right: $form-field-border-width-right !default;
+$form-field-textarea-border-width-bottom: $form-field-border-width-bottom !default;
+$form-field-textarea-border-width-left: $form-field-border-width-left !default;
+$form-field-textarea-padding: $form-field-padding !default;
+$form-field-textarea-padding-top: $form-field-padding-top !default;
+$form-field-textarea-padding-right: $form-field-padding-right !default;
+$form-field-textarea-padding-bottom: $form-field-padding-bottom !default;
+$form-field-textarea-padding-left: $form-field-padding-left !default;
+$form-field-textarea-error-border-width: $form-field-error-border-width !default;
+$form-field-textarea-error-border-color: $form-field-error-border-color !default;
+$form-field-textarea-placeholder-color: $form-field-placeholder-color !default;
+
+// - Configuration Bouton radio
+$form-field-radio-color: $form-global-color !default;
+$form-field-radio-checked-color: $form-global-color !default;
+$form-field-radio-background-color: $form-field-background-color !default;
+$form-field-radio-border-color: $form-field-border-color !default;
+
+// - Configuration Collection de boutons radio
+$form-field-radio-collection-color: $form-field-radio-color !default;
+$form-field-radio-collection-checked-color: $form-field-radio-checked-color !default;
+$form-field-radio-collection-background-color: $form-field-radio-background-color !default;
+$form-field-radio-collection-border-color: $form-field-radio-border-color !default;
+

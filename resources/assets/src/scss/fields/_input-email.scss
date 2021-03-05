@@ -1,0 +1,27 @@
+// Variables
+@import "../variables";
+
+// Personnalisation
+@mixin form_field_input-email {
+  .FieldEmail {
+    background-color: $form-field-input-email-background-color;
+    border-color: $form-field-input-email-border-color;
+    border-style: $form-field-input-email-border-style-top $form-field-input-email-border-style-right $form-field-input-email-border-style-bottom $form-field-input-email-border-style-left;
+    border-radius: #{$form-field-input-email-border-radius-tl}px #{$form-field-input-email-border-radius-tr}px #{$form-field-input-email-border-radius-br}px #{$form-field-input-email-border-radius-bl}px;
+    border-width: #{$form-field-input-email-border-width-top}px #{$form-field-input-email-border-width-right}px #{$form-field-input-email-border-width-bottom}px #{$form-field-input-email-border-width-left}px;
+    color: $form-field-input-email-color;
+    padding: $form-field-input-email-padding-top $form-field-input-email-padding-right $form-field-input-email-padding-bottom $form-field-input-email-padding-left;
+    width: 100%;
+
+    &[aria-invalid="true"] {
+      border-left-color: $form-field-input-email-error-border-color;
+      border-left-style: solid;
+      border-left-width: #{$form-field-input-email-error-border-width}px;
+      border-radius: 0 #{$form-field-input-email-border-radius-tr}px #{$form-field-input-email-border-radius-br}px 0;
+    }
+
+    &::placeholder {
+      color: $form-field-input-email-placeholder-color;
+    }
+  }
+}

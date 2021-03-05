@@ -1,0 +1,27 @@
+// Variables
+@import "../variables";
+
+// Personnalisation
+@mixin form_field_input-text {
+  .FieldText {
+    background-color: $form-field-input-text-background-color;
+    border-color: $form-field-input-text-border-color;
+    border-style: $form-field-input-text-border-style-top $form-field-input-text-border-style-right $form-field-input-text-border-style-bottom $form-field-input-text-border-style-left;
+    border-radius: #{$form-field-input-text-border-radius-tl}px #{$form-field-input-text-border-radius-tr}px #{$form-field-input-text-border-radius-br}px #{$form-field-input-text-border-radius-bl}px;
+    border-width: #{$form-field-input-text-border-width-top}px #{$form-field-input-text-border-width-right}px #{$form-field-input-text-border-width-bottom}px #{$form-field-input-text-border-width-left}px;
+    color: $form-field-input-text-color;
+    padding: $form-field-input-text-padding-top $form-field-input-text-padding-right $form-field-input-text-padding-bottom $form-field-input-text-padding-left;
+    width: 100%;
+
+    &[aria-invalid="true"] {
+      border-left-color: $form-field-input-text-error-border-color;
+      border-left-style: solid;
+      border-left-width: #{$form-field-input-text-error-border-width}px;
+      border-radius: 0 #{$form-field-input-text-border-radius-tr}px #{$form-field-input-text-border-radius-br}px 0;
+    }
+
+    &::placeholder {
+      color: $form-field-input-text-placeholder-color;
+    }
+  }
+}

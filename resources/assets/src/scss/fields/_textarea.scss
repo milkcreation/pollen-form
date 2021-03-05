@@ -1,0 +1,29 @@
+// Variables
+@import "../variables";
+
+// Personnalisation
+@mixin form_field_textarea {
+  .FieldTextarea {
+    background-color: $form-field-textarea-background-color;
+    border-color: $form-field-textarea-border-color;
+    border-style: $form-field-textarea-border-style-top $form-field-textarea-border-style-right $form-field-textarea-border-style-bottom $form-field-textarea-border-style-left;
+    border-radius: #{$form-field-textarea-border-radius-tl}px #{$form-field-textarea-border-radius-tr}px #{$form-field-textarea-border-radius-br}px #{$form-field-textarea-border-radius-bl}px;
+    border-width: #{$form-field-textarea-border-width-top}px #{$form-field-textarea-border-width-right}px #{$form-field-textarea-border-width-bottom}px #{$form-field-textarea-border-width-left}px;
+    color: $form-field-textarea-color;
+    height: 8em;
+    padding: $form-field-textarea-padding-top $form-field-textarea-padding-right $form-field-textarea-padding-bottom $form-field-textarea-padding-left;
+    resize: none;
+    width: 100%;
+
+    &[aria-invalid="true"] {
+      border-left-color: $form-field-textarea-error-border-color;
+      border-left-style: solid;
+      border-left-width: #{$form-field-textarea-error-border-width}px;
+      border-radius: 0 #{$form-field-textarea-border-radius-tr}px #{$form-field-textarea-border-radius-br}px 0;
+    }
+
+    &::placeholder {
+      color: $form-field-textarea-placeholder-color;
+    }
+  }
+}

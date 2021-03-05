@@ -1,0 +1,11 @@
+// Variables
+@import "variables";
+
+// Personnalisation
+@mixin form_label {
+  .FieldLabel {
+    font-size: 0.9em;
+    margin-bottom: 0;
+    color: $form-label-color;
+  }
+}
