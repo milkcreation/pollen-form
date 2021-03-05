@@ -1,0 +1,30 @@
+// Variables
+@import "../variables";
+
+// Personnalisation
+@mixin form_field_select {
+  .FieldSelect {
+    background-color: $form-field-select-background-color;
+    border-color: $form-field-select-border-color;
+    border-style: $form-field-select-border-style-top $form-field-select-border-style-right $form-field-select-border-style-bottom $form-field-select-border-style-left;
+    border-radius: #{$form-field-select-border-radius-tl}px #{$form-field-select-border-radius-tr}px #{$form-field-select-border-radius-br}px #{$form-field-select-border-radius-bl}px;
+    border-width: #{$form-field-select-border-width-top}px #{$form-field-select-border-width-right}px #{$form-field-select-border-width-bottom}px #{$form-field-select-border-width-left}px;
+    color: $form-field-select-color;
+    padding: $form-field-select-padding-top $form-field-select-padding-right $form-field-select-padding-bottom $form-field-select-padding-left;
+    width: 100%;
+
+    &[aria-invalid="true"] {
+      border-left-color: $form-field-select-error-border-color;
+      border-left-style: solid;
+      border-left-width: #{$form-field-select-error-border-width}px;
+      border-radius: 0 #{$form-field-select-border-radius-tr}px #{$form-field-select-border-radius-br}px 0;
+    }
+  }
+
+  .FieldSelect-wrapper {
+    .FieldSelect-trigger {
+      border-left: none;
+      background-color: transparent;
+    }
+  }
+}

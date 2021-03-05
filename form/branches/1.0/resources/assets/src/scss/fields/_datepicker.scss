@@ -1,0 +1,27 @@
+// Variables
+@import "../variables";
+
+// Personnalisation
+@mixin form_field_datepicker {
+  .FieldDatepicker {
+    background-color: $form-field-datepicker-background-color;
+    border-color: $form-field-datepicker-border-color;
+    border-style: $form-field-datepicker-border-style-top $form-field-datepicker-border-style-right $form-field-datepicker-border-style-bottom $form-field-datepicker-border-style-left;
+    border-radius: #{$form-field-datepicker-border-radius-tl}px #{$form-field-datepicker-border-radius-tr}px #{$form-field-datepicker-border-radius-br}px #{$form-field-datepicker-border-radius-bl}px;
+    border-width: #{$form-field-datepicker-border-width-top}px #{$form-field-datepicker-border-width-right}px #{$form-field-datepicker-border-width-bottom}px #{$form-field-datepicker-border-width-left}px;
+    color: $form-field-datepicker-color;
+    padding: $form-field-datepicker-padding-top $form-field-datepicker-padding-right $form-field-datepicker-padding-bottom $form-field-datepicker-padding-left;
+    width: 100%;
+
+    &[aria-invalid="true"] {
+      border-left-color: $form-field-datepicker-error-border-color;
+      border-left-style: solid;
+      border-left-width: #{$form-field-datepicker-error-border-width}px;
+      border-radius: 0 #{$form-field-datepicker-border-radius-tr}px #{$form-field-datepicker-border-radius-br}px 0;
+    }
+
+    &::placeholder {
+      color: $form-field-datepicker-placeholder-color;
+    }
+  }
+}

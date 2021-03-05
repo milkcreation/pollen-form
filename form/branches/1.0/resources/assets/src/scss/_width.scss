@@ -1,0 +1,37 @@
+// Variables
+@import "variables";
+
+// Personnalisation
+@mixin form_width {
+  .FormField--w33 {
+    float: left;
+    width: 33.333333%;
+  }
+
+  .FormField--w50 {
+    float: left;
+    width: 50%;
+  }
+
+  .FormField--w66 {
+    float: left;
+    width: 66.666666%;
+  }
+
+  @media (max-width: 767px) {
+    .FormField--w33,
+    .FormField--w50,
+    .FormField--w66 {
+      float: none;
+      width: 100%;
+    }
+  }
+
+  .FormField--w33,
+  .FormField--w50,
+  .FormField--w66 {
+    + .FormField:not(.FormField--w33, .FormField--w50, .FormField--w66) {
+      clear: both;
+    }
+  }
+}

@@ -1,0 +1,30 @@
+// Variables
+@import "../variables";
+
+// Personnalisation
+@mixin form_field_select-js {
+  .FieldSelectJs {
+    background-color: $form-field-select-js-background-color;
+    border-color: $form-field-select-js-border-color;
+    border-style: $form-field-select-js-border-style-top $form-field-select-js-border-style-right $form-field-select-js-border-style-bottom $form-field-select-js-border-style-left;
+    border-radius: #{$form-field-select-js-border-radius-tl}px #{$form-field-select-js-border-radius-tr}px #{$form-field-select-js-border-radius-br}px #{$form-field-select-js-border-radius-bl}px;
+    border-width: #{$form-field-select-js-border-width-top}px #{$form-field-select-js-border-width-right}px #{$form-field-select-js-border-width-bottom}px #{$form-field-select-js-border-width-left}px;
+    color: $form-field-select-js-color;
+    padding: $form-field-select-js-padding-top $form-field-select-js-padding-right $form-field-select-js-padding-bottom $form-field-select-js-padding-left;
+    width: 100%;
+
+    &[aria-invalid="true"] {
+      border-left-color: $form-field-select-js-error-border-color;
+      border-left-style: solid;
+      border-left-width: #{$form-field-select-js-error-border-width}px;
+      border-radius: 0 #{$form-field-select-js-border-radius-tr}px #{$form-field-select-js-border-radius-br}px 0;
+    }
+  }
+
+  .FieldSelectJs[aria-arrow="true"] {
+    .FieldSelectJs-trigger::before {
+      border-left: none;
+      background-color: transparent;
+    }
+  }
+}

@@ -1,0 +1,27 @@
+// Variables
+@import "../variables";
+
+// Personnalisation
+@mixin form_field_input-tel {
+  .FieldTel {
+    background-color: $form-field-input-tel-background-color;
+    border-color: $form-field-input-tel-border-color;
+    border-style: $form-field-input-tel-border-style-top $form-field-input-tel-border-style-right $form-field-input-tel-border-style-bottom $form-field-input-tel-border-style-left;
+    border-radius: #{$form-field-input-tel-border-radius-tl}px #{$form-field-input-tel-border-radius-tr}px #{$form-field-input-tel-border-radius-br}px #{$form-field-input-tel-border-radius-bl}px;
+    border-width: #{$form-field-input-tel-border-width-top}px #{$form-field-input-tel-border-width-right}px #{$form-field-input-tel-border-width-bottom}px #{$form-field-input-tel-border-width-left}px;
+    color: $form-field-input-tel-color;
+    padding: $form-field-input-tel-padding-top $form-field-input-tel-padding-right $form-field-input-tel-padding-bottom $form-field-input-tel-padding-left;
+    width: 100%;
+
+    &[aria-invalid="true"] {
+      border-left-color: $form-field-input-tel-error-border-color;
+      border-left-style: solid;
+      border-left-width: #{$form-field-input-tel-error-border-width}px;
+      border-radius: 0 #{$form-field-input-tel-border-radius-tr}px #{$form-field-input-tel-border-radius-br}px 0;
+    }
+
+    &::placeholder {
+      color: $form-field-input-tel-placeholder-color;
+    }
+  }
+}

@@ -1,0 +1,35 @@
+// Variables
+@import "../variables";
+
+// Personnalisation
+@mixin form_field_input-file {
+  .FieldFile {
+    background-color: transparent;
+    padding: 0;
+    width: 100%;
+
+    &::-webkit-file-upload-button {
+      background-color: $form-field-input-file-background-color;
+      border-color: $form-field-input-file-border-color;
+      border-style: $form-field-input-file-border-style-top $form-field-input-file-border-style-right $form-field-input-file-border-style-bottom $form-field-input-file-border-style-left;
+      border-radius: #{$form-field-input-file-border-radius-tl}px #{$form-field-input-file-border-radius-tr}px #{$form-field-input-file-border-radius-br}px #{$form-field-input-file-border-radius-bl}px;
+      border-width: #{$form-field-input-file-border-width-top}px #{$form-field-input-file-border-width-right}px #{$form-field-input-file-border-width-bottom}px #{$form-field-input-file-border-width-left}px;
+      color: $form-field-input-file-color;
+      cursor: pointer;
+      margin-right: 5px;
+      padding: $form-field-input-file-padding-top $form-field-input-file-padding-right $form-field-input-file-padding-bottom $form-field-input-file-padding-left;
+
+      &:hover {
+        background-color: $form-field-input-file-color;
+        color: $form-field-input-file-background-color;
+      }
+    }
+
+    &[aria-invalid="true"] {
+      border-left-color: $form-field-input-file-error-border-color;
+      border-left-style: solid;
+      border-left-width: #{$form-field-input-file-error-border-width}px;
+      padding-left: 1em;
+    }
+  }
+}

@@ -1,0 +1,18 @@
+// Variables
+@import "variables";
+
+// Personnalisation
+@mixin form_clearfix {
+  .FormFields,
+  .FormFieldsGroup {
+    &::before,
+    &::after {
+      display: table;
+      content: " ";
+    }
+
+    &::after {
+      clear: both;
+    }
+  }
+}
