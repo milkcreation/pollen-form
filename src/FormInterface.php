@@ -102,6 +102,13 @@ interface FormInterface extends
     public function getAnchor(): string;
 
     /**
+     * Récupération des scripts JS de suppression de l'ancre du formulaire.
+     *
+     * @return string
+     */
+    public function getAnchorCleanScripts(): string;
+
+    /**
      * Instance de la requête HTTP de traitement du formulaire.
      *
      * @return RequestInterface|Request

@@ -9,11 +9,12 @@
 
     + .FieldLabel {
       position: relative;
+      color:$form-field-checkbox-label-color;
+      font-size: $form-field-checkbox-label-font-size;
       display: inline-block;
       width: auto;
       cursor: pointer;
       padding: 3px 0 0 22px;
-      line-height: 1.2;
 
       &::before {
         position: absolute;
@@ -30,10 +31,10 @@
 
       &::after {
         position: absolute;
-        top: 0;
+        top: 1px;
         display: block;
         content: " ";
-        left: 3px;
+        left: 4px;
         margin-top: 8px;
         height: 8px;
         width: 8px;

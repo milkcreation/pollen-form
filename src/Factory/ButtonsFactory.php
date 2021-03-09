@@ -61,7 +61,7 @@ class ButtonsFactory implements ButtonsFactoryInterface
                 }
 
                 if ($params !== false) {
-                    $_buttons[$alias] = $this->form()->formManager()->getButtonDriver($alias);
+                    $_buttons[$alias] = clone $this->form()->formManager()->getButtonDriver($alias);
                     $_buttons[$alias]->setForm($this->form())->setParams(is_array($params) ? $params : [])->boot();
                 }
             }

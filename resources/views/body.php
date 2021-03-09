@@ -5,7 +5,7 @@
  */
 ?>
 <?php if ($fields->count()) : ?>
-    <div class="FormFields">
+    <div class="FormRows">
         <?php $this->insert('groups', $this->all()); ?>
     </div>
 <?php endif; ?>

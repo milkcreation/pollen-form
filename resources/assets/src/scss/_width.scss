@@ -2,36 +2,51 @@
 @import "variables";
 
 // Personnalisation
-@mixin form_width {
-  .FormField--w33 {
+@mixin row_width {
+  .FormRow--w33 {
     float: left;
     width: 33.333333%;
   }
 
-  .FormField--w50 {
+  .FormRow--w50 {
     float: left;
     width: 50%;
   }
 
-  .FormField--w66 {
+  .FormRow--w66 {
     float: left;
     width: 66.666666%;
   }
 
   @media (max-width: 767px) {
-    .FormField--w33,
-    .FormField--w50,
-    .FormField--w66 {
+    .FormRow--w33,
+    .FormRow--w50,
+    .FormRow--w66 {
       float: none;
       width: 100%;
     }
   }
 
-  .FormField--w33,
-  .FormField--w50,
-  .FormField--w66 {
-    + .FormField:not(.FormField--w33, .FormField--w50, .FormField--w66) {
+  .FormRow--w33,
+  .FormRow--w50,
+  .FormRow--w66 {
+    + .FormRow:not(.FormRow--w33, .FormRow--w50, .FormRow--w66) {
       clear: both;
     }
+  }
+}
+
+@mixin row_text_align {
+  .FormRow--text-center {
+   text-align: center;
+  }
+  .FormRow--text-left {
+    text-align: left;
+  }
+  .FormRow--text-right {
+    text-align: right;
+  }
+  .FormRow--text-justify {
+    text-align: justify;
   }
 }

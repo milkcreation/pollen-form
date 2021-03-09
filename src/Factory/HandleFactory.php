@@ -20,10 +20,16 @@ class HandleFactory implements HandleFactoryInterface
     use ParamsBagAwareTrait;
 
     /**
-     * Url de redirection.
+     * Url de redirection en cas d'échec.
      * @var string
      */
-    protected $redirectUrl;
+    protected $failedRedirectUrl;
+
+    /**
+     * Url de redirection en cas de succès.
+     * @var string
+     */
+    protected $succeedRedirectUrl;
 
     /**
      * Indicateur de soumission du formulaire.
@@ -48,9 +54,6 @@ class HandleFactory implements HandleFactoryInterface
             }
 
             $this->form()->event('handle.booting', [&$this]);
-
-            $this->form()->session()->forget(['notices', 'request']);
-            $this->form()->messages()->flush();
 
             switch ($accessor = $this->form()->getMethod()) {
                 case 'get':
@@ -94,10 +97,8 @@ class HandleFactory implements HandleFactoryInterface
             }
         }
 
-        $this->form()->session()->remove('notices');
-
-        foreach ($this->form()->messages()->allMessages() as $type => $notices) {
-            $this->form()->session()->set("notices.{$type}", $notices);
+        foreach ($this->form()->messages()->all() as $type => $notices) {
+            $this->form()->session()->flash(["notices.{$type}" => $notices]);
         }
 
         $this->form()->event('handle.failed', [&$this]);
@@ -108,17 +109,39 @@ class HandleFactory implements HandleFactoryInterface
     /**
      * @inheritDoc
      */
-    public function getRedirectUrl(): string
+    public function getFailedRedirectUrl(): string
     {
-        if ($this->redirectUrl === null) {
-            $this->setRedirectUrl(
-                $this->params('_http_referer', $this->form()->getHandleRequest()->headers->get('referer'))
-            );
+        if ($this->failedRedirectUrl === null) {
+            $this->setFailedRedirectUrl($this->getRefererUrl());
         }
 
-        $this->form()->event('handle.redirect', [&$this->redirectUrl]);
+        $this->form()->event('handle.failed.redirect_url', [&$this->failedRedirectUrl]);
 
-        return $this->redirectUrl;
+        return $this->failedRedirectUrl;
+    }
+
+    /**
+     * Récupération de l'url de provenance de soumission de formulaire.
+     *
+     * @return string
+     */
+    protected function getRefererUrl(): string
+    {
+        return $this->params('_http_referer', $this->form()->getHandleRequest()->headers->get('referer'));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSucceedRedirectUrl(): string
+    {
+        if ($this->succeedRedirectUrl === null) {
+            $this->setSucceedRedirectUrl($this->getRefererUrl());
+        }
+
+        $this->form()->event('handle.succeed.redirect_url', [&$this->succeedRedirectUrl]);
+
+        return $this->succeedRedirectUrl;
     }
 
     /**
@@ -134,6 +157,8 @@ class HandleFactory implements HandleFactoryInterface
      */
     public function isSubmitted(): bool
     {
+        $this->boot();
+
         if ($this->submitted === null) {
             $this->submitted = (bool)wp_verify_nonce($this->getToken(), 'Form' . $this->form()->getAlias())
                 && $this->form()->getHandleRequest()->isMethod($this->form()->getMethod());
@@ -169,11 +194,9 @@ class HandleFactory implements HandleFactoryInterface
 
         if (!$this->isValidated()) {
             $this->fail();
-
-            return null;
+        } else {
+            $this->success();
         }
-
-        $this->success();
 
         return $this->redirectResponse()->prepare($this->form()->getHandleRequest());
     }
@@ -183,7 +206,9 @@ class HandleFactory implements HandleFactoryInterface
      */
     public function redirectResponse(): RedirectResponse
     {
-        return new RedirectResponse($this->getRedirectUrl());
+        return $this->form->isSuccessful()
+            ? new RedirectResponse($this->getSucceedRedirectUrl())
+            : new RedirectResponse($this->getFailedRedirectUrl());
     }
 
     /**
@@ -192,9 +217,11 @@ class HandleFactory implements HandleFactoryInterface
     public function success(): HandleFactoryInterface
     {
         $this->form()->session()->clear();
-        $this->form()->setSuccessful()->session()->set('successful', true);
+        $this->form()->setSuccessful()->session()->flash(['successful' => true]);
 
-        $this->form()->messages()->success($this->form()->option('success.message', ''));
+        if ($mess = $this->form()->option('success', '')) {
+            $this->form()->messages()->success($mess);
+        }
 
         $this->form()->event('handle.successful', [&$this]);
 
@@ -204,25 +231,45 @@ class HandleFactory implements HandleFactoryInterface
     /**
      * @inheritDoc
      */
-    public function setRedirectUrl(string $url, bool $raw = false): HandleFactoryInterface
+    public function setFailedRedirectUrl(string $url, bool $raw = false): HandleFactoryInterface
     {
-        if (!$raw) {
-            $uri = new UrlManipulator($url);
-
-            if ($this->form()->getMethod() === 'get') {
-                $without = ['_token'];
-                foreach ($this->form()->formFields() as $field) {
-                    $without[] = $field->getName();
-                }
-                $uri = $uri->without($without);
-            }
-
-            $url = $uri->withFragment($this->form()->getAnchor())->render();
-        }
-
-        $this->redirectUrl = $url;
+        $this->failedRedirectUrl = ($raw === false) ? $this->urlGenerator($url) : $url;
 
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setSucceedRedirectUrl(string $url, bool $raw = false): HandleFactoryInterface
+    {
+        $this->succeedRedirectUrl = ($raw === false) ? $this->urlGenerator($url) : $url;
+
+        return $this;
+    }
+
+    /**
+     * Génération d'url
+     * {@internal Suppression des arguments de token de champs lorsque la méthode de soumission est GET.}
+     * {@internal Ajout de l'ancre lorsque celle ci est définie.}
+     *
+     * @param string $url
+     *
+     * @return string
+     */
+    protected function urlGenerator(string $url): string
+    {
+        $uri = new UrlManipulator($url);
+
+        if ($this->form()->getMethod() === 'get') {
+            $without = ['_token'];
+            foreach ($this->form()->formFields() as $field) {
+                $without[] = $field->getName();
+            }
+            $uri = $uri->without($without);
+        }
+
+        return $uri->withFragment($this->form()->getAnchor())->render();
     }
 
     /**

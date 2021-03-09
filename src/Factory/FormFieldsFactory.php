@@ -54,7 +54,7 @@ class FormFieldsFactory implements FormFieldsFactoryInterface
                         );
                     }
 
-                    $this->fieldDrivers[$slug] = $this->form()->formManager()->getFormFieldDriver($alias);
+                    $this->fieldDrivers[$slug] = clone $this->form()->formManager()->getFormFieldDriver($alias);
                     $this->fieldDrivers[$slug]->setSlug($slug)->setForm($this->form())->setParams($params)->boot();
 
                     if (!$this->fieldDrivers[$slug]->getGroup()) {

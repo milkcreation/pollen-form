@@ -38,4 +38,27 @@ class SessionFactory extends AttributeKeyBag implements SessionFactoryInterface
 
         return $this;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function flash($key = null, $default = null)
+    {
+        if ($key !== null) {
+            $namespace = $this->getKey();
+
+            if (is_string($key)) {
+                return $this->session()->flash()->get($namespace . '.' . $key);
+            }
+
+            if (is_array($key)) {
+                foreach ($key as $k => $v) {
+                    unset($key[$k]);
+                    $key[$namespace . '.' . $k] = $v;
+                }
+            }
+        }
+
+        return $this->session()->flash($key, $default);
+    }
 }

@@ -27,10 +27,11 @@
 // Personnalisation
 .Form {
   /**
-   * Largeurs de champs
+   * Styles des conteneurs de champs
    */
   @if map.get($form-styles-enabled, width) {
-    @include form_width;
+    @include row_width;
+    @include row_text_align;
   }
 
   /**
@@ -139,6 +140,10 @@
   }
 
   .FieldRecaptcha {
+    &:focus {
+      outline: none;
+    }
+
     &[aria-error=true] {
       border-left: solid 3px $form-notice-error-border-color;
     }

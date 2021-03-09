@@ -6,7 +6,7 @@
   .Notice {
     color: $form-notice-color;
     padding: 0.625em 1em;
-    margin-bottom: 2em;
+    margin-bottom: #{$form-gutters-bottom}px;
 
     &.Notice--error,
     &.Notice--success,
