@@ -26,11 +26,18 @@ interface HandleFactoryInterface extends BootableTraitInterface, FormAwareTraitI
     public function fail(): HandleFactoryInterface;
 
     /**
-     * Récupération de l'url de redirection.
+     * Récupération de l'url de redirection en cas d'échec.
      *
      * @return string
      */
-    public function getRedirectUrl(): string;
+    public function getFailedRedirectUrl(): string;
+
+    /**
+     * Récupération de l'url de redirection en cas de succès.
+     *
+     * @return string
+     */
+    public function getSucceedRedirectUrl(): string;
 
     /**
      * Récupération de la valeur de la protection CSRF.
@@ -68,14 +75,24 @@ interface HandleFactoryInterface extends BootableTraitInterface, FormAwareTraitI
     public function redirectResponse(): RedirectResponse;
 
     /**
-     * Définition de l'url de redirection.
+     * Définition de l'url de redirection en cas d'échec.
      *
      * @param string $url
-     * @param bool $raw Désactivation du formatage (indicateur de succès && ancre).
+     * @param bool $raw Activation/Désactivation du formatage automatique.
      *
      * @return static
      */
-    public function setRedirectUrl(string $url, bool $raw = false): HandleFactoryInterface;
+    public function setFailedRedirectUrl(string $url, bool $raw = false): HandleFactoryInterface;
+
+    /**
+     * Définition de l'url de redirection en cas de succès.
+     *
+     * @param string $url
+     * @param bool $raw Activation/Désactivation du formatage automatique.
+     *
+     * @return static
+     */
+    public function setSucceedRedirectUrl(string $url, bool $raw = false): HandleFactoryInterface;
 
     /**
      * Traitement du succès de la requête de soumission du formulaire.

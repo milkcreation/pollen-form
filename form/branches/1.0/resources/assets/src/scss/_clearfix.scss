@@ -3,7 +3,7 @@
 
 // Personnalisation
 @mixin form_clearfix {
-  .FormFields,
+  .FormRows,
   .FormFieldsGroup {
     &::before,
     &::after {

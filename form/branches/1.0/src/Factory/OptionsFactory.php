@@ -61,14 +61,12 @@ class OptionsFactory implements OptionsFactoryInterface
                 'dismissible' => false,
             ],
             /**
-             *
+             * @var string|null $success Message de succès
              */
-            'success' => [
-                'message' => __(
-                    'Votre demande a bien été prise en compte et sera traitée dès que possible.',
-                    'tify'
-                ),
-            ],
+            'success' => __(
+                'Votre demande a bien été prise en compte et sera traitée dès que possible.',
+                'tify'
+            ),
         ];
     }
 }

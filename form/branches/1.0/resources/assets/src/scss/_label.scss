@@ -4,8 +4,8 @@
 // Personnalisation
 @mixin form_label {
   .FieldLabel {
-    font-size: 0.9em;
-    margin-bottom: 0;
     color: $form-label-color;
+    font-size: $form-label-font-size;
+    margin-bottom: 0;
   }
 }

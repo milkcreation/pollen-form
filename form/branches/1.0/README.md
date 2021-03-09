@@ -339,7 +339,7 @@ $request = Request::createFromGlobals();
 $form->setHandleRequest($request);
 
 if ($form->isSubmitted()) {
-    $fields = $form->fields()->all();
+    $fields = $form->formFields()->all();
 
     try {
         $fields['login']->validate();
@@ -369,7 +369,6 @@ if ($form->isSuccessful()) {
     // ... Specific handling
 
     $response = $form->handle()->redirectResponse();
-    $response->prepare($request);
 
     (new SapiEmitter())->emit($response->psr());
     exit;

@@ -114,13 +114,12 @@ class Form implements FormInterface
 
             $services = [
                 'events',
+                'session',
                 'addons',
                 'formFields',
                 'groups',
                 'buttons',
-                'handle',
                 'options',
-                'session',
                 'validate',
             ];
 
@@ -130,7 +129,7 @@ class Form implements FormInterface
                 $this->{$service}->boot();
             }
 
-            $this->setSuccessful((bool)$this->session()->pull('successful', false));
+            $this->setSuccessful((bool)$this->session()->flash('successful', false));
 
             $this->setBooted();
 
@@ -351,6 +350,22 @@ class Form implements FormInterface
     /**
      * @inheritDoc
      */
+    public function getAnchorCleanScripts(): string
+    {
+        if ($anchor = $this->getAnchor()) {
+            $js = 'window.addEventListener("load", (event) => {' .
+                'if(window.location.href.split("#")[1] === "' . $anchor . '"){' .
+                'window.history.pushState("", document.title, window.location.pathname + window.location.search);' .
+                '}});';
+
+            return "<script type=\"text/javascript\">/* <![CDATA[ */{$js}/* ]]> */</script>";
+        }
+        return '';
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getHandleRequest(): RequestInterface
     {
         if ($this->handleRequest === null) {
@@ -538,31 +553,21 @@ class Form implements FormInterface
     {
         if ($this->renderBuild['notices'] === false) {
             if ($this->messages()->count()) {
-                $this->session()->remove('notices');
-            } elseif ($notices = $this->session()->pull('notices')) {
+                //$this->session()->remove('notices');
+            } elseif ($notices = $this->session()->flash('notices')) {
                 foreach ($notices as $type => $items) {
                     foreach ($items as $item) {
-                        $this->messages()->log($type, $item['message'] ?? '', $item['datas'] ?? []);
+                        $this->messages($item['message'] ?? '', $type, $item['datas'] ?? []);
                     }
                 }
             }
             if ($this->isSuccessful()) {
-                if (!$this->messages()->exists(MessagesBag::SUCCESS)) {
-                    $this->messages()->success($this->option('success.message', ''));
+                if (($mes = $this->option('success', '')) && !$this->messages()->exists(MessagesBag::SUCCESS)) {
+                    $this->messages()->success($mes);
                 }
                 $this->session()->clear();
-            } else {
-                $this->session()->remove('notices');
             }
 
-            /**
-             * @todo
-             * Asset::setInlineJs(
-             * 'window.addEventListener("load", (event) => {' .
-             * 'if(window.location.href.split("#")[1] === "' . $this->getAnchor() . '"){' .
-             * 'window.history.pushState("", document.title, window.location.pathname + window.location.search);' .
-             * '}});', true);
-             */
             $this->renderBuild['successful'] = true;
         }
 

@@ -3,11 +3,11 @@
 
 // Personnalisation
 @mixin form_gutters {
-  .FormFields {
+  .FormRows {
     margin: 0 -#{$form-gutters-right}px 0 -#{$form-gutters-left}px;
   }
 
-  .FormField {
+  .FormRow {
     padding: #{$form-gutters-top}px #{$form-gutters-right}px #{$form-gutters-bottom}px #{$form-gutters-left}px;
   }
 }

@@ -29,6 +29,7 @@ $form-colors: (
  * Global
  */
 $form-global-color: formColor(regular) !default;
+$form-global-font-size: 1em !default;
 
 // Activation des éléments
 $form-styles-enabled: (
@@ -40,6 +41,7 @@ $form-styles-enabled: (
     required: true,
     width: true,
 ) !default;
+
 // Activation des type de champ
 $form-field_types-enabled: (
     checkbox: true,
@@ -106,6 +108,7 @@ $form-notice-warning-border-color: $notice-warning-border-color !default;
  * Etiquette
  */
 $form-label-color: $form-global-color !default;
+$form-label-font-size: $form-global-font-size !default;
 
 /**
  * Indicateur de champ requis
@@ -137,6 +140,8 @@ $form-field-border-width-top: $form-field-border-width !default;
 $form-field-border-width-right: $form-field-border-width !default;
 $form-field-border-width-bottom: $form-field-border-width !default;
 $form-field-border-width-left: $form-field-border-width !default;
+// -- Font-size
+$form-field-font-size: $form-global-font-size !default;
 // -- CSS Padding
 $form-field-padding: 1em !default;
 $form-field-padding-top: $form-field-padding !default;
@@ -151,12 +156,16 @@ $form-field-error-border-color: $form-notice-error-border-color !default;
 
 // - Configuration Case à cocher
 $form-field-checkbox-color: $form-global-color !default;
+$form-field-checkbox-label-color: $form-global-color !default;
+$form-field-checkbox-label-font-size: $form-global-font-size !default;
 $form-field-checkbox-checked-color: $form-global-color !default;
 $form-field-checkbox-background-color: $form-field-background-color !default;
 $form-field-checkbox-border-color: $form-field-border-color !default;
 
 // - Configuration Collection de cases à cocher
 $form-field-checkbox-collection-color: $form-field-checkbox-color !default;
+$form-field-checkbox-collection-label-color: $form-field-checkbox-label-color !default;
+$form-field-checkbox-collection-label-font-size: $form-field-checkbox-label-font-size !default;
 $form-field-checkbox-collection-checked-color: $form-field-checkbox-checked-color !default;
 $form-field-checkbox-collection-background-color: $form-field-checkbox-background-color !default;
 $form-field-checkbox-collection-border-color: $form-field-checkbox-border-color !default;
@@ -413,12 +422,16 @@ $form-field-textarea-placeholder-color: $form-field-placeholder-color !default;
 
 // - Configuration Bouton radio
 $form-field-radio-color: $form-global-color !default;
+$form-field-radio-label-color: $form-global-color !default;
+$form-field-radio-label-font-size: $form-global-font-size !default;
 $form-field-radio-checked-color: $form-global-color !default;
 $form-field-radio-background-color: $form-field-background-color !default;
 $form-field-radio-border-color: $form-field-border-color !default;
 
 // - Configuration Collection de boutons radio
 $form-field-radio-collection-color: $form-field-radio-color !default;
+$form-field-radio-collection-label-color: $form-field-radio-label-color !default;
+$form-field-radio-collection-label-font-size: $form-field-radio-label-font-size !default;
 $form-field-radio-collection-checked-color: $form-field-radio-checked-color !default;
 $form-field-radio-collection-background-color: $form-field-radio-background-color !default;
 $form-field-radio-collection-border-color: $form-field-radio-border-color !default;

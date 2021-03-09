@@ -80,6 +80,12 @@ class FormFieldDriver implements FormFieldDriverInterface
     protected $slug = '';
 
     /**
+     * Liste des propriétés de formulaire supportées.
+     * @var array|null
+     */
+    protected $supports;
+
+    /**
      * @inheritDoc
      */
     public function __toString(): string
@@ -461,16 +467,20 @@ class FormFieldDriver implements FormFieldDriverInterface
         $param = $this->params();
 
         if ($this->default === null) {
-            $this->setDefault($param->get('value', null));
+            $this->setDefault($param->get('value'));
         }
 
-        $name = $param->get('name', null);
+        $name = $param->get('name');
         if (!is_null($name)) {
             $param->set(['name' => $name ? esc_attr($name) : esc_attr($this->getSlug())]);
         }
 
         if (!$param->get('supports')) {
-            $param->set('supports', $this->fieldTypeSupports[$this->getType()] ?? $this->defaultSupports);
+            if ($this->supports !== null) {
+                $param->set('supports', $this->supports);
+            } else {
+                $param->set('supports', $this->fieldTypeSupports[$this->getType()] ?? $this->defaultSupports);
+            }
         }
 
         $transport = $param->get('transport');
@@ -634,13 +644,13 @@ class FormFieldDriver implements FormFieldDriverInterface
                 $param->set('wrapper', array_merge(['tag' => 'div', 'attrs' => []], $wrapper));
 
                 if (!$param->has('wrapper.attrs.id')) {
-                    $param->set('wrapper.attrs.id', "FormField--{$this->getSlug()}_{$this->form()->getIndex()}");
+                    $param->set('wrapper.attrs.id', "FormRow--{$this->getSlug()}_{$this->form()->getIndex()}");
                 }
                 if (!$param->get('wrapper.attrs.id')) {
                     $param->pull('wrapper.attrs.id');
                 }
 
-                $default_class = "FormField FormField--{$this->getType()} FormField--{$this->getSlug()}";
+                $default_class = "FormRow FormRow--{$this->getType()} FormRow--{$this->getSlug()}";
                 if (!$param->has('wrapper.attrs.class')) {
                     $param->set('wrapper.attrs.class', $default_class);
                 } else {
