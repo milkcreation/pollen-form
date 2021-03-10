@@ -207,7 +207,13 @@ class Form implements FormInterface
      */
     public function csrf(): string
     {
-        return wp_create_nonce('Form' . $this->getAlias());
+        $token = $this->params('token', '');
+
+        if (empty($token) || !is_string($token)) {
+            return '';
+        }
+
+        return wp_create_nonce($token);
     }
 
     /**
@@ -280,6 +286,10 @@ class Form implements FormInterface
              * @var string $title Intitulé de qualification du formulaire.
              */
             'title'    => $this->getAlias(),
+            /**
+             * @var string|false Chaîne de validation csrf|Désactivation du token
+             */
+            'token'     => 'Form' . $this->getAlias(),
             /**
              * @var array $viewer Attributs de configuration du gestionnaire de gabarits d'affichage.
              */
@@ -666,6 +676,14 @@ class Form implements FormInterface
         return $this->tagName = is_null($this->tagName)
             ? lcfirst(str_replace(' ', '', ucwords(str_replace(['-', '_', '.'], ' ', $this->getAlias()))))
             : $this->tagName;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function tokenized(): bool
+    {
+        return (bool)$this->csrf();
     }
 
     /**

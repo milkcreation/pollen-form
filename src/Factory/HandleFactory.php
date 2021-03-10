@@ -71,10 +71,10 @@ class HandleFactory implements HandleFactoryInterface
 
                 if ($value !== null) {
                     $field->setValue($value);
+                }
 
-                    if ($field->supports('session') && $this->form()->supports('session')) {
-                        $this->form()->session()->set("request.{$field->getName()}", $value);
-                    }
+                if ($field->supports('session') && $this->form()->supports('session')) {
+                    $this->form()->session()->set("request.{$field->getName()}", $value);
                 }
             }
 

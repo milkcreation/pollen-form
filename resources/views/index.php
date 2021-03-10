@@ -2,6 +2,7 @@
 /**
  * @var Pollen\Form\FormViewLoaderInterface $this
  */
+
 ?>
 <?php if ($this->form()->params('wrapper')) : ?>
     <?php $this->layout('wrapper-form', $this->all()); ?>
@@ -12,13 +13,18 @@
 <?php $this->insert('notices', $this->all()); ?>
 
     <form <?php echo $this->htmlAttrs($this->form()->params('attrs', [])); ?>>
-        <?php echo $this->field('hidden', [
-            'name'  => '_token',
-            'value' => $this->csrf(),
-            'attrs' => [
-                'class' => '',
-            ],
-        ]); ?>
+        <?php if ($csrf = $this->csrf()) : ?>
+            <?php echo $this->field(
+                'hidden',
+                [
+                    'name'  => '_token',
+                    'value' => $this->csrf(),
+                    'attrs' => [
+                        'class' => '',
+                    ],
+                ]
+            ); ?>
+        <?php endif; ?>
 
         <?php if ($header = $this->fetch('header', $this->all())) : ?>
             <header class="FormHeader FormHeader--<?php echo $this->tagName(); ?>">

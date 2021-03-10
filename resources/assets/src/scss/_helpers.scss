@@ -1,0 +1,61 @@
+// Variables
+@import "variables";
+
+// Personnalisation
+@mixin helpers_width {
+  .Form-w-33 {
+    float: left;
+    width: 33.333333%;
+  }
+
+  .Form-w-50 {
+    float: left;
+    width: 50%;
+  }
+
+  .Form-w-66 {
+    float: left;
+    width: 66.666666%;
+  }
+
+  @media (max-width: 767px) {
+    .Form-w-33,
+    .Form-w-50,
+    .Form-w-66 {
+      float: none;
+      width: 100%;
+    }
+  }
+
+  .Form-w-33,
+  .Form-w-50,
+  .Form-w-66 {
+    + .FormRow:not(.Form-w-33, .Form-w-50, .Form-w-66) {
+      clear: both;
+    }
+  }
+}
+
+@mixin helpers_display {
+  .Form-d-inline-block {
+    display: inline-block;
+  }
+  .Form-d-flex {
+    display: flex;
+  }
+}
+
+@mixin helpers_text_align {
+  .Form-text-center {
+   text-align: center;
+  }
+  .Form-text-left {
+    text-align: left;
+  }
+  .Form-text-right {
+    text-align: right;
+  }
+  .Form-text-justify {
+    text-align: justify;
+  }
+}

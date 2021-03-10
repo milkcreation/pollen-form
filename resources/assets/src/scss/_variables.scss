@@ -39,7 +39,7 @@ $form-styles-enabled: (
     label: true,
     notice: true,
     required: true,
-    width: true,
+    helpers: true,
 ) !default;
 
 // Activation des type de champ

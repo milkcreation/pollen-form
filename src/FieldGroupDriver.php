@@ -53,7 +53,9 @@ class FieldGroupDriver implements FieldGroupDriverInterface
 
             $this->setForm($this->groupsManager->form());
 
-            $this->form()->event('group.boot');
+            $this->form()->event('group.booting');
+
+            $this->setParams((array)$this->form()->params('groups.'. $this->getAlias(), []));
 
             $this->parseParams();
 
