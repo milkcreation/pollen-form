@@ -9,7 +9,7 @@
 @import "label";
 @import "notice";
 @import "required";
-@import "width";
+@import "helpers";
 @import "fields/checkbox";
 @import "fields/checkbox-collection";
 @import "fields/datepicker";
@@ -29,9 +29,10 @@
   /**
    * Styles des conteneurs de champs
    */
-  @if map.get($form-styles-enabled, width) {
-    @include row_width;
-    @include row_text_align;
+  @if map.get($form-styles-enabled, helpers) {
+    @include helpers_width;
+    @include helpers_display;
+    @include helpers_text_align;
   }
 
   /**

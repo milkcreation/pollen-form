@@ -103,8 +103,8 @@ class FormFieldDriver implements FormFieldDriverInterface
                 throw new RuntimeException('Form Field Driver requires a valid related Form instance');
             }
 
-            $this->form()->event('field.boot.' . $this->getType(), [&$this]);
-            $this->form()->event('field.boot', [&$this]);
+            $this->form()->event('field.booting.' . $this->getType(), [&$this]);
+            $this->form()->event('field.booting', [&$this]);
 
             $this->parseParams();
 
