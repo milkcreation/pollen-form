@@ -6,6 +6,12 @@
 ?>
 <?php if ($fields->count()) : ?>
     <div class="FormRows">
-        <?php $this->insert('groups', $this->all()); ?>
+        <?php if ($this->form()->hasGroup()) : ?>
+            <?php $this->insert('groups', $this->all()); ?>
+        <?php else : ?>
+            <?php foreach($this->form()->formFields() as $field) : ?>
+                <?php $this->insert('field',compact('field')); ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
     </div>
 <?php endif; ?>

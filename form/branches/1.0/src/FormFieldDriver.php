@@ -202,9 +202,9 @@ class FormFieldDriver implements FormFieldDriverInterface
              */
             'extras'      => [],
             /**
-             * @var string $group Alias du groupe d'appartenance.
+             * @var string|null $group Alias du groupe d'appartenance.
              */
-            'group'       => '',
+            'group'       => null,
             /**
              * @var bool|string|array $label Affichage de l'intitulé de champ. false si masqué|true charge les attributs
              * par défaut|array permet de définir des attributs personnalisés.

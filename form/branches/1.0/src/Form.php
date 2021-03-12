@@ -433,6 +433,14 @@ class Form implements FormInterface
     /**
      * @inheritDoc
      */
+    public function hasGroup(): bool
+    {
+        return $this->groups()->count() > 0;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function isSubmitted(): bool
     {
         return $this->handle()->isSubmitted();
@@ -562,15 +570,14 @@ class Form implements FormInterface
     public function renderBuildNotices(): FormInterface
     {
         if ($this->renderBuild['notices'] === false) {
-            if ($this->messages()->count()) {
-                //$this->session()->remove('notices');
-            } elseif ($notices = $this->session()->flash('notices')) {
+           if (!$this->messages()->count() && ($notices = $this->session()->flash('notices'))) {
                 foreach ($notices as $type => $items) {
                     foreach ($items as $item) {
                         $this->messages($item['message'] ?? '', $type, $item['datas'] ?? []);
                     }
                 }
             }
+
             if ($this->isSuccessful()) {
                 if (($mes = $this->option('success', '')) && !$this->messages()->exists(MessagesBag::SUCCESS)) {
                     $this->messages()->success($mes);

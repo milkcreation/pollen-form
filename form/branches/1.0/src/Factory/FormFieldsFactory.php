@@ -45,6 +45,10 @@ class FormFieldsFactory implements FormFieldsFactoryInterface
             $this->form()->event('fields.booting', [&$this]);
 
             $fields = (array)$this->form()->params('fields', []);
+            $withGroup = (bool)(new Collection($fields))->first(function(array $field) {
+                $group = $field['group'] ?? null;
+                return $group  !== null;
+            });
 
             foreach ($fields as $slug => $params) {
                 if ($slug !== null) {
@@ -57,7 +61,7 @@ class FormFieldsFactory implements FormFieldsFactoryInterface
                     $this->fieldDrivers[$slug] = clone $this->form()->formManager()->getFormFieldDriver($alias);
                     $this->fieldDrivers[$slug]->setSlug($slug)->setForm($this->form())->setParams($params)->boot();
 
-                    if (!$this->fieldDrivers[$slug]->getGroup()) {
+                    if ($withGroup && !$this->fieldDrivers[$slug]->getGroup()) {
                         $this->form()->groups()->setDriver((string)$this->fieldDrivers[$slug]->params('group'), []);
                     }
                 }
