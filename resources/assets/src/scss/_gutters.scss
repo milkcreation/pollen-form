@@ -8,6 +8,6 @@
   }
 
   .FormRow {
-    padding: #{$form-gutters-top}px #{$form-gutters-right}px #{$form-gutters-bottom}px #{$form-gutters-left}px;
+    padding: #{$form-gutters-top/2}px #{$form-gutters-right}px #{$form-gutters-bottom/2}px #{$form-gutters-left}px;
   }
 }

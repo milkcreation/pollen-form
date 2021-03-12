@@ -144,11 +144,18 @@ interface FormInterface extends
     public function getTitle(): string;
 
     /**
-     * Vérification du status en erreur du formulaire.
+     * Vérification d'existence d'erreur de soumission du formulaire.
      *
      * @return bool
      */
     public function hasError(): bool;
+
+    /**
+     * Vérification d'existence de champs groupés.
+     *
+     * @return bool
+     */
+    public function hasGroup(): bool;
 
     /**
      * Vérification de soumission du formulaire.
