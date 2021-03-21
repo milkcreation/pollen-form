@@ -13,6 +13,7 @@ use Pollen\Support\Concerns\BuildableTrait;
 use Pollen\Support\Concerns\ParamsBagAwareTrait;
 use Pollen\Support\MessagesBag;
 use RuntimeException;
+use Pollen\Validation\Validator as v;
 
 class FormFieldDriver implements FormFieldDriverInterface
 {
@@ -895,6 +896,8 @@ class FormFieldDriver implements FormFieldDriverInterface
 
         if ($this->getRequired('check')) {
             $value = $this->getValue($this->getRequired('raw', true));
+
+
 
             if (!$check = $this->form()->validate()->call(
                 $this->getRequired('call'),
