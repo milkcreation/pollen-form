@@ -58,6 +58,7 @@ class ValidateFactory implements ValidateFactoryInterface
                     return !empty($_args)
                         ? !v::$callback(...$_args)->validate($value) : !v::$callback()->validate($value);
                 }
+
                 return !empty($_args) ? v::$callback(...$_args)->validate($value) : v::$callback()->validate($value);
             } catch (Exception $e) {
                 if (is_callable([$this, $callback])) {
