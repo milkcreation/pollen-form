@@ -28,11 +28,11 @@ interface FormFieldDriverInterface extends
      *
      * @param string $message
      * @param string $level
-     * @param array $datas Liste des données associées au message.
+     * @param array $context
      *
      * @return static
      */
-    public function addNotice(string $message, string $level = 'error', array $datas = []): FormFieldDriverInterface;
+    public function addNotice(string $message, string $level = 'error', array $context = []): FormFieldDriverInterface;
 
     /**
      * Récupération du pré-affichage.
@@ -66,11 +66,11 @@ interface FormFieldDriverInterface extends
      * Définition d'un message d'erreur associé au champ.
      *
      * @param string $message
-     * @param array $datas Liste des données associées au message.
+     * @param array $context
      *
      * @return static
      */
-    public function error(string $message, array $datas = []): FormFieldDriverInterface;
+    public function error(string $message, array $context = []): FormFieldDriverInterface;
 
     /**
      * Récupération de l'alias de qualification.

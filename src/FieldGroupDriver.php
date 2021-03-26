@@ -126,6 +126,14 @@ class FieldGroupDriver implements FieldGroupDriverInterface
     /**
      * @inheritDoc
      */
+    public function getIndex(): int
+    {
+        return $this->index;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getPosition(): int
     {
         return (int)$this->params('position');
@@ -194,6 +202,16 @@ class FieldGroupDriver implements FieldGroupDriverInterface
     public function setGroupManager(FieldGroupsFactoryInterface $groupsManager): FieldGroupDriverInterface
     {
         $this->groupsManager = $groupsManager;
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setIndex(int $index): FieldGroupDriverInterface
+    {
+        $this->index = $index;
 
         return $this;
     }

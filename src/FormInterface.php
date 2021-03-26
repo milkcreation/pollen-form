@@ -50,11 +50,18 @@ interface FormInterface extends
     public function build(): FormInterface;
 
     /**
-     * Récupération de la chaîne de sécurisation du formulaire (CSRF).
+     * Indice de la clé de protection CSRF.
      *
      * @return string
      */
-    public function csrf(): string;
+    public function csrfKey(): string;
+
+    /**
+     * Récupération du champ de protection CSRF.
+     *
+     * @return string
+     */
+    public function csrfField(): string;
 
     /**
      * Liste des intitulés de qualification par défaut.
@@ -66,12 +73,12 @@ interface FormInterface extends
     /**
      * Déclaration d'un message d'erreur.
      *
-     * @param string $message Intitulé du message.
-     * @param array $datas Données associées à l'erreur
+     * @param string $message
+     * @param array $context
      *
      * @return string Identifiant de qualification du message d'erreur
      */
-    public function error(string $message, array $datas = []): string;
+    public function error(string $message, array $context = []): string;
 
     /**
      * Récupération de l'instance du gestionnaire de formulaire.

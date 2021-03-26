@@ -11,7 +11,6 @@ use Pollen\View\ViewLoader;
 use RuntimeException;
 
 /**
- * @method string csrf()
  * @method bool isSuccessful()
  * @method string tagName()
  */
@@ -51,6 +50,16 @@ class FormViewLoader extends ViewLoader implements FormViewLoaderInterface
             }
         }
         return '';
+    }
+
+    /**
+     * Récupération du champ de protection CSRF.
+     *
+     * @return string
+     */
+    public function csrf(): string
+    {
+        return $this->form()->csrfField();
     }
 
     /**

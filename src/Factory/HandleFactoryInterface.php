@@ -40,13 +40,6 @@ interface HandleFactoryInterface extends BootableTraitInterface, FormAwareTraitI
     public function getSucceedRedirectUrl(): string;
 
     /**
-     * Récupération de la valeur de la protection CSRF.
-     *
-     * @return string
-     */
-    public function getToken(): string;
-
-    /**
      * Vérification de soumission du formulaire.
      *
      * @return boolean
@@ -54,7 +47,7 @@ interface HandleFactoryInterface extends BootableTraitInterface, FormAwareTraitI
     public function isSubmitted(): bool;
 
     /**
-     * Vérification du succes de validation de la soumission du formulaire.
+     * Vérification du succès de validation de la soumission du formulaire.
      *
      * @return bool
      */
@@ -63,9 +56,9 @@ interface HandleFactoryInterface extends BootableTraitInterface, FormAwareTraitI
     /**
      * Processus de traitement de la requête de soumission du formulaire.
      *
-     * @return RedirectResponse|null
+     * @return RedirectResponse
      */
-    public function proceed(): ?RedirectResponse;
+    public function proceed(): RedirectResponse;
 
     /**
      * Redirection de la requête de traitement du formulaire.

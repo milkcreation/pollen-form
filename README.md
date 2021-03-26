@@ -129,8 +129,6 @@ echo $form;
 
 ## Configuration
 
-@todo
-
 ### Form
 
 ```php
@@ -364,16 +362,20 @@ if ($form->isSubmitted()) {
     }
 }
 
-// Step 5 : Form validated submission redirect
+// Step 5 : Catching HTTP Response
+$response = $form->handle()->redirectResponse();
+
+// Step 6 : Form validated submission redirect
 if ($form->isSuccessful()) {
     // ... Specific handling
-
-    $response = $form->handle()->redirectResponse();
-
     (new SapiEmitter())->emit($response->psr());
     exit;
 }
 
-// Step 6 : Output the form
+// Step 6 :
+// Option # 1 : Form display after redirect (Best practice)
+(new SapiEmitter())->emit($response->psr());
+exit;
+// Option # 2 : Form output through the POST request (Web Standard practice)
 echo $form;
 ```
