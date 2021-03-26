@@ -205,15 +205,32 @@ class Form implements FormInterface
     /**
      * @inheritDoc
      */
-    public function csrf(): string
+    public function csrfKey(): string
     {
-        $token = $this->params('token', '');
+        $name = $this->params('token');
 
-        if (empty($token) || !is_string($token)) {
+        if ($name === false) {
             return '';
         }
 
-        return wp_create_nonce($token);
+        if (!is_string($name) || empty($name)) {
+            $name = '_token';
+        }
+
+        return $name;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function csrfField(): string
+    {
+        if ($name = $this->csrfKey()) {
+            $value = $this->session()->getToken();
+
+            return "<input type=\"hidden\" name=\"{$name}\" value=\"{$value}\"/>";
+        }
+        return '';
     }
 
     /**
@@ -287,9 +304,9 @@ class Form implements FormInterface
              */
             'title'    => $this->getAlias(),
             /**
-             * @var string|false Chaîne de validation csrf|Désactivation du token
+             * @var bool Activation du token (recommandé)
              */
-            'token'     => 'Form' . $this->getAlias(),
+            'token'     => true,
             /**
              * @var array $viewer Attributs de configuration du gestionnaire de gabarits d'affichage.
              */
@@ -304,9 +321,9 @@ class Form implements FormInterface
     /**
      * @inheritDoc
      */
-    public function error(string $message, array $datas = []): string
+    public function error(string $message, array $context = []): string
     {
-        return $this->messages($message, MessagesBag::ERROR, $datas);
+        return $this->messages($message, MessagesBag::ERROR, $context);
     }
 
     /**
@@ -573,7 +590,7 @@ class Form implements FormInterface
            if (!$this->messages()->count() && ($notices = $this->session()->flash('notices'))) {
                 foreach ($notices as $type => $items) {
                     foreach ($items as $item) {
-                        $this->messages($item['message'] ?? '', $type, $item['datas'] ?? []);
+                        $this->messages($item['message'] ?? '', $type, $item['context'] ?? []);
                     }
                 }
             }
@@ -688,14 +705,6 @@ class Form implements FormInterface
     /**
      * @inheritDoc
      */
-    public function tokenized(): bool
-    {
-        return (bool)$this->csrf();
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function view(?string $view = null, array $data = [])
     {
         if (is_null($this->viewEngine)) {
@@ -748,7 +757,6 @@ class Form implements FormInterface
             }
 
             $mixins = [
-                'csrf',
                 'isSuccessful',
                 'tagName',
             ];

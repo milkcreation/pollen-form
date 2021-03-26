@@ -13,18 +13,7 @@
 <?php $this->insert('notices', $this->all()); ?>
 
     <form <?php echo $this->htmlAttrs($this->form()->params('attrs', [])); ?>>
-        <?php if ($csrf = $this->csrf()) : ?>
-            <?php echo $this->field(
-                'hidden',
-                [
-                    'name'  => '_token',
-                    'value' => $this->csrf(),
-                    'attrs' => [
-                        'class' => '',
-                    ],
-                ]
-            ); ?>
-        <?php endif; ?>
+        <?php echo $this->csrf(); ?>
 
         <?php if ($header = $this->fetch('header', $this->all())) : ?>
             <header class="FormHeader FormHeader--<?php echo $this->tagName(); ?>">

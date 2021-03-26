@@ -60,6 +60,13 @@ interface FieldGroupDriverInterface extends
     public function getFormFields(): iterable;
 
     /**
+     * Récupération de l'indice de qualification.
+     *
+     * @return int
+     */
+    public function getIndex(): int;
+
+    /**
      * Récupération du groupe parent
      *
      * @return FieldGroupDriverInterface|null
@@ -97,4 +104,13 @@ interface FieldGroupDriverInterface extends
      * @return static
      */
     public function setGroupManager(FieldGroupsFactoryInterface $groupsManager): FieldGroupDriverInterface;
+
+    /**
+     * Définition de l'indice de qualification.
+     *
+     * @param int $index
+     *
+     * @return static
+     */
+    public function setIndex(int $index): FieldGroupDriverInterface;
 }

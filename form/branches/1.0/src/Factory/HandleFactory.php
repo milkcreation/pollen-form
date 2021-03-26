@@ -41,7 +41,7 @@ class HandleFactory implements HandleFactoryInterface
      * Clé d'indice de la protection CSRF.
      * @var string
      */
-    protected $tokenKey = '_token';
+    protected $tokenKey;
 
     /**
      * @inheritDoc
@@ -69,9 +69,7 @@ class HandleFactory implements HandleFactoryInterface
             foreach ($this->form()->formFields() as $field) {
                 $value = $this->params($field->getName());
 
-                if ($value !== null) {
-                    $field->setValue($value);
-                }
+                $field->setValue($value);
 
                 if ($field->supports('session') && $this->form()->supports('session')) {
                     $this->form()->session()->set("request.{$field->getName()}", $value);
@@ -147,21 +145,24 @@ class HandleFactory implements HandleFactoryInterface
     /**
      * @inheritDoc
      */
-    public function getToken(): string
-    {
-        return $this->params($this->tokenKey, '');
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function isSubmitted(): bool
     {
         $this->boot();
 
         if ($this->submitted === null) {
-            $this->submitted = (bool)wp_verify_nonce($this->getToken(), 'Form' . $this->form()->getAlias())
-                && $this->form()->getHandleRequest()->isMethod($this->form()->getMethod());
+            if (!$this->submitted = $this->form()->getHandleRequest()->isMethod($this->form()->getMethod())) {
+                $this->form()->error('Form could not submitted : HTTP method is not allowed.');
+                $this->fail();
+            } elseif ($tokenValue = $this->tokenValue()) {
+                $this->submitted = $this->form()->session()->verifyToken($tokenValue);
+
+                if (!$this->submitted) {
+                    $this->form()->error('Form could not submitted : CSRF protection is invalid.');
+                    $this->fail();
+                }
+            } else {
+                $this->submitted = true;
+            }
         }
 
         return $this->submitted;
@@ -184,21 +185,19 @@ class HandleFactory implements HandleFactoryInterface
     /**
      * @inheritDoc
      */
-    public function proceed(): ?RedirectResponse
+    public function proceed(): RedirectResponse
     {
-        if (!$this->isSubmitted()) {
-            return null;
+        if ($this->isSubmitted()) {
+            $this->validate();
+
+            if ($this->isValidated()) {
+                $this->success();
+            } else {
+                $this->fail();
+            }
         }
 
-        $this->validate();
-
-        if (!$this->isValidated()) {
-            $this->fail();
-        } else {
-            $this->success();
-        }
-
-        return $this->redirectResponse()->prepare($this->form()->getHandleRequest());
+        return $this->redirectResponse();
     }
 
     /**
@@ -206,9 +205,11 @@ class HandleFactory implements HandleFactoryInterface
      */
     public function redirectResponse(): RedirectResponse
     {
-        return $this->form->isSuccessful()
+        $response = $this->form->isSuccessful()
             ? new RedirectResponse($this->getSucceedRedirectUrl())
             : new RedirectResponse($this->getFailedRedirectUrl());
+
+        return $response->prepare($this->form()->getHandleRequest());
     }
 
     /**
@@ -249,6 +250,34 @@ class HandleFactory implements HandleFactoryInterface
     }
 
     /**
+     * Indice de la clé de protection CSRF.
+     *
+     * @return string
+     */
+    protected function tokenKey(): string
+    {
+        if ($this->tokenKey === null) {
+            $this->tokenKey = $this->form()->csrfKey();
+        }
+
+        return $this->tokenKey;
+    }
+
+    /**
+     * Valeur de la protection CSRF.
+     *
+     * @return string|null
+     */
+    protected function tokenValue(): ?string
+    {
+        if (!$tokenKey = $this->tokenKey()) {
+            return null;
+        }
+
+        return $this->params($tokenKey);
+    }
+
+    /**
      * Génération d'url
      * {@internal Suppression des arguments de token de champs lorsque la méthode de soumission est GET.}
      * {@internal Ajout de l'ancre lorsque celle ci est définie.}
@@ -262,7 +291,12 @@ class HandleFactory implements HandleFactoryInterface
         $uri = new UrlManipulator($url);
 
         if ($this->form()->getMethod() === 'get') {
-            $without = ['_token'];
+            $without = [];
+
+            if ($tokenKey = $this->tokenKey()) {
+                $without[] = $tokenKey;
+            }
+
             foreach ($this->form()->formFields() as $field) {
                 $without[] = $field->getName();
             }

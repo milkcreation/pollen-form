@@ -32,4 +32,20 @@ interface SessionFactoryInterface extends
      * @return string|array|object|null|FlashBagInterface
      */
     public function flash($key = null, $default = null);
+
+    /**
+     * Récupération du jeton de protection contre les attaque CSRF.
+     *
+     * @return string
+     */
+    public function getToken(): string;
+
+    /**
+     * Contrôle du jeton de protection contre les attaque CSRF.
+     *
+     * @param string $value
+     *
+     * @return bool
+     */
+    public function verifyToken(string $value): bool;
 }

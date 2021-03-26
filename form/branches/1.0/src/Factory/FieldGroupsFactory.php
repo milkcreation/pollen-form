@@ -51,15 +51,17 @@ class FieldGroupsFactory implements FieldGroupsFactoryInterface
 
             $this->form()->event('groups.booting');
 
+            $this->collect()->each(function (FieldGroupDriverInterface $group) {
+                $group->setIndex($this->getIncrement())->boot();
+            });
+
             $max = $this->collect()->max(function (FieldGroupDriverInterface $group) {
                 return $group->getPosition();
             });
 
             $pad = 0;
             $this->collect()->each(function (FieldGroupDriverInterface $group) use (&$pad, $max) {
-                $group->boot();
-
-                $group->params('position', $group->getPosition() ?: ++$pad + $max);
+                $group->params(['position' => $group->getPosition() ?: ++$pad + $max]);
 
                 if ($fields = $group->getFormFields()) {
                     $max = $fields->max(function (FormFieldDriverInterface $field) {
@@ -67,9 +69,10 @@ class FieldGroupsFactory implements FieldGroupsFactoryInterface
                     });
                     $pad = 0;
 
-                    $fields->each(function (FormFieldDriverInterface $field) use (&$pad, $max) {
-                        $group = $field->getGroup();
-                        $number = 10000 * (($group ? $group->getPosition() : 0) + 1);
+                    $fields->each(function (FormFieldDriverInterface $field) use (&$pad, $max, $group) {
+                        $formBase = ($this->form()->getIndex()+1)*10000;
+                        $groupBase = ($group->getIndex()+1)*1000;
+                        $number = $formBase + $groupBase + (100* (($group ? $group->getPosition() : 0) + 1));
                         $position = $field->getPosition() ?: ++$pad + $max;
 
                         return $field->setPosition(absint($number + $position));
