@@ -7,7 +7,9 @@
   },
   "author": "Jordy Manner",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "inputmask": "^5.0.3"
+  },
+  "dependencies": {
   }
 }
