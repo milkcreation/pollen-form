@@ -42,9 +42,8 @@ interface ValidateFactoryInterface extends BootableTraitInterface, FormAwareTrai
      *
      * @param mixed $value Valeur du champ courant à comparer.
      * @param mixed $tags Variables de qualification de champs de comparaison.
-     * @param bool $raw Récupération du format brut du champ de comparaison.
      *
      * @return bool
      */
-    public function compare($value, $tags, $raw = true): bool;
+    public function compare($value, $tags): bool;
 }

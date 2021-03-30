@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Pollen\Form\Factory;
 
+use InvalidArgumentException;
 use Pollen\Form\Concerns\FormAwareTraitInterface;
 use Pollen\Http\RedirectResponse;
 use Pollen\Support\Concerns\BootableTraitInterface;
-use Pollen\Support\Concerns\ParamsBagAwareTraitInterface;
+use Pollen\Support\ParamsBag;
 
-interface HandleFactoryInterface extends BootableTraitInterface, FormAwareTraitInterface, ParamsBagAwareTraitInterface
+interface HandleFactoryInterface extends BootableTraitInterface, FormAwareTraitInterface
 {
     /**
      * Chargement.
@@ -17,6 +18,18 @@ interface HandleFactoryInterface extends BootableTraitInterface, FormAwareTraitI
      * @return static
      */
     public function boot(): HandleFactoryInterface;
+
+    /**
+     * Définition|Récupération|Instance des données de requête HTTP de traitement du formulaire.
+     *
+     * @param array|string|null $key
+     * @param mixed $default
+     *
+     * @return string|int|array|mixed|ParamsBag
+     *
+     * @throws InvalidArgumentException
+     */
+    public function datas($key = null, $default = null);
 
     /**
      * Traitement de l'échec de la requête de soumission du formulaire.

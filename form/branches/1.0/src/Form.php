@@ -205,6 +205,19 @@ class Form implements FormInterface
     /**
      * @inheritDoc
      */
+    public function addNotice(string $message, string $level = 'error', array $context = []): FormInterface
+    {
+        $record = $this->messages($message, $level, $context);
+
+        $flash = $this->session()->flash();
+        $flash->push($this->session()->getKey() . ".notices.{$record['level']}", $record);
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function csrfKey(): string
     {
         $name = $this->params('token');
@@ -321,9 +334,9 @@ class Form implements FormInterface
     /**
      * @inheritDoc
      */
-    public function error(string $message, array $context = []): string
+    public function error(string $message, array $context = []): FormInterface
     {
-        return $this->messages($message, MessagesBag::ERROR, $context);
+        return $this->addNotice($message, 'error', $context);
     }
 
     /**
@@ -597,7 +610,7 @@ class Form implements FormInterface
 
             if ($this->isSuccessful()) {
                 if (($mes = $this->option('success', '')) && !$this->messages()->exists(MessagesBag::SUCCESS)) {
-                    $this->messages()->success($mes);
+                    $this->addNotice($mes, 'success');
                 }
                 $this->session()->clear();
             }

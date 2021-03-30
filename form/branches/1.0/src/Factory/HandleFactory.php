@@ -4,20 +4,26 @@ declare(strict_types=1);
 
 namespace Pollen\Form\Factory;
 
+use InvalidArgumentException;
 use Pollen\Http\UrlManipulator;
 use Pollen\Http\RedirectResponse;
 use Pollen\Form\Concerns\FormAwareTrait;
 use Pollen\Form\Exception\FieldValidateException;
 use Pollen\Form\FormInterface;
 use Pollen\Support\Concerns\BootableTrait;
-use Pollen\Support\Concerns\ParamsBagAwareTrait;
+use Pollen\Support\ParamsBag;
 use RuntimeException;
 
 class HandleFactory implements HandleFactoryInterface
 {
     use BootableTrait;
     use FormAwareTrait;
-    use ParamsBagAwareTrait;
+
+    /**
+     * Instance des données de requête HTTP de traitement du formulaire.
+     * @var ParamsBag
+     */
+    protected $datasBag;
 
     /**
      * Url de redirection en cas d'échec.
@@ -64,16 +70,14 @@ class HandleFactory implements HandleFactoryInterface
                     break;
             }
 
-            $this->params($this->form()->getHandleRequest()->{$accessor}->all());
+            $this->datas($this->form()->getHandleRequest()->{$accessor}->all());
 
             foreach ($this->form()->formFields() as $field) {
-                $value = $this->params($field->getName());
+                $value = $this->datas($field->getName());
 
-                $field->setValue($value);
+                $this->form()->session()->set("request.{$field->getName()}", $value);
 
-                if ($field->supports('session') && $this->form()->supports('session')) {
-                    $this->form()->session()->set("request.{$field->getName()}", $value);
-                }
+                $field->setValueFromSession();
             }
 
             $this->setBooted();
@@ -85,6 +89,38 @@ class HandleFactory implements HandleFactoryInterface
     }
 
     /**
+     * Définition|Récupération|Instance des données de requête HTTP de traitement du formulaire.
+     *
+     * @param array|string|null $key
+     * @param mixed $default
+     *
+     * @return string|int|array|mixed|ParamsBag
+     *
+     * @throws InvalidArgumentException
+     */
+    public function datas($key = null, $default = null)
+    {
+        if (!$this->datasBag instanceof ParamsBag) {
+            $this->datasBag = new ParamsBag();
+        }
+
+        if (is_null($key)) {
+            return $this->datasBag;
+        }
+
+        if (is_string($key)) {
+            return $this->datasBag->get($key, $default);
+        }
+
+        if (is_array($key)) {
+            $this->datasBag->set($key);
+            return $this->datasBag;
+        }
+
+        throw new InvalidArgumentException('Invalid Form Handle DatasBag passed method arguments');
+    }
+
+    /**
      * @inheritDoc
      */
     public function fail(): HandleFactoryInterface
@@ -93,10 +129,6 @@ class HandleFactory implements HandleFactoryInterface
             if (!$field->supports('transport')) {
                 $field->resetValue();
             }
-        }
-
-        foreach ($this->form()->messages()->all() as $type => $notices) {
-            $this->form()->session()->flash(["notices.{$type}" => $notices]);
         }
 
         $this->form()->event('handle.failed', [&$this]);
@@ -125,7 +157,7 @@ class HandleFactory implements HandleFactoryInterface
      */
     protected function getRefererUrl(): string
     {
-        return $this->params('_http_referer', $this->form()->getHandleRequest()->headers->get('referer'));
+        return $this->datas('_http_referer', $this->form()->getHandleRequest()->headers->get('referer'));
     }
 
     /**
@@ -151,7 +183,7 @@ class HandleFactory implements HandleFactoryInterface
 
         if ($this->submitted === null) {
             if (!$this->submitted = $this->form()->getHandleRequest()->isMethod($this->form()->getMethod())) {
-                $this->form()->error('Form could not submitted : HTTP method is not allowed.');
+                //$this->form()->error('Form could not submitted : HTTP method is not allowed.');
                 $this->fail();
             } elseif ($tokenValue = $this->tokenValue()) {
                 $this->submitted = $this->form()->session()->verifyToken($tokenValue);
@@ -221,7 +253,7 @@ class HandleFactory implements HandleFactoryInterface
         $this->form()->setSuccessful()->session()->flash(['successful' => true]);
 
         if ($mess = $this->form()->option('success', '')) {
-            $this->form()->messages()->success($mess);
+            $this->form()->addNotice($mess, 'success');
         }
 
         $this->form()->event('handle.successful', [&$this]);
@@ -274,7 +306,7 @@ class HandleFactory implements HandleFactoryInterface
             return null;
         }
 
-        return $this->params($tokenKey);
+        return $this->datas($tokenKey);
     }
 
     /**
@@ -313,7 +345,7 @@ class HandleFactory implements HandleFactoryInterface
     {
         foreach ($this->form()->formFields() as $name => $field) {
             try {
-                $field->validate();
+                $field->validate($this->datas($name));
             } catch (FieldValidateException $e) {
                 $field->error($e->getMessage());
             }

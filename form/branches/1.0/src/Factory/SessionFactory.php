@@ -65,10 +65,11 @@ class SessionFactory extends AttributeKeyBag implements SessionFactoryInterface
                     unset($key[$k]);
                     $key[$namespace . '.' . $k] = $v;
                 }
+                $this->session()->flash($key);
             }
         }
 
-        return $this->session()->flash($key, $default);
+        return $this->session()->flash();
     }
 
     public function clear(): array

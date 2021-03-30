@@ -50,6 +50,17 @@ interface FormInterface extends
     public function build(): FormInterface;
 
     /**
+     * Définition d'un message de notification.
+     *
+     * @param string $message
+     * @param string $level
+     * @param array $context
+     *
+     * @return static
+     */
+    public function addNotice(string $message, string $level = 'error', array $context = []): FormInterface;
+
+    /**
      * Indice de la clé de protection CSRF.
      *
      * @return string
@@ -76,9 +87,9 @@ interface FormInterface extends
      * @param string $message
      * @param array $context
      *
-     * @return string Identifiant de qualification du message d'erreur
+     * @return static
      */
-    public function error(string $message, array $context = []): string;
+    public function error(string $message, array $context = []): FormInterface;
 
     /**
      * Récupération de l'instance du gestionnaire de formulaire.
