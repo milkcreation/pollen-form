@@ -295,16 +295,16 @@ interface FormFieldDriverInterface extends
     public function setPosition(int $position = 0): FormFieldDriverInterface;
 
     /**
-     * Définition de la valeur du champ basée sur la donnée en correspondance stockée en session.
+     * Définition de la valeur du champ basée sur la donnée de session.
      *
      * @return static
      */
-    public function setSessionValue(): FormFieldDriverInterface;
+    public function setValueFromSession(): FormFieldDriverInterface;
 
     /**
      * Définition de l'identifiant de qualification.
      *
-     * @param string $slug.
+     * @param string $slug
      *
      * @return static
      */
@@ -331,9 +331,11 @@ interface FormFieldDriverInterface extends
     /**
      * Validation du champs de formulaire.
      *
+     * @param mixed $value
+     *
      * @return void
      *
      * @throws FieldValidateException
      */
-    public function validate(): void;
+    public function validate($value = null): void;
 }

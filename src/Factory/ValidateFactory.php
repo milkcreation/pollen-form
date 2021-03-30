@@ -87,8 +87,35 @@ class ValidateFactory implements ValidateFactoryInterface
     /**
      * @inheritDoc
      */
-    public function compare($value, $tags, $raw = true): bool
+    public function compare($value, $tags): bool
     {
-        return v::equals($this->form()->formFields()->metatagsValue($tags, $raw))->validate($value);
+        return v::equals($this->requestTagValue($tags))->validate($value);
+    }
+
+    /**
+     * Récupération de valeur(s) de champ(s) basée(s) sur leurs variables d'identifiant de qualification.
+     *
+     * @param mixed $tags Variables de qualification de champs.
+     * string ex. "%%{{slug#1}}%% %%{{slug#2}}%%"
+     * array ex ["%%{{slug#1}}%%", "%%{{slug#2}}%%"]
+     *
+     * @return string|null
+     */
+    protected function requestTagValue($tags): ?string
+    {
+        if (is_string($tags)) {
+            if (preg_match_all('/([^%%]*)%%(.*?)%%([^%%]*)?/', $tags, $matches)) {
+                $tags = '';
+                foreach ($matches[2] as $i => $tag) {
+                    $tags .= $matches[1][$i] . $this->form()->handle()->datas($tag, $matches[2][$i]) . $matches[3][$i];
+                }
+            }
+        } elseif (is_array($tags)) {
+            foreach ($tags as $k => &$i) {
+                $i = $this->requestTagValue($i);
+            }
+        }
+
+        return $tags;
     }
 }

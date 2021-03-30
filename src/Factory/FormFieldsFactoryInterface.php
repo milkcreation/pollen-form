@@ -61,18 +61,6 @@ interface FormFieldsFactoryInterface extends
     public function fromGroup(string $groupAlias): ?iterable;
 
     /**
-     * Récupération de valeur(s) de champ(s) basée(s) sur leurs variables d'identifiant de qualification.
-     *
-     * @param mixed $tags Variables de qualification de champs.
-     * string ex. "%%{{slug#1}}%% %%{{slug#2}}%%"
-     * array ex ["%%{{slug#1}}%%", "%%{{slug#2}}%%"]
-     * @param boolean $raw Activation de la valeur de retour au format brut.
-     *
-     * @return string|null
-     */
-    public function metatagsValue($tags, bool $raw = true): ?string;
-
-    /**
      * Pré-traitement de la liste des champs en vue d'un affichage du rendu.
      *
      * @return FormFieldsFactoryInterface

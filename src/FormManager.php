@@ -209,12 +209,11 @@ class FormManager implements FormManagerInterface
             );
         }
 
-        $this->forms[$alias] = $form;
+        $this->forms[$alias] = $form->setAlias($alias);
+        $this->forms[$alias]->setFormManager($this);
+        $this->forms[$alias]->setParams($params);
 
-        return new FormBuilder($form->setAlias($alias)
-            ->setFormManager($this)
-            ->setParams($params)
-            ->build());
+        return new FormBuilder($this->forms[$alias]->build());
     }
 
     /**
@@ -476,11 +475,11 @@ class FormManager implements FormManagerInterface
 
         unset($this->formDefinitions[$alias]);
 
-        return $this->forms[$alias] = $form
-            ->setAlias($alias)
-            ->setFormManager($this)
-            ->setParams($params)
-            ->build();
+        $this->forms[$alias] = $form->setAlias($alias);
+        $this->forms[$alias]->setFormManager($this);
+        $this->forms[$alias]->setParams($params);
+
+        return $this->forms[$alias]->build();
     }
 
     /**

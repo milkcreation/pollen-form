@@ -11,7 +11,9 @@ use Pollen\Support\Arr;
 use Pollen\Support\Concerns\BootableTrait;
 use Pollen\Support\Concerns\BuildableTrait;
 use Pollen\Support\Concerns\ParamsBagAwareTrait;
+use Pollen\Support\Html;
 use Pollen\Support\MessagesBag;
+
 use RuntimeException;
 
 class FormFieldDriver implements FormFieldDriverInterface
@@ -25,7 +27,7 @@ class FormFieldDriver implements FormFieldDriverInterface
      * Liste des propriétés de support par défaut.
      * @var array
      */
-    private $defaultSupports = ['label', 'request', 'session', 'tabindex', 'transport', 'wrapper'];
+    private $defaultSupports = ['label', 'request', 'tabindex', 'transport', 'wrapper'];
 
     /**
      * Liste des attributs de support des types de champs natifs.
@@ -33,20 +35,20 @@ class FormFieldDriver implements FormFieldDriverInterface
      */
     private $fieldTypeSupports = [
         'button'              => ['request', 'wrapper'],
-        'checkbox'            => ['checking', 'label', 'request', 'wrapper', 'session', 'tabindex', 'transport'],
-        'checkbox-collection' => ['choices', 'label', 'request', 'session', 'tabindexes', 'transport', 'wrapper'],
-        'datetime-js'         => ['label', 'request', 'session', 'tabindexes', 'transport', 'wrapper'],
+        'checkbox'            => ['checking', 'label', 'request', 'wrapper', 'tabindex', 'transport'],
+        'checkbox-collection' => ['choices', 'label', 'request', 'tabindexes', 'transport', 'wrapper'],
+        'datetime-js'         => ['label', 'request', 'tabindexes', 'transport', 'wrapper'],
         'file'                => ['label', 'request', 'tabindex', 'wrapper'],
-        'hidden'              => ['request', 'session', 'transport'],
+        'hidden'              => ['request', 'transport'],
         'label'               => ['wrapper'],
         'password'            => ['label', 'request', 'tabindex', 'wrapper'],
-        'radio'               => ['label', 'request', 'session', 'tabindex', 'transport', 'wrapper'],
-        'radio-collection'    => ['choices', 'label', 'request', 'session', 'tabindexes', 'transport', 'wrapper'],
-        'repeater'            => ['label', 'request', 'session', 'tabindexes', 'transport', 'wrapper'],
-        'select'              => ['choices', 'label', 'request', 'session', 'tabindex', 'transport', 'wrapper'],
-        'select-js'           => ['choices', 'label', 'request', 'session', 'tabindex', 'transport', 'wrapper'],
+        'radio'               => ['label', 'request', 'tabindex', 'transport', 'wrapper'],
+        'radio-collection'    => ['choices', 'label', 'request',  'tabindexes', 'transport', 'wrapper'],
+        'repeater'            => ['label', 'request',  'tabindexes', 'transport', 'wrapper'],
+        'select'              => ['choices', 'label', 'request', 'tabindex', 'transport', 'wrapper'],
+        'select-js'           => ['choices', 'label', 'request', 'tabindex', 'transport', 'wrapper'],
         'submit'              => ['request', 'tabindex', 'wrapper'],
-        'toggle-switch'       => ['request', 'tabindex', 'session', 'transport', 'wrapper'],
+        'toggle-switch'       => ['request', 'tabindex', 'transport', 'wrapper'],
     ];
 
     /**
@@ -138,7 +140,7 @@ class FormFieldDriver implements FormFieldDriverInterface
      */
     public function addNotice(string $message, string $level = 'error', array $context = []): FormFieldDriverInterface
     {
-        $this->form()->messages($message, $level, array_merge($context, ['field' => $this->getSlug()]));
+        $this->form()->addNotice($message, $level, array_merge($context, ['field' => $this->getSlug()]));
 
         return $this;
     }
@@ -178,7 +180,7 @@ class FormFieldDriver implements FormFieldDriverInterface
     {
         return [
             /**
-             * @var array $addons Liste des attributs de configuration associés aux addons.
+             * @var string[]|array $addons Liste des attributs de configuration associés aux addons.
              */
             'addons'      => [],
             /**
@@ -219,24 +221,18 @@ class FormFieldDriver implements FormFieldDriverInterface
              */
             'position'    => 0,
             /**
-             * @var boolean|string|array $required {
+             * @var bool|string|array $required {
              * Configuration de champs requis. false si désactivé|true charge les attributs par défaut|array
-             * @type boolean|string|array $tagged Affichage de l'indicateur de champ requis. false si masqué|true charge
+             * @type bool|string|array $tagged Affichage de l'indicateur de champ requis. false si masqué|true charge
              * les attributs par défaut|string valeur de l'indicateur|array permet de définir des attributs personnalisés.
-             * @type boolean $check Activation du test d'existance natif.
-             * @type mixed $value_none Valeur à comparer pour le test d'existance.
-             * @type string|callable $call Fonction de validation ou alias de qualification.
+             * @type bool $check Activation du test d'existence natif.
+             * @type mixed $value_none Valeur à comparer pour le test d'existence.
+             * @type string|callable $call Fonction de validation|alias de qualification.
              * @type array $args Liste des variables passées en argument dans la fonction de validation.
-             * @type boolean $raw Activation du format brut de la valeur.
              * @type string $message Message de notification de retour en cas d'erreur.
              * }
              */
             'required'    => false,
-            /**
-             * @var null|boolean $session Court-circuitage de la propriété de support du stockage en session des données à
-             * l'issue de la soumission.
-             */
-            'session'     => true,
             /**
              * @var array $supports Définition des propriétés de support. label|wrapper|request|tabindex|transport.
              */
@@ -246,7 +242,7 @@ class FormFieldDriver implements FormFieldDriverInterface
              */
             'title'       => $this->getSlug(),
             /**
-             * @var boolean|null $transport Court-circuitage de la propriété de support du transport des données à
+             * @var bool|null $transport Court-circuitage de la propriété de support du transport des données à
              * l'issue de la soumission.
              */
             'transport'   => null,
@@ -257,10 +253,9 @@ class FormFieldDriver implements FormFieldDriverInterface
             /**
              * @var array $validations {
              * Liste des fonctions de validation d'intégrité du champ lors de la soumission.
-             * @type string|callable $call Fonction de validation ou alias de qualification.
+             * @type string|callable $call Fonction de validation|alias de qualification.
              * @type array $args Liste des variables passées en arguments dans la fonction de validation.
              * @type string $message Message de notification d'erreur.
-             * @type boolean $raw Activation du format brut de la valeur.
              * }
              */
             'validations' => [],
@@ -269,10 +264,10 @@ class FormFieldDriver implements FormFieldDriverInterface
              */
             'value'       => '',
             /**
-             * @var bool|string|array $wrapper Affichage de l'encapuleur de champ. false si masqué|true charge les attributs
-             * par défaut|array permet de définir des attributs personnalisés.
+             * @var bool|string|array $wrapper Affichage de l'encapsuleur de champ.
+             * false si masqué|true charge les attributs par défaut|array permet de définir des attributs personnalisés.
              */
-            'wrapper'     => null,
+            'wrapper'     => null
         ];
     }
 
@@ -392,7 +387,7 @@ class FormFieldDriver implements FormFieldDriverInterface
         $this->form()->event('field.get.value', [&$value, $this]);
 
         if (!$raw) {
-            $value = is_array($value) ? array_map('esc_attr', $value) : esc_attr($value);
+            $value = Html::e($value);
         }
 
         return $value;
@@ -411,10 +406,11 @@ class FormFieldDriver implements FormFieldDriverInterface
                     $v = $choices[$v];
                 }
             }
+            unset($v);
         }
 
         if (!$raw) {
-            $value = is_array($value) ? array_map('esc_attr', $value) : esc_attr($value);
+            $value = Html::e($value);
         }
 
         if (!is_null($glue)) {
@@ -472,7 +468,7 @@ class FormFieldDriver implements FormFieldDriverInterface
 
         $name = $param->get('name');
         if (!is_null($name)) {
-            $param->set(['name' => $name ? esc_attr($name) : esc_attr($this->getSlug())]);
+            $param->set(['name' => Html::e($name ?: $this->getSlug())]);
         }
 
         if (!$param->get('supports')) {
@@ -490,14 +486,7 @@ class FormFieldDriver implements FormFieldDriverInterface
             $param->set('supports', array_diff($param->get('supports', []), ['transport']));
         }
 
-        $session = $param->get('session');
-        if ($session && !in_array('session', $param->get('supports', []), true)) {
-            $param->push('supports', 'session');
-        } elseif ($session === false) {
-            $param->set('supports', array_diff($param->get('supports', []), ['session']));
-        }
-
-        $this->setSessionValue();
+        $this->setValueFromSession();
 
         if ($param->get('wrapper')) {
             $param->push('supports', 'wrapper');
@@ -519,8 +508,7 @@ class FormFieldDriver implements FormFieldDriverInterface
                     'value_none' => '',
                     'call'       => '',
                     'args'       => [],
-                    'raw'        => true,
-                    'message'    => __('Le champ "%s" doit être renseigné.', 'tify'),
+                    'message'    => 'Le champ "%s" doit être renseigné.',
                     'html5'      => false,
                 ],
                 $required
@@ -578,8 +566,7 @@ class FormFieldDriver implements FormFieldDriverInterface
                         'alias'   => '',
                         'args'    => [],
                         'call'    => 'default',
-                        'message' => __('Le format du champ "%s" est invalide', 'tify'),
-                        'raw'     => false,
+                        'message' => 'Le format du champ "%s" est invalide',
                     ],
                     $validations
                 );
@@ -840,14 +827,12 @@ class FormFieldDriver implements FormFieldDriverInterface
     /**
      * @inheritDoc
      */
-    public function setSessionValue(): FormFieldDriverInterface
+    public function setValueFromSession(): FormFieldDriverInterface
     {
-        if ($this->supports('session') && $this->form()->supports('session')) {
-            $value = $this->form()->session()->get("request.{$this->getName()}");
+        $value = $this->form()->session()->get("request.{$this->getName()}");
 
-            if (!is_null($value)) {
-                $this->setValue($value);
-            }
+        if (!is_null($value)) {
+            $this->setValue($value);
         }
 
         return $this;
@@ -886,32 +871,28 @@ class FormFieldDriver implements FormFieldDriverInterface
     /**
      * @inheritDoc
      */
-    public function validate(): void
+    public function validate($value = null): void
     {
+        if ($value === null) {
+            $value = $this->form()->handle()->datas($this->getName());
+        }
+
         $check = true;
 
-        $this->form()->event('field.validate.' . $this->getType(), [&$this]);
-        $this->form()->event('field.validate', [&$this]);
+        $this->form()->event('field.validate.' . $this->getType(), [$value, &$this]);
+        $this->form()->event('field.validate', [$value, &$this]);
 
-        if ($this->getRequired('check')) {
-            $value = $this->getValue($this->getRequired('raw', true));
-
-
-
-            if (!$check = $this->form()->validate()->call(
+        if ($this->getRequired('check') && !$check = $this->form()->validate()->call(
                 $this->getRequired('call'),
                 $value,
                 $this->getRequired('args', [])
             )
-            ) {
-                throw (new FieldValidateException(sprintf($this->getRequired('message'), $this->getTitle())))
-                    ->setFormField($this)->setAlias('_required');
-            }
+        ) {
+            throw (new FieldValidateException(sprintf($this->getRequired('message'), $this->getTitle())))
+                ->setFormField($this)->setAlias('_required');
         }
 
         if ($check && $validations = $this->params('validations', [])) {
-            $value = $this->getValue($this->getRequired('raw', true));
-
             foreach ($validations as $i => $validation) {
                 if (!$this->form()->validate()->call($validation['call'], $value, $validation['args'])) {
                     if (!$alias = $validation['alias'] ?: null) {

@@ -180,7 +180,7 @@ echo $form;
     /**
      * @var string[] $supports Propriété de support.
      */
-    'supports' => ['session'],
+    'supports' => [],
     /**
      * @var string $title Intitulé de qualification du formulaire.
      */
@@ -201,7 +201,7 @@ echo $form;
 ```php
 [
     /**
-     * @var array $addons Liste des attributs de configuration associés aux addons.
+     * @var string[]|array $addons Liste des attributs de configuration associés aux addons.
      */
     'addons'      => [],
     /**
@@ -225,9 +225,9 @@ echo $form;
      */
     'extras'      => [],
     /**
-     * @var string $group Alias du groupe d'appartenance.
+     * @var string|null $group Alias du groupe d'appartenance.
      */
-    'group'       => '',
+    'group'       => null,
     /**
      * @var bool|string|array $label Affichage de l'intitulé de champ. false si masqué|true charge les attributs
      * par défaut|array permet de définir des attributs personnalisés.
@@ -236,30 +236,24 @@ echo $form;
     /**
      * @var string $name Indice de qualification de la variable de requête.
      */
-    'name'        => '',
+    'name'        => $this->getSlug(),
     /**
      * @var int $position Ordre d'affichage général ou dans le groupe s'il est défini.
      */
     'position'    => 0,
     /**
-     * @var boolean|string|array $required {
+     * @var bool|string|array $required {
      * Configuration de champs requis. false si désactivé|true charge les attributs par défaut|array
-     * @type boolean|string|array $tagged Affichage de l'indicateur de champ requis. false si masqué|true charge
+     * @type bool|string|array $tagged Affichage de l'indicateur de champ requis. false si masqué|true charge
      * les attributs par défaut|string valeur de l'indicateur|array permet de définir des attributs personnalisés.
-     * @type boolean $check Activation du test d'existance natif.
-     * @type mixed $value_none Valeur à comparer pour le test d'existance.
-     * @type string|callable $call Fonction de validation ou alias de qualification.
+     * @type bool $check Activation du test d'existence natif.
+     * @type mixed $value_none Valeur à comparer pour le test d'existence.
+     * @type string|callable $call Fonction de validation|alias de qualification.
      * @type array $args Liste des variables passées en argument dans la fonction de validation.
-     * @type boolean $raw Activation du format brut de la valeur.
      * @type string $message Message de notification de retour en cas d'erreur.
      * }
      */
     'required'    => false,
-    /**
-     * @var null|boolean $session Court-circuitage de la propriété de support du stockage en session des données à
-     * l'issue de la soumission.
-     */
-    'session'     => true,
     /**
      * @var array $supports Définition des propriétés de support. label|wrapper|request|tabindex|transport.
      */
@@ -267,9 +261,9 @@ echo $form;
     /**
      * @var string $title Intitulé de qualification. Valeur par défaut. ex. label.
      */
-    'title'       => '',
+    'title'       => $this->getSlug(),
     /**
-     * @var boolean|null $transport Court-circuitage de la propriété de support du transport des données à
+     * @var bool|null $transport Court-circuitage de la propriété de support du transport des données à
      * l'issue de la soumission.
      */
     'transport'   => null,
@@ -278,12 +272,11 @@ echo $form;
      */
     'type'        => 'html',
     /**
-     * @var string|string[]|array[] $validations {
+     * @var array $validations {
      * Liste des fonctions de validation d'intégrité du champ lors de la soumission.
-     * @type string|callable $call Fonction de validation ou alias de qualification.
+     * @type string|callable $call Fonction de validation|alias de qualification.
      * @type array $args Liste des variables passées en arguments dans la fonction de validation.
      * @type string $message Message de notification d'erreur.
-     * @type boolean $raw Activation du format brut de la valeur.
      * }
      */
     'validations' => [],
@@ -292,10 +285,10 @@ echo $form;
      */
     'value'       => '',
     /**
-     * @var bool|string|array $wrapper Affichage de l'encapuleur de champ. false si masqué|true charge les attributs
-     * par défaut|array permet de définir des attributs personnalisés.
+     * @var bool|string|array $wrapper Affichage de l'encapsuleur de champ.
+     * false si masqué|true charge les attributs par défaut|array permet de définir des attributs personnalisés.
      */
-    'wrapper'     => null
+    'wrapper'     => null,
 ];
 
 ```

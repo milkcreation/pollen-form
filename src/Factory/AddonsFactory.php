@@ -57,7 +57,8 @@ class AddonsFactory implements AddonsFactoryInterface
 
                 if ($params !== false) {
                     $this->addonDrivers[$alias] = clone $this->form()->formManager()->getAddonDriver($alias);
-                    $this->addonDrivers[$alias]->setForm($this->form())->setParams($params)->boot();
+                    $this->addonDrivers[$alias]->setForm($this->form())->setParams($params);
+                    $this->addonDrivers[$alias]->boot();
                 }
             }
 

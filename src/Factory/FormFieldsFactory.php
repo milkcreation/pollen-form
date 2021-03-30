@@ -59,7 +59,8 @@ class FormFieldsFactory implements FormFieldsFactoryInterface
                     }
 
                     $this->fieldDrivers[$slug] = clone $this->form()->formManager()->getFormFieldDriver($alias);
-                    $this->fieldDrivers[$slug]->setSlug($slug)->setForm($this->form())->setParams($params)->boot();
+                    $this->fieldDrivers[$slug]->setSlug($slug)->setForm($this->form())->setParams($params);
+                    $this->fieldDrivers[$slug]->boot();
 
                     if ($withGroup && !$this->fieldDrivers[$slug]->getGroup()) {
                         $this->form()->groups()->setDriver((string)$this->fieldDrivers[$slug]->params('group'), []);
@@ -115,28 +116,6 @@ class FormFieldsFactory implements FormFieldsFactoryInterface
         return $this->collect()->filter(function (FormFieldDriverInterface $field) use ($groupAlias) {
             return ($group = $field->getGroup()) && $group->getAlias() === $groupAlias;
         });
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function metatagsValue($tags, $raw = true): ?string
-    {
-        if (is_string($tags)) {
-            if (preg_match_all('/([^%%]*)%%(.*?)%%([^%%]*)?/', $tags, $matches)) {
-                $tags = '';
-                foreach ($matches[2] as $i => $slug) {
-                    $tags .= $matches[1][$i] . (($field = $this->get($slug))
-                            ? $field->getValue($raw) : $matches[2][$i]) . $matches[3][$i];
-                }
-            }
-        } elseif (is_array($tags)) {
-            foreach ($tags as $k => &$i) {
-                $i = $this->metatagsValue($i, $raw);
-            }
-        }
-
-        return $tags;
     }
 
     /**

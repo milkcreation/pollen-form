@@ -7,7 +7,7 @@ namespace Pollen\Form;
 use LogicException;
 use Pollen\Form\Concerns\FormAwareTrait;
 use Pollen\Form\Factory\FieldGroupsFactoryInterface;
-use Pollen\Support\HtmlAttrs;
+use Pollen\Support\Html;
 use Pollen\Support\Concerns\BootableTrait;
 use Pollen\Support\Concerns\ParamsBagAwareTrait;
 
@@ -112,7 +112,7 @@ class FieldGroupDriver implements FieldGroupDriverInterface
     {
         $attrs = $this->params('attrs', []);
 
-        return $linearized ? HtmlAttrs::createFromAttrs($this->params('attrs', [])) : $attrs;
+        return $linearized ? Html::attr($this->params('attrs', [])) : $attrs;
     }
 
     /**
