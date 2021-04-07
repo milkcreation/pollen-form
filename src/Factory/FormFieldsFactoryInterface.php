@@ -52,6 +52,13 @@ interface FormFieldsFactoryInterface extends
     public function get(string $alias): ?FormFieldDriverInterface;
 
     /**
+     * Vérification d'existance d'un champs de téléchargement.
+     *
+     * @return bool
+     */
+    public function hasUploadField(): bool;
+
+    /**
      * Récupération de la liste des champs par groupe d'appartenance.
      *
      * @param string $groupAlias Alias de qualification du groupe.

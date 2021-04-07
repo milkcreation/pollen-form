@@ -190,6 +190,13 @@ interface FormInterface extends
     public function isSuccessful(): bool;
 
     /**
+     * Vérification de l'activation du téléchargement de fichiers.
+     *
+     * @return bool
+     */
+    public function isUploadEnabled(): bool;
+
+    /**
      * Evénement de déclenchement à l'initialisation du formulaire en tant que formulaire courant.
      *
      * @return void
