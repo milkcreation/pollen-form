@@ -566,7 +566,7 @@ class FormFieldDriver implements FormFieldDriverInterface
                         'alias'   => '',
                         'args'    => [],
                         'call'    => 'default',
-                        'message' => 'Le format du champ "%s" est invalide',
+                        'message' => 'Le format du champ "%s" est invalide.',
                     ],
                     $validations
                 );

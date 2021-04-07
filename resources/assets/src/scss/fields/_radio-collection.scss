@@ -21,6 +21,7 @@
       width: auto;
       cursor: pointer;
       padding: 3px 0 0 22px;
+      user-select: none;
 
       &::before {
         position: absolute;
