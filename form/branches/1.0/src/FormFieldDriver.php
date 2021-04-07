@@ -38,7 +38,7 @@ class FormFieldDriver implements FormFieldDriverInterface
         'checkbox'            => ['checking', 'label', 'request', 'wrapper', 'tabindex', 'transport'],
         'checkbox-collection' => ['choices', 'label', 'request', 'tabindexes', 'transport', 'wrapper'],
         'datetime-js'         => ['label', 'request', 'tabindexes', 'transport', 'wrapper'],
-        'file'                => ['label', 'request', 'tabindex', 'wrapper'],
+        'file'                => ['label', 'request', 'upload', 'tabindex', 'wrapper'],
         'hidden'              => ['request', 'transport'],
         'label'               => ['wrapper'],
         'password'            => ['label', 'request', 'tabindex', 'wrapper'],

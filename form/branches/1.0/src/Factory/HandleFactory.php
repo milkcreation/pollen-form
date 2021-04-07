@@ -84,6 +84,10 @@ class HandleFactory implements HandleFactoryInterface
                 $field->setValueFromSession();
             }
 
+            if ($this->form()->isUploadEnabled()) {
+                $this->datas($this->form()->getHandleRequest()->files->all());
+            }
+
             $this->setBooted();
 
             $this->form()->event('handle.booted', [&$this]);

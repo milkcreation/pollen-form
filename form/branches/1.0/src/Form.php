@@ -479,6 +479,14 @@ class Form implements FormInterface
     /**
      * @inheritDoc
      */
+    public function isUploadEnabled(): bool
+    {
+        return $this->params('enctype') === 'multipart/form-data' || $this->formFields()->hasUploadField();
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function isSuccessful(): bool
     {
         return $this->successful;
@@ -564,6 +572,10 @@ class Form implements FormInterface
 
             $param->set('attrs.method', $this->getMethod());
             if ($enctype = $param->get('enctype')) {
+                $param->set('attrs.enctype', $enctype);
+            } elseif ($this->formFields()->hasUploadField()) {
+                $enctype = 'multipart/form-data';
+                $param->set('enctype', $enctype);
                 $param->set('attrs.enctype', $enctype);
             }
 

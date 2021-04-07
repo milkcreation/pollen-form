@@ -111,6 +111,16 @@ class FormFieldsFactory implements FormFieldsFactoryInterface
     /**
      * @inheritDoc
      */
+    public function hasUploadField(): bool
+    {
+        return (bool)$this->collect()->contains(function (FormFieldDriverInterface $field) {
+            return $field->supports('upload');
+        });
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function fromGroup(string $groupAlias): ?iterable
     {
         return $this->collect()->filter(function (FormFieldDriverInterface $field) use ($groupAlias) {
