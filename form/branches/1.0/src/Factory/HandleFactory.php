@@ -75,7 +75,11 @@ class HandleFactory implements HandleFactoryInterface
             foreach ($this->form()->formFields() as $field) {
                 $value = $this->datas($field->getName());
 
-                $this->form()->session()->set("request.{$field->getName()}", $value);
+                if ($field->supports('transport')) {
+                    $this->form()->session()->set("request.{$field->getName()}", $value);
+                } else {
+                    $this->form()->session()->set("request.{$field->getName()}", null);
+                }
 
                 $field->setValueFromSession();
             }

@@ -13,6 +13,7 @@
 <?php $this->insert('notices', $this->all()); ?>
 
     <form <?php echo $this->htmlAttrs($this->form()->params('attrs', [])); ?>>
+        <input autocomplete="false" name="hidden" type="text" style="display:none;">
         <?php echo $this->csrf(); ?>
 
         <?php if ($header = $this->fetch('header', $this->all())) : ?>
