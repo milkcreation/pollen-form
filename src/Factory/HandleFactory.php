@@ -272,6 +272,20 @@ class HandleFactory implements HandleFactoryInterface
     /**
      * @inheritDoc
      */
+    public function safeError($message = '', $context = [], string $fieldSlug = null): HandleFactoryInterface
+    {
+        if ($fieldSlug !== null && ($field = $this->form()->formField($fieldSlug))) {
+            $field->error($message, $context);
+        } else {
+            $this->form()->error($message, $context);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function setFailedRedirectUrl(string $url, bool $raw = false): HandleFactoryInterface
     {
         $this->failedRedirectUrl = ($raw === false) ? $this->urlGenerator($url) : $url;
