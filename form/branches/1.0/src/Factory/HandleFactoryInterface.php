@@ -81,6 +81,18 @@ interface HandleFactoryInterface extends BootableTraitInterface, FormAwareTraitI
     public function redirectResponse(): RedirectResponse;
 
     /**
+     * Définition d'un message d'erreur.
+     * {@internal Si le champs indiqué en paramètre n'est pas disponible, l'erreur est passée au formulaire.}
+     *
+     * @param string $message
+     * @param array $context
+     * @param string|null $fieldSlug
+     *
+     * @return static
+     */
+    public function safeError($message = '', $context = [], string $fieldSlug = null): HandleFactoryInterface;
+
+    /**
      * Définition de l'url de redirection en cas d'échec.
      *
      * @param string $url
