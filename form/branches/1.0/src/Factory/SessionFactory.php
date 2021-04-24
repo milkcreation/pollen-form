@@ -10,8 +10,6 @@ use Pollen\Session\AttributeKeyBag;
 use Pollen\Support\Concerns\BootableTrait;
 use Pollen\Support\Proxy\SessionProxy;
 use RuntimeException;
-use Symfony\Component\Security\Csrf\CsrfToken;
-use Symfony\Component\Security\Csrf\CsrfTokenManager;
 
 class SessionFactory extends AttributeKeyBag implements SessionFactoryInterface
 {
@@ -74,7 +72,7 @@ class SessionFactory extends AttributeKeyBag implements SessionFactoryInterface
 
     public function clear(): array
     {
-        (new CsrfTokenManager())->removeToken($this->tokenID);
+        $this->session()->removeToken($this->tokenID);
 
         return parent::clear();
     }
@@ -84,7 +82,7 @@ class SessionFactory extends AttributeKeyBag implements SessionFactoryInterface
      */
     public function getToken(): string
     {
-        return (new CsrfTokenManager())->getToken($this->tokenID)->getValue();
+        return $this->session()->getToken($this->tokenID);
     }
 
     /**
@@ -92,9 +90,6 @@ class SessionFactory extends AttributeKeyBag implements SessionFactoryInterface
      */
     public function verifyToken(string $value): bool
     {
-        $tokenManager = new CsrfTokenManager();
-        $token = new CsrfToken($this->tokenID, $value);
-
-        return $tokenManager->isTokenValid($token);
+        return $this->session()->verifyToken($value, $this->tokenID);
     }
 }
