@@ -7,12 +7,14 @@ namespace Pollen\Form;
 use Closure;
 use Pollen\Support\Concerns\BootableTraitInterface;
 use Pollen\Support\Concerns\ConfigBagAwareTraitInterface;
+use Pollen\Support\Concerns\ResourcesAwareTraitInterface;
 use Pollen\Support\Proxy\ContainerProxyInterface;
 use Pollen\Support\Proxy\EventProxyInterface;
 
 interface FormManagerInterface extends
     BootableTraitInterface,
     ConfigBagAwareTraitInterface,
+    ResourcesAwareTraitInterface,
     ContainerProxyInterface,
     EventProxyInterface
 {
@@ -152,24 +154,6 @@ interface FormManagerInterface extends
      * @return static
      */
     public function resetCurrentForm(): FormManagerInterface;
-
-    /**
-     * Chemin absolu vers une ressource (fichier|répertoire).
-     *
-     * @param string|null $path Chemin relatif vers la ressource.
-     *
-     * @return string
-     */
-    public function resources(?string $path = null): string;
-
-    /**
-     * Définition du chemin absolu vers le répertoire des ressources.
-     *
-     * @return static
-     * @var string $resourceBaseDir
-     *
-     */
-    public function setResourcesBaseDir(string $resourceBaseDir): FormManagerInterface;
 
     /**
      * Définition de l'instance du formulaire courant.
