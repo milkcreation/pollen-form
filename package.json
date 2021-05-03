@@ -11,5 +11,8 @@
     "inputmask": "^5.0.3"
   },
   "dependencies": {
+    "@pollen-solutions/field": "file:../field/",
+    "@pollen-solutions/partial": "file:../partial/",
+    "@pollen-solutions/support": "file:../support/"
   }
 }
