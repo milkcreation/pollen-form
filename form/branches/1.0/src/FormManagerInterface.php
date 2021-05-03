@@ -100,7 +100,7 @@ interface FormManagerInterface extends
      * @param string|array|AddonDriverInterface $addonDriverDefinition
      * @param Closure|null $registerCallback
      *
-     * @return FormManagerInterface
+     * @return static
      */
     public function registerAddonDriver(
         string $alias,
@@ -115,7 +115,7 @@ interface FormManagerInterface extends
      * @param string|array|ButtonDriverInterface $buttonDriverDefinition
      * @param Closure|null $registerCallback
      *
-     * @return FormManagerInterface
+     * @return static
      */
     public function registerButtonDriver(
         string $alias,
@@ -130,7 +130,7 @@ interface FormManagerInterface extends
      * @param string|array|FormFieldDriverInterface $fieldDriverDefinition
      * @param Closure|null $registerCallback
      *
-     * @return FormManagerInterface
+     * @return static
      */
     public function registerFormFieldDriver(
         string $alias,
@@ -144,7 +144,7 @@ interface FormManagerInterface extends
      * @param string $alias
      * @param string|array|FormInterface $formDefinition
      *
-     * @return FormManagerInterface
+     * @return static
      */
     public function registerForm(string $alias, $formDefinition): FormManagerInterface;
 

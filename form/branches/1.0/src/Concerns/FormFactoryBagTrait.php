@@ -6,6 +6,7 @@ namespace Pollen\Form\Concerns;
 
 use Pollen\Form\AddonDriverInterface;
 use Pollen\Form\ButtonDriverInterface;
+use Pollen\Form\Exception\FieldMissingException;
 use Pollen\Form\Factory\AddonsFactoryInterface;
 use Pollen\Form\Factory\ButtonsFactoryInterface;
 use Pollen\Form\Factory\EventFactoryInterface;
@@ -148,9 +149,12 @@ trait FormFactoryBagTrait
      *
      * @return FormFieldDriverInterface
      */
-    public function formField(string $slug): ?FormFieldDriverInterface
+    public function formField(string $slug): FormFieldDriverInterface
     {
-        return $this->formFields()->get($slug);
+        if ($field = $this->formFields()->get($slug)) {
+            return $field;
+        }
+        throw new FieldMissingException($slug);
     }
 
     /**

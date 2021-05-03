@@ -888,8 +888,8 @@ class FormFieldDriver implements FormFieldDriverInterface
                 $this->getRequired('args', [])
             )
         ) {
-            throw (new FieldValidateException(sprintf($this->getRequired('message'), $this->getTitle())))
-                ->setFormField($this)->setAlias('_required');
+            throw (new FieldValidateException($this, sprintf($this->getRequired('message'), $this->getTitle())))
+                ->setRequired();
         }
 
         if ($check && $validations = $this->params('validations', [])) {
@@ -898,8 +898,8 @@ class FormFieldDriver implements FormFieldDriverInterface
                     if (!$alias = $validation['alias'] ?: null) {
                         $alias = (is_string($validation['call'])) ? $validation['call'] : $i;
                     }
-                    throw (new FieldValidateException(sprintf($validation['message'], $this->getTitle())))
-                        ->setFormField($this)->setAlias($alias);
+                    throw (new FieldValidateException($this, sprintf($validation['message'], $this->getTitle())))
+                        ->addFlag($alias);
                 }
             }
         }
