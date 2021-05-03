@@ -76,7 +76,7 @@ interface FormFactoryBagTraitInterface
      *
      * @return FormFieldDriverInterface
      */
-    public function formField(string $slug): ?FormFieldDriverInterface;
+    public function formField(string $slug): FormFieldDriverInterface;
 
     /**
      * Récupération du gestionnaire de champs.

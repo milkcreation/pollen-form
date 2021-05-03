@@ -13,7 +13,6 @@ class FormServiceProvider extends BaseServiceProvider
      */
     protected $provides = [
         FormManagerInterface::class,
-        FormViewEngineInterface::class
     ];
 
     /**
@@ -24,20 +23,5 @@ class FormServiceProvider extends BaseServiceProvider
         $this->getContainer()->share(FormManagerInterface::class, function () {
             return new FormManager([], $this->getContainer());
         });
-
-        $this->registerViewEngine();
-    }
-
-    /**
-     * @return void
-     */
-    public function registerViewEngine(): void
-    {
-        $this->getContainer()->add(
-            FormViewEngineInterface::class,
-            function () {
-                return new FormViewEngine();
-            }
-        );
     }
 }

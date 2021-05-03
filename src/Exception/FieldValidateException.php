@@ -6,14 +6,15 @@ namespace Pollen\Form\Exception;
 
 use InvalidArgumentException;
 use Pollen\Form\FormFieldDriverInterface;
+use Throwable;
 
-class FieldValidateException extends InvalidArgumentException
+class FieldValidateException extends InvalidArgumentException implements FormException
 {
     /**
-     * Alias de qualification.
-     * @var string
+     * Drapeaux d'identification.
+     * @var array
      */
-    private $alias = '';
+    private $flags = [];
 
     /**
      * Instance du champ associé.
@@ -22,13 +23,47 @@ class FieldValidateException extends InvalidArgumentException
     private $formField;
 
     /**
-     * Récupération de l'alias de qualification.
-     *
-     * @return string
+     * @param FormFieldDriverInterface $formField
+     * @param string $message
+     * @param array $flags
+     * @param int $code
+     * @param Throwable|null $previous
      */
-    public function getAlias(): string
+    public function __construct(FormFieldDriverInterface $formField, string $message = "", array $flags = [], int $code = 0, Throwable $previous = null)
     {
-        return $this->alias;
+        $this->formField = $formField;
+
+        parent::__construct($message, $code, $previous);
+    }
+
+    /**
+     * Définition d'un drapeau d'identification
+     *
+     * @param string $flag
+     *
+     * @return static
+     */
+    public function addFlag(string $flag): self
+    {
+        return $this->addFlags([$flag]);
+    }
+
+    /**
+     * Définition de drapeaux d'identification
+     *
+     * @param array $flags
+     *
+     * @return static
+     */
+    public function addFlags(array $flags): self
+    {
+        foreach(array_values($flags) as $flag) {
+            if (is_string($flag) && !in_array($flag, $this->flags, true)) {
+                $this->flags[] = $flag;
+            }
+        }
+
+        return $this;
     }
 
     /**
@@ -42,52 +77,34 @@ class FieldValidateException extends InvalidArgumentException
     }
 
     /**
-     * Vérification de correspondance de l'alias de qualification.
+     * Vérification d'existance d'un drapeau d'identification.
      *
-     * @param string $alias
+     * @param string $flag
      *
      * @return bool
      */
-    public function is(string $alias): bool
+    public function hasFlag(string $flag): bool
     {
-        return $this->alias === $alias;
+        return in_array($flag, $this->flags, true);
     }
 
     /**
-     * Vérification de correspondance de l'alias de qualification.
+     * Vérification d'existance du drapeau de champ requis.
      *
      * @return bool
      */
     public function isRequired(): bool
     {
-        return $this->alias === '_required';
+        return $this->hasFlag('required');
     }
 
     /**
-     * Définition de l'alias de qualification.
-     *
-     * @param string $alias
+     * Définition du drapeau de champ requis.
      *
      * @return static
      */
-    public function setAlias(string $alias): self
+    public function setRequired(): self
     {
-        $this->alias = $alias;
-
-        return $this;
-    }
-
-    /**
-     * Définition de l'instance du champ associé.
-     *
-     * @param FormFieldDriverInterface $formField
-     *
-     * @return static
-     */
-    public function setFormField(FormFieldDriverInterface $formField): self
-    {
-        $this->formField = $formField;
-
-        return $this;
+        return $this->addFlag('required');
     }
 }
