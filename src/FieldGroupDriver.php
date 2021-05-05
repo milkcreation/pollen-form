@@ -36,12 +36,6 @@ class FieldGroupDriver implements FieldGroupDriverInterface
     protected $alias = '';
 
     /**
-     * Instance du groupe parent.
-     * @var FieldGroupsFactoryInterface|null
-     */
-    protected $parent;
-
-    /**
      * @inheritDoc
      */
     public function boot(): FieldGroupDriverInterface
@@ -92,7 +86,6 @@ class FieldGroupDriver implements FieldGroupDriverInterface
             'after'    => '',
             'before'   => '',
             'attrs'    => [],
-            'parent'   => null,
             'position' => null
         ];
     }
@@ -137,22 +130,6 @@ class FieldGroupDriver implements FieldGroupDriverInterface
     public function getPosition(): int
     {
         return (int)$this->params('position');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getParent(): ?FieldGroupDriverInterface
-    {
-        if ($this->parent === null) {
-            if ($alias = $this->params('parent')) {
-                $this->parent = $this->groupsManager()->get($alias) ?: false;
-            } else {
-                $this->parent = false;
-            }
-        }
-
-        return $this->parent ?: null;
     }
 
     /**

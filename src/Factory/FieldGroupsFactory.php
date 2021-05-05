@@ -64,21 +64,26 @@ class FieldGroupsFactory implements FieldGroupsFactoryInterface
                 $group->params(['position' => $group->getPosition() ?: ++$pad + $max]);
 
                 if ($fields = $group->getFormFields()) {
-                    $max = $fields->max(function (FormFieldDriverInterface $field) {
+                    $fmax = $fields->max(function (FormFieldDriverInterface $field) {
                         return $field->getPosition();
                     });
-                    $pad = 0;
+                    $fpad = 0;
 
-                    $fields->each(function (FormFieldDriverInterface $field) use (&$pad, $max, $group) {
+                    $fields->each(function (FormFieldDriverInterface $field) use (&$fpad, $fmax, $group) {
                         $formBase = ($this->form()->getIndex()+1)*10000;
                         $groupBase = ($group->getIndex()+1)*1000;
                         $number = $formBase + $groupBase + (100* (($group ? $group->getPosition() : 0) + 1));
-                        $position = $field->getPosition() ?: ++$pad + $max;
+                        $position = $field->getPosition() ?: ++$fpad + $fmax;
 
                         return $field->setPosition(absint($number + $position));
                     });
                 }
             });
+
+
+            $this->groupDrivers = $this->collect()->sortBy(function (FieldGroupDriverInterface $group) {
+                return $group->getPosition();
+            }, SORT_NUMERIC)->all();
 
             $this->setBooted();
 
@@ -109,7 +114,9 @@ class FieldGroupsFactory implements FieldGroupsFactoryInterface
      */
     public function get(string $alias): ?FieldGroupDriverInterface
     {
-        return $this->groupDrivers[$alias] ?? null;
+        return $this->collect()->filter(function (FieldGroupDriverInterface $group) use ($alias){
+            return $group->getAlias() === $alias;
+        })->first();
     }
 
     /**
@@ -133,7 +140,7 @@ class FieldGroupsFactory implements FieldGroupsFactoryInterface
      */
     public function offsetExists($offset): bool
     {
-        return array_key_exists($offset, $$this->groupDrivers);
+        return array_key_exists($offset, $this->groupDrivers);
     }
 
     /**
@@ -175,7 +182,7 @@ class FieldGroupsFactory implements FieldGroupsFactoryInterface
             $driver = $driverDefinition;
         }
 
-        $this->groupDrivers[$alias] = $driver->setAlias($alias)->setGroupManager($this);
+        $this->groupDrivers[] = $driver->setAlias($alias)->setGroupManager($this);
 
         return $this;
     }
