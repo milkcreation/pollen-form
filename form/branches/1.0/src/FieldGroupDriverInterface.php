@@ -67,13 +67,6 @@ interface FieldGroupDriverInterface extends
     public function getIndex(): int;
 
     /**
-     * Récupération du groupe parent
-     *
-     * @return FieldGroupDriverInterface|null
-     */
-    public function getParent(): ?FieldGroupDriverInterface;
-
-    /**
      * Récupération du positionnement de l'élément.
      *
      * @return int
