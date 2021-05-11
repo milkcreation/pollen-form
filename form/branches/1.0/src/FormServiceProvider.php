@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Pollen\Form;
 
-use Pollen\Container\BaseServiceProvider;
+use Pollen\Container\BootableServiceProvider;
 
-class FormServiceProvider extends BaseServiceProvider
+class FormServiceProvider extends BootableServiceProvider
 {
     /**
      * @var string[]
