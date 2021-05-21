@@ -1,3 +1,5 @@
+@use "sass:math";
+
 // Variables
 @import "variables";
 
@@ -8,6 +10,6 @@
   }
 
   .FormRow {
-    padding: #{$form-gutters-top/2}px #{$form-gutters-right}px #{$form-gutters-bottom/2}px #{$form-gutters-left}px;
+    padding: #{math.div($form-gutters-top,2)}px #{$form-gutters-right}px #{math.div($form-gutters-bottom,2)}px #{$form-gutters-left}px;
   }
 }
