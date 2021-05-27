@@ -831,7 +831,7 @@ class FormFieldDriver implements FormFieldDriverInterface
     {
         $value = $this->form()->session()->get("request.{$this->getName()}");
 
-        if (!is_null($value)) {
+        if ($value !== null) {
             $this->setValue($value);
         }
 
