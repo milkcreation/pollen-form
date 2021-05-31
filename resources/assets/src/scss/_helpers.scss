@@ -3,6 +3,11 @@
 
 // Personnalisation
 @mixin helpers_width {
+  .Form-w-25 {
+    float: left;
+    width: 25%;
+  }
+
   .Form-w-33 {
     float: left;
     width: 33.333333%;
@@ -18,10 +23,17 @@
     width: 66.666666%;
   }
 
+  .Form-w-75 {
+    float: left;
+    width: 75%;
+  }
+
   @media (max-width: 767px) {
+    .Form-w-25,
     .Form-w-33,
     .Form-w-50,
-    .Form-w-66 {
+    .Form-w-66,
+    .Form-w-75 {
       float: none;
       width: 100%;
     }
