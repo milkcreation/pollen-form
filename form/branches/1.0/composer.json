@@ -5,9 +5,9 @@
   "keywords": [
     "pollen-solutions",
     "component",
-    "forms"
+    "form"
   ],
-  "time": "2021-05-27",
+  "time": "2021-05-31",
   "license": "MIT",
   "authors": [
     {
@@ -37,7 +37,8 @@
     "pollen-solutions/view": "^1.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^9.0"
+    "phpunit/phpunit": "^9.0",
+    "roave/security-advisories": "dev-latest"
   },
   "autoload": {
     "psr-4": {
