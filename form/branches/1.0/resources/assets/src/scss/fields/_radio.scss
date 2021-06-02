@@ -1,45 +1,44 @@
+@use "sass:math";
+
 // Variables
 @import "../variables";
 
-// Personnalisation
+// Customization
 @mixin form_field_radio {
   .FieldRadio {
     display: none;
-    cursor: pointer;
 
     + .FieldLabel {
       position: relative;
-      color:$form-field-radio-label-color;
-      font-size: $form-field-radio-label-font-size;
-      display: inline-block;
-      width: auto;
+      font-size:$form-field-radio-label-font-size;
+      color: $form-field-radio-label-color;
+      display: flex;
+      align-items: center;
+      column-gap: 0.4em;
+      user-select: none;
       cursor: pointer;
-      padding: 3px 0 0 22px;
 
       &::before {
-        position: absolute;
-        top: 0;
-        left: 0;
         display: block;
         content: " ";
-        vertical-align: middle;
-        margin-top: 5px;
-        height: 14px;
-        width: 14px;
-        margin-right: 5px;
+        height: #{$form-field-radio-box-height}px;
+        width: #{$form-field-radio-box-width}px;
+        border-radius: 50%;
       }
 
       &::after {
-        position: absolute;
-        top: 1px;
         display: block;
         content: " ";
-        left: 4px;
-        margin-top: 8px;
-        height: 8px;
-        width: 8px;
+        position: absolute;
+        top: 50%;
+        left: #{math.div($form-field-radio-box-width, 2) + $form-field-radio-box-border-width}px;
+        margin-top: -#{math.div($form-field-radio-box-checked-height, 2)}px;
+        margin-left: -#{math.div($form-field-radio-box-checked-width, 2)}px;
+        height: #{$form-field-radio-box-checked-height}px;
+        width: #{$form-field-radio-box-checked-width}px;
         transform: scale(0);
         transition: transform 200ms ease-in-out;
+        border-radius: 50%;
       }
     }
 
@@ -52,31 +51,13 @@
       transition: transform 200ms ease-in-out;
     }
 
-    &:disabled + .FieldLabel {
-      opacity: 0.5;
-
-      &::before {
-        opacity: 0.5;
-      }
-    }
-  }
-
-  .FieldRadio + .FieldLabel::after {
-    background-color: $form-field-radio-checked-color;
-  }
-
-  .FieldRadio + .FieldLabel {
-    &::before {
-      border-radius: 50%;
+    & + .FieldLabel::after {
+      background-color: $form-field-radio-box-checked-background-color;
     }
 
-    &::after {
-      border-radius: 50%;
+    & + .FieldLabel::before {
+      border: #{$form-field-radio-box-border-width}px solid $form-field-radio-box-border-color;
+      background-color: $form-field-radio-box-background-color;
     }
-  }
-
-  .FieldRadio + .FieldLabel::before {
-    border: 1px solid $form-field-radio-border-color;
-    background-color: $form-field-radio-background-color;
   }
 }

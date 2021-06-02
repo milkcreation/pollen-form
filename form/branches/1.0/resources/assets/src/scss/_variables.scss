@@ -155,20 +155,30 @@ $form-field-error-border-width: $form-notice-border-width !default;
 $form-field-error-border-color: $form-notice-error-border-color !default;
 
 // - Configuration Case à cocher
-$form-field-checkbox-color: $form-global-color !default;
-$form-field-checkbox-label-color: $form-global-color !default;
+$form-field-checkbox-global-color: $form-global-color !default;
+$form-field-checkbox-box-width: 16 !default;
+$form-field-checkbox-box-height: 16 !default;
+$form-field-checkbox-box-border-color: $form-field-checkbox-global-color !default;
+$form-field-checkbox-box-border-width: $form-field-border-width !default;
+$form-field-checkbox-box-background-color: $form-field-background-color !default;
+$form-field-checkbox-box-checked-width: 10 !default;
+$form-field-checkbox-box-checked-height: 10!default;
+$form-field-checkbox-box-checked-background-color: $form-field-checkbox-global-color !default;
 $form-field-checkbox-label-font-size: $form-global-font-size !default;
-$form-field-checkbox-checked-color: $form-global-color !default;
-$form-field-checkbox-background-color: $form-field-background-color !default;
-$form-field-checkbox-border-color: $form-field-border-color !default;
+$form-field-checkbox-label-color: $form-field-checkbox-global-color !default;
 
 // - Configuration Collection de cases à cocher
-$form-field-checkbox-collection-color: $form-field-checkbox-color !default;
+$form-field-checkbox-collection-global-color: $form-field-checkbox-global-color !default;
+$form-field-checkbox-collection-box-width: $form-field-checkbox-box-width !default;
+$form-field-checkbox-collection-box-height: $form-field-checkbox-box-height !default;
+$form-field-checkbox-collection-box-border-color: $form-field-checkbox-box-border-color!default;
+$form-field-checkbox-collection-box-border-width: $form-field-checkbox-box-border-width !default;
+$form-field-checkbox-collection-box-background-color: $form-field-checkbox-box-background-color !default;
+$form-field-checkbox-collection-box-checked-width: $form-field-checkbox-box-checked-width !default;
+$form-field-checkbox-collection-box-checked-height: $form-field-checkbox-box-checked-height !default;
+$form-field-checkbox-collection-box-checked-background-color: $form-field-checkbox-box-checked-background-color !default;
+$form-field-checkbox-collection-label-font-size: $form-field-checkbox-label-font-size!default;
 $form-field-checkbox-collection-label-color: $form-field-checkbox-label-color !default;
-$form-field-checkbox-collection-label-font-size: $form-field-checkbox-label-font-size !default;
-$form-field-checkbox-collection-checked-color: $form-field-checkbox-checked-color !default;
-$form-field-checkbox-collection-background-color: $form-field-checkbox-background-color !default;
-$form-field-checkbox-collection-border-color: $form-field-checkbox-border-color !default;
 
 // - Configuration Selecteur de date
 $form-field-datepicker-color: $form-field-color !default;
@@ -312,7 +322,7 @@ $form-field-input-tel-placeholder-color: $form-field-placeholder-color !default;
 
 // - Configuration Champ text
 $form-field-input-text-color: $form-field-color !default;
-$form-field-input-text-background-color: $form-field-background-color!default;
+$form-field-input-text-background-color: $form-field-background-color !default;
 $form-field-input-text-border-color: $form-field-border-color !default;
 $form-field-input-text-border-radius: $form-field-border-radius !default;
 $form-field-input-text-border-radius-tl: $form-field-border-radius-tl !default;
@@ -421,18 +431,28 @@ $form-field-textarea-error-border-color: $form-field-error-border-color !default
 $form-field-textarea-placeholder-color: $form-field-placeholder-color !default;
 
 // - Configuration Bouton radio
-$form-field-radio-color: $form-global-color !default;
-$form-field-radio-label-color: $form-global-color !default;
+$form-field-radio-global-color: $form-global-color !default;
+$form-field-radio-box-width: 16!default;
+$form-field-radio-box-height: 16 !default;
+$form-field-radio-box-border-color: $form-field-radio-global-color !default;
+$form-field-radio-box-border-width: $form-field-border-width !default;
+$form-field-radio-box-background-color: $form-field-background-color !default;
+$form-field-radio-box-checked-width: 10 !default;
+$form-field-radio-box-checked-height: 10 !default;
+$form-field-radio-box-checked-background-color: $form-field-radio-global-color !default;
 $form-field-radio-label-font-size: $form-global-font-size !default;
-$form-field-radio-checked-color: $form-global-color !default;
-$form-field-radio-background-color: $form-field-background-color !default;
-$form-field-radio-border-color: $form-field-border-color !default;
+$form-field-radio-label-color: $form-field-radio-global-color !default;
 
 // - Configuration Collection de boutons radio
-$form-field-radio-collection-color: $form-field-radio-color !default;
+$form-field-radio-collection-global-color: $form-field-radio-global-color !default;
+$form-field-radio-collection-box-width: $form-field-radio-box-width !default;
+$form-field-radio-collection-box-height: $form-field-radio-box-height !default;
+$form-field-radio-collection-box-border-color: $form-field-radio-box-border-color!default;
+$form-field-radio-collection-box-border-width: $form-field-radio-box-border-width !default;
+$form-field-radio-collection-box-background-color: $form-field-radio-box-background-color !default;
+$form-field-radio-collection-box-checked-width: $form-field-radio-box-checked-width !default;
+$form-field-radio-collection-box-checked-height: $form-field-radio-box-checked-height !default;
+$form-field-radio-collection-box-checked-background-color: $form-field-radio-box-checked-background-color !default;
+$form-field-radio-collection-label-font-size: $form-field-radio-label-font-size!default;
 $form-field-radio-collection-label-color: $form-field-radio-label-color !default;
-$form-field-radio-collection-label-font-size: $form-field-radio-label-font-size !default;
-$form-field-radio-collection-checked-color: $form-field-radio-checked-color !default;
-$form-field-radio-collection-background-color: $form-field-radio-background-color !default;
-$form-field-radio-collection-border-color: $form-field-radio-border-color !default;
 

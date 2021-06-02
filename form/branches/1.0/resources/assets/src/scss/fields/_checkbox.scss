@@ -1,43 +1,40 @@
+@use "sass:math";
+
 // Variables
 @import "../variables";
 
-// Personnalisation
+// Customization
 @mixin form_field_checkbox {
   .FieldCheckbox {
     display: none;
-    cursor: pointer;
 
     + .FieldLabel {
       position: relative;
-      color:$form-field-checkbox-label-color;
-      font-size: $form-field-checkbox-label-font-size;
-      display: inline-block;
-      width: auto;
+      font-size:$form-field-checkbox-label-font-size;
+      color: $form-field-checkbox-label-color;
+      display: flex;
+      align-items: center;
+      column-gap: 0.4em;
+      user-select: none;
       cursor: pointer;
-      padding: 3px 0 0 22px;
 
       &::before {
-        position: absolute;
-        top: 0;
-        left: 0;
         display: block;
         content: " ";
-        vertical-align: middle;
-        margin-top: 5px;
-        height: 14px;
-        width: 14px;
-        margin-right: 5px;
+        height: #{$form-field-checkbox-box-height}px;
+        width: #{$form-field-checkbox-box-width}px;
       }
 
       &::after {
-        position: absolute;
-        top: 1px;
         display: block;
         content: " ";
-        left: 4px;
-        margin-top: 8px;
-        height: 8px;
-        width: 8px;
+        position: absolute;
+        top: 50%;
+        left: #{math.div($form-field-checkbox-box-width, 2) + $form-field-checkbox-box-border-width}px;
+        margin-top: -#{math.div($form-field-checkbox-box-checked-height, 2)}px;
+        margin-left: -#{math.div($form-field-checkbox-box-checked-width, 2)}px;
+        height: #{$form-field-checkbox-box-checked-height}px;
+        width: #{$form-field-checkbox-box-checked-width}px;
         transform: scale(0);
         transition: transform 200ms ease-in-out;
       }
@@ -52,21 +49,13 @@
       transition: transform 200ms ease-in-out;
     }
 
-    &:disabled + .FieldLabel {
-      opacity: 0.5;
-
-      &::before {
-        opacity: 0.5;
-      }
+    & + .FieldLabel::after {
+      background-color: $form-field-checkbox-box-checked-background-color;
     }
-  }
 
-  .FieldCheckbox + .FieldLabel::after {
-    background-color: $form-field-checkbox-checked-color;
-  }
-
-  .FieldCheckbox + .FieldLabel::before {
-    border: 1px solid $form-field-checkbox-border-color;
-    background-color: $form-field-checkbox-background-color;
+    & + .FieldLabel::before {
+      border: #{$form-field-checkbox-box-border-width}px solid $form-field-checkbox-box-border-color;
+      background-color: $form-field-checkbox-box-background-color;
+    }
   }
 }

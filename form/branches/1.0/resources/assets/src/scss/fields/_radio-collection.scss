@@ -1,7 +1,9 @@
+@use "sass:math";
+
 // Variables
 @import "../variables";
 
-// Personnalisation
+// Customization
 @mixin form_field_radio-collection {
   .FieldRadioCollection {
     &:focus {
@@ -9,85 +11,61 @@
     }
   }
 
-  .FieldRadioCollection-itemInput {
-    display: none;
-    cursor: pointer;
+  .FieldRadioCollection {
+    .FieldRadio {
+      display: none;
 
-    + .FieldRadioCollection-itemLabel {
-      position: relative;
-      color:$form-field-radio-collection-label-color;
-      font-size: $form-field-radio-collection-label-font-size;
-      display: inline-block;
-      width: auto;
-      cursor: pointer;
-      padding: 3px 0 0 22px;
-      user-select: none;
+      + .FieldLabel {
+        position: relative;
+        font-size:$form-field-radio-collection-label-font-size;
+        color: $form-field-radio-collection-label-color;
+        display: flex;
+        align-items: center;
+        column-gap: 0.4em;
+        user-select: none;
+        cursor: pointer;
 
-      &::before {
-        position: absolute;
-        top: 0;
-        left: 0;
-        display: block;
-        content: " ";
-        vertical-align: middle;
-        margin-top: 5px;
-        height: 14px;
-        width: 14px;
-        margin-right: 5px;
+        &::before {
+          display: block;
+          content: " ";
+          height: #{$form-field-radio-collection-box-height}px;
+          width: #{$form-field-radio-collection-box-width}px;
+          border-radius: 50%;
+        }
+
+        &::after {
+          display: block;
+          content: " ";
+          position: absolute;
+          top: 50%;
+          left: #{math.div($form-field-radio-collection-box-width, 2) + $form-field-radio-collection-box-border-width}px;
+          margin-top: -#{math.div($form-field-radio-collection-box-checked-height, 2)}px;
+          margin-left: -#{math.div($form-field-radio-collection-box-checked-width, 2)}px;
+          height: #{$form-field-radio-collection-box-checked-height}px;
+          width: #{$form-field-radio-collection-box-checked-width}px;
+          transform: scale(0);
+          transition: transform 200ms ease-in-out;
+          border-radius: 50%;
+        }
       }
 
-      &::after {
-        position: absolute;
-        top: 1px;
-        display: block;
-        content: " ";
-        left: 4px;
-        margin-top: 8px;
-        height: 8px;
-        width: 8px;
-        transform: scale(0);
+      &:checked + .FieldLabel::after {
+        transform: scale(1);
         transition: transform 200ms ease-in-out;
       }
-    }
 
-    &[aria-invalid="true"] + .FieldLabel::before {
-      border: 1px solid $form-notice-error-border-color;
-    }
+      & + .FieldLabel::after {
+        background-color: $form-field-radio-collection-box-checked-background-color;
+      }
 
-    &:checked + .FieldRadioCollection-itemLabel::after {
-      transform: scale(1);
-      transition: transform 200ms ease-in-out;
-    }
-
-    &:disabled + .FieldRadioCollection-itemLabel {
-      opacity: 0.5;
-
-      &::before {
-        opacity: 0.5;
+      & + .FieldLabel::before {
+        border: #{$form-field-radio-collection-box-border-width}px solid $form-field-radio-collection-box-border-color;
+        background-color: $form-field-radio-collection-box-background-color;
       }
     }
-  }
 
-  .FieldRadioCollection-itemInput + .FieldRadioCollection-itemLabel::after {
-    background-color: $form-field-radio-collection-checked-color;
-  }
-
-  .FieldRadioCollection[aria-invalid="true"] .FieldRadioCollection-itemInput + .FieldRadioCollection-itemLabel::before {
-    border: 1px solid $form-notice-error-border-color;
-  }
-
-  .FieldRadioCollection-itemInput + .FieldRadioCollection-itemLabel {
-    &::before {
-      border-radius: 50%;
+    &[aria-invalid="true"] .FieldRadio + .FieldLabel::before {
+      border: 1px solid $form-notice-error-border-color;
     }
-
-    &::after {
-      border-radius: 50%;
-    }
-  }
-
-  .FieldRadioCollection-itemInput + .FieldRadioCollection-itemLabel::before {
-    border: 1px solid $form-field-radio-collection-border-color;
-    background-color: $form-field-radio-collection-background-color;
   }
 }
