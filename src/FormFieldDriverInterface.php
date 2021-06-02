@@ -295,11 +295,11 @@ interface FormFieldDriverInterface extends
     public function setPosition(int $position = 0): FormFieldDriverInterface;
 
     /**
-     * Définition de la valeur du champ basée sur la donnée de session.
+     * Affecte la valeur du champ depuis la donnée de requête en session.
      *
      * @return static
      */
-    public function setValueFromSession(): FormFieldDriverInterface;
+    public function persistValue(): FormFieldDriverInterface;
 
     /**
      * Définition de l'identifiant de qualification.

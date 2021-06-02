@@ -76,12 +76,12 @@ class HandleFactory implements HandleFactoryInterface
                 $value = $this->datas($field->getName());
 
                 if ($field->supports('transport')) {
-                    $this->form()->session()->set("request.{$field->getName()}", $value);
+                    $this->persist($field->getName(), $value);
                 } else {
-                    $this->form()->session()->set("request.{$field->getName()}", null);
+                    $this->persist($field->getName(), null);
                 }
 
-                $field->setValueFromSession();
+                $field->persistValue();
             }
 
             if ($this->form()->isUploadEnabled()) {
@@ -220,6 +220,16 @@ class HandleFactory implements HandleFactoryInterface
         }
 
         return false;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function persist(string $key, $value): HandleFactoryInterface
+    {
+        $this->form()->session()->set("request.$key", $value);
+
+        return $this;
     }
 
     /**

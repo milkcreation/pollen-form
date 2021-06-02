@@ -276,7 +276,7 @@ class FormFieldDriver implements FormFieldDriverInterface
      */
     public function getAddonOption(string $alias, ?string $key = null, $default = null)
     {
-        return is_null($key) ? $this->params("addons.{$alias}", []) : $this->params("addons.{$alias}.{$key}", $default);
+        return is_null($key) ? $this->params("addons.$alias", []) : $this->params("addons.$alias.$key", $default);
     }
 
     /**
@@ -300,7 +300,7 @@ class FormFieldDriver implements FormFieldDriverInterface
      */
     public function getExtras(?string $key = null, $default = null)
     {
-        return is_null($key) ? $this->params('extras', []) : $this->params("extras.{$key}", $default);
+        return is_null($key) ? $this->params('extras', []) : $this->params("extras.$key", $default);
     }
 
     /**
@@ -340,7 +340,7 @@ class FormFieldDriver implements FormFieldDriverInterface
      */
     public function getRequired(?string $key = null, $default = null)
     {
-        return $this->params('required' . ($key ? ".{$key}" : ''), $default);
+        return $this->params('required' . ($key ? ".$key" : ''), $default);
     }
 
     /**
@@ -486,7 +486,7 @@ class FormFieldDriver implements FormFieldDriverInterface
             $param->set('supports', array_diff($param->get('supports', []), ['transport']));
         }
 
-        $this->setValueFromSession();
+        $this->persistValue();
 
         if ($param->get('wrapper')) {
             $param->push('supports', 'wrapper');
@@ -545,10 +545,10 @@ class FormFieldDriver implements FormFieldDriverInterface
 
         foreach ($this->form()->addons() as $alias => $addon) {
             $param->set(
-                "addons.{$alias}",
+                "addons.$alias",
                 array_merge(
                     $addon->defaultFieldOptions(),
-                    $param->get("addons.{$alias}", []) ?: []
+                    $param->get("addons.$alias", []) ?: []
                 )
             );
         }
@@ -811,7 +811,7 @@ class FormFieldDriver implements FormFieldDriverInterface
      */
     public function setExtra(string $key, $value): FormFieldDriverInterface
     {
-        return $this->params(["extras.{$key}" => $value]);
+        return $this->params(["extras.$key" => $value]);
     }
 
     /**
@@ -827,9 +827,9 @@ class FormFieldDriver implements FormFieldDriverInterface
     /**
      * @inheritDoc
      */
-    public function setValueFromSession(): FormFieldDriverInterface
+    public function persistValue(): FormFieldDriverInterface
     {
-        $value = $this->form()->session()->get("request.{$this->getName()}");
+        $value = $this->form()->persistent($this->getName());
 
         if ($value !== null) {
             $this->setValue($value);

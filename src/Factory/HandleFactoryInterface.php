@@ -67,6 +67,16 @@ interface HandleFactoryInterface extends BootableTraitInterface, FormAwareTraitI
     public function isValidated(): bool;
 
     /**
+     * Persistance des données en session.
+     *
+     * @param string $key
+     * @param mixed $value
+     *
+     * @return static
+     */
+    public function persist(string $key, $value): HandleFactoryInterface;
+
+    /**
      * Processus de traitement de la requête de soumission du formulaire.
      *
      * @return RedirectResponse

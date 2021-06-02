@@ -519,6 +519,14 @@ class Form implements FormInterface
     /**
      * @inheritDoc
      */
+    public function persistent(string $key, $default = null)
+    {
+        return $this->session()->get("request.$key", $default);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function render(): string
     {
         $this->renderBuild();

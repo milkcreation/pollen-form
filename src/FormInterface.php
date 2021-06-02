@@ -211,6 +211,16 @@ interface FormInterface extends
     public function onResetCurrent(): void;
 
     /**
+     * Récupération de donnée requête persistante.
+     *
+     * @param string $key
+     * @param mixed $default
+     *
+     * @return mixed
+     */
+    public function persistent(string $key, $default = null);
+
+    /**
      * Affichage.
      *
      * @return string

@@ -1,83 +1,69 @@
+@use "sass:math";
+
 // Variables
 @import "../variables";
 
-// Personnalisation
+// Customization
 @mixin form_field_checkbox-collection {
   .FieldCheckboxCollection {
-     &:focus {
-       outline: none;
-     }
+    &:focus {
+      outline: none;
+    }
   }
 
-  .FieldCheckboxCollection-itemInput {
-    display: none;
-    cursor: pointer;
+  .FieldCheckboxCollection {
+    .FieldCheckbox {
+      display: none;
 
-    + .FieldCheckboxCollection-itemLabel {
-      position: relative;
-      color:$form-field-checkbox-collection-label-color;
-      font-size: $form-field-checkbox-collection-label-font-size;
-      display: inline-block;
-      width: auto;
-      cursor: pointer;
-      padding: 3px 0 0 22px;
-      user-select: none;
+      + .FieldLabel {
+        position: relative;
+        font-size:$form-field-checkbox-collection-label-font-size;
+        color: $form-field-checkbox-collection-label-color;
+        display: flex;
+        align-items: center;
+        column-gap: 0.4em;
+        user-select: none;
+        cursor: pointer;
 
-      &::before {
-        position: absolute;
-        top: 0;
-        left: 0;
-        display: block;
-        content: " ";
-        vertical-align: middle;
-        margin-top: 5px;
-        height: 14px;
-        width: 14px;
-        margin-right: 5px;
+        &::before {
+          display: block;
+          content: " ";
+          height: #{$form-field-checkbox-collection-box-height}px;
+          width: #{$form-field-checkbox-collection-box-width}px;
+        }
+
+        &::after {
+          display: block;
+          content: " ";
+          position: absolute;
+          top: 50%;
+          left: #{math.div($form-field-checkbox-collection-box-width, 2) + $form-field-checkbox-collection-box-border-width}px;
+          margin-top: -#{math.div($form-field-checkbox-collection-box-checked-height, 2)}px;
+          margin-left: -#{math.div($form-field-checkbox-collection-box-checked-width, 2)}px;
+          height: #{$form-field-checkbox-collection-box-checked-height}px;
+          width: #{$form-field-checkbox-collection-box-checked-width}px;
+          transform: scale(0);
+          transition: transform 200ms ease-in-out;
+        }
       }
 
-      &::after {
-        position: absolute;
-        top: 1px;
-        display: block;
-        content: " ";
-        left: 4px;
-        margin-top: 8px;
-        height: 8px;
-        width: 8px;
-        transform: scale(0);
+      &:checked + .FieldLabel::after {
+        transform: scale(1);
         transition: transform 200ms ease-in-out;
       }
-    }
 
-    &[aria-invalid="true"] + .FieldLabel::before {
-      border: 1px solid $form-notice-error-border-color;
-    }
+      & + .FieldLabel::after {
+        background-color: $form-field-checkbox-collection-box-checked-background-color;
+      }
 
-    &:checked + .FieldCheckboxCollection-itemLabel::after {
-      transform: scale(1);
-      transition: transform 200ms ease-in-out;
-    }
-
-    &:disabled + .FieldCheckboxCollection-itemLabel {
-      opacity: 0.5;
-
-      &::before {
-        opacity: 0.5;
+      & + .FieldLabel::before {
+        border: #{$form-field-checkbox-collection-box-border-width}px solid $form-field-checkbox-collection-box-border-color;
+        background-color: $form-field-checkbox-collection-box-background-color;
       }
     }
-  }
 
-  .FieldCheckboxCollection-itemInput + .FieldCheckboxCollection-itemLabel::after {
-    background-color: $form-field-checkbox-collection-checked-color;
-  }
-
-  .FieldCheckboxCollection[aria-invalid="true"] .FieldCheckboxCollection-itemInput + .FieldCheckboxCollection-itemLabel::before {
-    border: 1px solid $form-notice-error-border-color;
-  }
-
-  .FieldCheckboxCollection-itemInput + .FieldCheckboxCollection-itemLabel::before {
-    border: 1px solid $form-field-checkbox-collection-border-color;
-    background-color: $form-field-checkbox-collection-background-color;
+    &[aria-invalid="true"] .FieldCheckbox + .FieldLabel::before {
+      border: 1px solid $form-notice-error-border-color;
+    }
   }
 }
