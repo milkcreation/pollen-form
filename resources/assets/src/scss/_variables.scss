@@ -158,14 +158,14 @@ $form-field-error-border-color: $form-notice-error-border-color !default;
 $form-field-checkbox-global-color: $form-global-color !default;
 $form-field-checkbox-box-width: 16 !default;
 $form-field-checkbox-box-height: 16 !default;
-$form-field-checkbox-box-border-color: $form-field-checkbox-global-color !default;
+$form-field-checkbox-box-border-color: $form-field-border-color !default;
 $form-field-checkbox-box-border-width: $form-field-border-width !default;
 $form-field-checkbox-box-background-color: $form-field-background-color !default;
 $form-field-checkbox-box-checked-width: 10 !default;
 $form-field-checkbox-box-checked-height: 10!default;
 $form-field-checkbox-box-checked-background-color: $form-field-checkbox-global-color !default;
 $form-field-checkbox-label-font-size: $form-global-font-size !default;
-$form-field-checkbox-label-color: $form-field-checkbox-global-color !default;
+$form-field-checkbox-label-color: $form-label-color !default;
 
 // - Configuration Collection de cases à cocher
 $form-field-checkbox-collection-global-color: $form-field-checkbox-global-color !default;
@@ -434,14 +434,14 @@ $form-field-textarea-placeholder-color: $form-field-placeholder-color !default;
 $form-field-radio-global-color: $form-global-color !default;
 $form-field-radio-box-width: 16!default;
 $form-field-radio-box-height: 16 !default;
-$form-field-radio-box-border-color: $form-field-radio-global-color !default;
+$form-field-radio-box-border-color: $form-field-border-color !default;
 $form-field-radio-box-border-width: $form-field-border-width !default;
 $form-field-radio-box-background-color: $form-field-background-color !default;
 $form-field-radio-box-checked-width: 10 !default;
 $form-field-radio-box-checked-height: 10 !default;
 $form-field-radio-box-checked-background-color: $form-field-radio-global-color !default;
 $form-field-radio-label-font-size: $form-global-font-size !default;
-$form-field-radio-label-color: $form-field-radio-global-color !default;
+$form-field-radio-label-color: $form-label-color !default;
 
 // - Configuration Collection de boutons radio
 $form-field-radio-collection-global-color: $form-field-radio-global-color !default;
