@@ -29,9 +29,9 @@ trait FormAwareTrait
      *
      * @param FormInterface $form
      *
-     * @return static
+     * @return FormAwareTraitInterface|static
      */
-    public function setForm(FormInterface $form): FormAwareTrait
+    public function setForm(FormInterface $form): FormAwareTraitInterface
     {
         $this->form = $form;
 

@@ -144,79 +144,79 @@ interface FormFactoryBagTraitInterface
      *
      * @param AddonsFactoryInterface $addonsFactory
      *
-     * @return FormFactoryBagTrait
+     * @return FormFactoryBagTraitInterface
      */
-    public function setAddonsFactory(AddonsFactoryInterface $addonsFactory): FormFactoryBagTrait;
+    public function setAddonsFactory(AddonsFactoryInterface $addonsFactory): FormFactoryBagTraitInterface;
 
     /**
      * Définition du gestionnaire de boutons.
      *
      * @param ButtonsFactoryInterface $buttonsFactory
      *
-     * @return FormFactoryBagTrait
+     * @return FormFactoryBagTraitInterface
      */
-    public function setButtonsFactory(ButtonsFactoryInterface $buttonsFactory): FormFactoryBagTrait;
+    public function setButtonsFactory(ButtonsFactoryInterface $buttonsFactory): FormFactoryBagTraitInterface;
 
     /**
      * Définition du gestionnaire d'événements.
      *
      * @param EventFactoryInterface $eventsFactory
      *
-     * @return FormFactoryBagTrait
+     * @return FormFactoryBagTraitInterface
      */
-    public function setEventFactory(EventFactoryInterface $eventsFactory): FormFactoryBagTrait;
+    public function setEventFactory(EventFactoryInterface $eventsFactory): FormFactoryBagTraitInterface;
 
     /**
      * Définition du gestionnaire de champs.
      *
      * @param FormFieldsFactoryInterface $formFieldsFactory
      *
-     * @return FormFactoryBagTrait
+     * @return FormFactoryBagTraitInterface
      */
-    public function setFormFieldsFactory(FormFieldsFactoryInterface $formFieldsFactory): FormFactoryBagTrait;
+    public function setFormFieldsFactory(FormFieldsFactoryInterface $formFieldsFactory): FormFactoryBagTraitInterface;
 
     /**
      * Définition du gestionnaire de groupe de champs.
      *
      * @param FieldGroupsFactoryInterface $groupsFactory
      *
-     * @return FormFactoryBagTrait
+     * @return FormFactoryBagTraitInterface
      */
-    public function setGroupsFactory(FieldGroupsFactoryInterface $groupsFactory): FormFactoryBagTrait;
+    public function setGroupsFactory(FieldGroupsFactoryInterface $groupsFactory): FormFactoryBagTraitInterface;
 
     /**
      * Définition du gestionnaire de traitement de la requête de soumission du formulaire.
      *
      * @param HandleFactoryInterface $handleFactory
      *
-     * @return FormFactoryBagTrait
+     * @return FormFactoryBagTraitInterface
      */
-    public function setHandleFactory(HandleFactoryInterface $handleFactory): FormFactoryBagTrait;
+    public function setHandleFactory(HandleFactoryInterface $handleFactory): FormFactoryBagTraitInterface;
 
     /**
      * Définition du gestionnaire des options de formulaire.
      *
      * @param OptionsFactoryInterface $optionsFactory
      *
-     * @return FormFactoryBagTrait
+     * @return FormFactoryBagTraitInterface
      */
-    public function setOptionsFactory(OptionsFactoryInterface $optionsFactory): FormFactoryBagTrait;
+    public function setOptionsFactory(OptionsFactoryInterface $optionsFactory): FormFactoryBagTraitInterface;
 
     /**
      * Définition du gestionnaire de session.
      *
      * @param SessionFactoryInterface $sessionFactory
      *
-     * @return FormFactoryBagTrait
+     * @return FormFactoryBagTraitInterface
      */
-    public function setSessionFactory(SessionFactoryInterface $sessionFactory): FormFactoryBagTrait;
+    public function setSessionFactory(SessionFactoryInterface $sessionFactory): FormFactoryBagTraitInterface;
 
     /**
      * Définition du gestionnaire de validation de la requêter de soumission du formulaire.
      *
      * @param ValidateFactoryInterface $validateFactory
      *
-     * @return FormFactoryBagTrait
+     * @return FormFactoryBagTraitInterface
      */
-    public function setValidateFactory(ValidateFactoryInterface $validateFactory): FormFactoryBagTrait;
+    public function setValidateFactory(ValidateFactoryInterface $validateFactory): FormFactoryBagTraitInterface;
 }

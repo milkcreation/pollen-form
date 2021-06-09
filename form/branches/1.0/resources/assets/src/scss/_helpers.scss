@@ -39,10 +39,12 @@
     }
   }
 
+  .Form-w-25,
   .Form-w-33,
   .Form-w-50,
-  .Form-w-66 {
-    + .FormRow:not(.Form-w-33, .Form-w-50, .Form-w-66) {
+  .Form-w-66,
+  .Form-w-75 {
+    + *:not(.Form-w-25, .Form-w-33, .Form-w-50, .Form-w-66, .Form-w-75) {
       clear: both;
     }
   }

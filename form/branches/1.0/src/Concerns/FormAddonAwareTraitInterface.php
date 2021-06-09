@@ -28,7 +28,7 @@ interface FormAddonAwareTraitInterface
      *
      * @param AddonDriverInterface $formAddon
      *
-     * @return FormAddonAwareTrait
+     * @return FormAddonAwareTraitInterface
      */
-    public function setFormAddon(AddonDriverInterface $formAddon): FormAddonAwareTrait;
+    public function setFormAddon(AddonDriverInterface $formAddon): FormAddonAwareTraitInterface;
 }

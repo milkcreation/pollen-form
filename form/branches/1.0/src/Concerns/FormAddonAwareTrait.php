@@ -51,9 +51,9 @@ trait FormAddonAwareTrait
      *
      * @param AddonDriverInterface $formAddon
      *
-     * @return static
+     * @return FormAddonAwareTraitInterface|static
      */
-    public function setFormAddon(AddonDriverInterface $formAddon): FormAddonAwareTrait
+    public function setFormAddon(AddonDriverInterface $formAddon): FormAddonAwareTraitInterface
     {
         $this->formAddon = $formAddon;
 

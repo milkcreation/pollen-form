@@ -247,9 +247,9 @@ trait FormFactoryBagTrait
      *
      * @param AddonsFactoryInterface $addonsFactory
      *
-     * @return static
+     * @return FormFactoryBagTraitInterface|static
      */
-    public function setAddonsFactory(AddonsFactoryInterface $addonsFactory): FormFactoryBagTrait
+    public function setAddonsFactory(AddonsFactoryInterface $addonsFactory): FormFactoryBagTraitInterface
     {
         $this->addonsFactory = $addonsFactory;
 
@@ -261,9 +261,9 @@ trait FormFactoryBagTrait
      *
      * @param ButtonsFactoryInterface $buttonsFactory
      *
-     * @return static
+     * @return FormFactoryBagTraitInterface|static
      */
-    public function setButtonsFactory(ButtonsFactoryInterface $buttonsFactory): FormFactoryBagTrait
+    public function setButtonsFactory(ButtonsFactoryInterface $buttonsFactory): FormFactoryBagTraitInterface
     {
         $this->buttonsFactory = $buttonsFactory;
 
@@ -275,9 +275,9 @@ trait FormFactoryBagTrait
      *
      * @param EventFactoryInterface $eventsFactory
      *
-     * @return static
+     * @return FormFactoryBagTraitInterface|static
      */
-    public function setEventFactory(EventFactoryInterface $eventsFactory): FormFactoryBagTrait
+    public function setEventFactory(EventFactoryInterface $eventsFactory): FormFactoryBagTraitInterface
     {
         $this->eventsFactory = $eventsFactory;
 
@@ -289,9 +289,9 @@ trait FormFactoryBagTrait
      *
      * @param FormFieldsFactoryInterface $formFieldsFactory
      *
-     * @return static
+     * @return FormFactoryBagTraitInterface|static
      */
-    public function setFormFieldsFactory(FormFieldsFactoryInterface $formFieldsFactory): FormFactoryBagTrait
+    public function setFormFieldsFactory(FormFieldsFactoryInterface $formFieldsFactory): FormFactoryBagTraitInterface
     {
         $this->formFieldsFactory = $formFieldsFactory;
 
@@ -303,9 +303,9 @@ trait FormFactoryBagTrait
      *
      * @param FieldGroupsFactoryInterface $groupsFactory
      *
-     * @return static
+     * @return FormFactoryBagTraitInterface|static
      */
-    public function setGroupsFactory(FieldGroupsFactoryInterface $groupsFactory): FormFactoryBagTrait
+    public function setGroupsFactory(FieldGroupsFactoryInterface $groupsFactory): FormFactoryBagTraitInterface
     {
         $this->groupsFactory = $groupsFactory;
 
@@ -317,9 +317,9 @@ trait FormFactoryBagTrait
      *
      * @param HandleFactoryInterface $handleFactory
      *
-     * @return static
+     * @return FormFactoryBagTraitInterface|static
      */
-    public function setHandleFactory(HandleFactoryInterface $handleFactory): FormFactoryBagTrait
+    public function setHandleFactory(HandleFactoryInterface $handleFactory): FormFactoryBagTraitInterface
     {
         $this->handleFactory = $handleFactory;
 
@@ -331,9 +331,9 @@ trait FormFactoryBagTrait
      *
      * @param OptionsFactoryInterface $optionsFactory
      *
-     * @return static
+     * @return FormFactoryBagTraitInterface|static
      */
-    public function setOptionsFactory(OptionsFactoryInterface $optionsFactory): FormFactoryBagTrait
+    public function setOptionsFactory(OptionsFactoryInterface $optionsFactory): FormFactoryBagTraitInterface
     {
         $this->optionsFactory = $optionsFactory;
 
@@ -345,9 +345,9 @@ trait FormFactoryBagTrait
      *
      * @param SessionFactoryInterface $sessionFactory
      *
-     * @return static
+     * @return FormFactoryBagTraitInterface|static
      */
-    public function setSessionFactory(SessionFactoryInterface $sessionFactory): FormFactoryBagTrait
+    public function setSessionFactory(SessionFactoryInterface $sessionFactory): FormFactoryBagTraitInterface
     {
         $this->sessionFactory = $sessionFactory;
 
@@ -359,9 +359,9 @@ trait FormFactoryBagTrait
      *
      * @param ValidateFactoryInterface $validateFactory
      *
-     * @return static
+     * @return FormFactoryBagTraitInterface|static
      */
-    public function setValidateFactory(ValidateFactoryInterface $validateFactory): FormFactoryBagTrait
+    public function setValidateFactory(ValidateFactoryInterface $validateFactory): FormFactoryBagTraitInterface
     {
         $this->validateFactory = $validateFactory;
 
