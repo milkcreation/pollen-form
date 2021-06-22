@@ -25,8 +25,9 @@ use Pollen\Support\Proxy\HttpRequestProxy;
 use Pollen\Support\Proxy\FieldProxy;
 use Pollen\Support\Proxy\PartialProxy;
 use Pollen\Translation\Concerns\LabelsBagAwareTrait;
-use Pollen\View\ViewEngine;
-use Pollen\View\ViewEngineInterface;
+use Pollen\View\View;
+use Pollen\View\Engines\Plates\PlatesViewEngine;
+use Pollen\View\ViewInterface;
 use RuntimeException;
 
 class Form implements FormInterface
@@ -43,15 +44,14 @@ class Form implements FormInterface
 
     /**
      * Instance du gestionnaire de formulaire.
-     * @var FormManagerInterface
      */
-    private $formManager;
+    private ?FormManagerInterface $formManager = null;
 
     /**
      * Indicateur d'initialisation de rendu.
-     * @var array
+     * @var array<string, bool>
      */
-    private $renderBuild = [
+    private array $renderBuild = [
         'attrs'   => false,
         'fields'  => false,
         'id'      => false,
@@ -60,39 +60,33 @@ class Form implements FormInterface
 
     /**
      * Alias de qualification.
-     * @var string
      */
-    protected $alias = '';
+    protected string $alias = '';
 
     /**
      * Indice de qualification.
-     * @var int|null
      */
-    protected $index;
+    protected ?int $index = null;
 
     /**
-     * Instance de la requête de traitement .
-     * @var RequestInterface|null
+     * Instance de la requête de traitement.
      */
-    protected $handleRequest;
+    protected ?RequestInterface $handleRequest;
 
     /**
      * Indicateur de succès de soumission du formulaire.
-     * @var boolean
      */
-    protected $successful = false;
+    protected bool $successful = false;
 
     /**
      * Nom de qualification du formulaire dans les attributs de balises HTML.
-     * @var string|null
      */
-    protected $tagName;
+    protected ?string $tagName;
 
     /**
      * Instance du moteur des gabarits d'affichage.
-     * @var ViewEngineInterface
      */
-    protected $viewEngine;
+    protected ViewInterface $view;
 
     /**
      * @inheritDoc
@@ -241,7 +235,7 @@ class Form implements FormInterface
         if ($name = $this->csrfKey()) {
             $value = $this->session()->getToken();
 
-            return "<input type=\"hidden\" name=\"{$name}\" value=\"{$value}\"/>";
+            return "<input type=\"hidden\" name=\"$name\" value=\"$value\"/>";
         }
         return '';
     }
@@ -319,7 +313,7 @@ class Form implements FormInterface
             /**
              * @var bool Activation du token (recommandé)
              */
-            'token'     => true,
+            'token'    => true,
             /**
              * @var array $viewer Attributs de configuration du gestionnaire de gabarits d'affichage.
              */
@@ -398,7 +392,7 @@ class Form implements FormInterface
                 'window.history.pushState("", document.title, window.location.pathname + window.location.search);' .
                 '}});';
 
-            return "<script type=\"text/javascript\">/* <![CDATA[ */{$js}/* ]]> */</script>";
+            return "<script type=\"text/javascript\">/* <![CDATA[ */$js/* ]]> */</script>";
         }
         return '';
     }
@@ -620,7 +614,7 @@ class Form implements FormInterface
     public function renderBuildNotices(): FormInterface
     {
         if ($this->renderBuild['notices'] === false) {
-           if (!$this->messages()->count() && ($notices = $this->session()->flash('notices'))) {
+            if (!$this->messages()->count() && ($notices = $this->session()->flash('notices'))) {
                 foreach ($notices as $type => $items) {
                     foreach ($items as $item) {
                         $this->messages($item['message'] ?? '', $type, $item['context'] ?? []);
@@ -740,9 +734,7 @@ class Form implements FormInterface
      */
     public function view(?string $view = null, array $data = [])
     {
-        if (is_null($this->viewEngine)) {
-            $directory = null;
-            $overrideDir = null;
+        if ($this->view === null) {
             $default = $this->formManager()->config('default.viewer', []);
 
             $directory = $this->params('viewer.directory');
@@ -778,31 +770,43 @@ class Form implements FormInterface
                 }
             }
 
-            $this->viewEngine = new ViewEngine();
-            if ($container = $this->formManager()->getContainer()) {
-                $this->viewEngine->setContainer($container);
-            }
+            $this->view = View::createFromPlates(
+                function (PlatesViewEngine $platesViewEngine) use ($directory, $overrideDir) {
+                    $platesViewEngine
+                        ->setDelegate($this)
+                        ->setTemplateClass(FormTemplate::class)
+                        ->setDirectory($directory);
 
-            $this->viewEngine->setDirectory($directory)->setDelegate($this)->setLoader(FormViewLoader::class);
+                    if ($overrideDir !== null) {
+                        $platesViewEngine->setOverrideDir($overrideDir);
+                    }
 
-            if ($overrideDir !== null) {
-                $this->viewEngine->addFolder('_override_dir', $overrideDir, true);
-            }
+                    if ($container = $this->formManager()->getContainer()) {
+                        $platesViewEngine->setContainer($container);
+                    }
 
-            $mixins = [
-                'isSuccessful',
-                'tagName',
-            ];
+                    $mixins = [
+                        'isSuccessful',
+                        'tagName',
+                    ];
 
-            foreach ($mixins as $mixin) {
-                $this->viewEngine->setDelegateMixin($mixin);
-            }
+                    foreach ($mixins as $mixin) {
+                        $platesViewEngine->setDelegateMixin($mixin);
+                    }
+
+                    return $platesViewEngine;
+                }
+            );
+
+
+
+
         }
 
         if (func_num_args() === 0) {
-            return $this->viewEngine;
+            return $this->view;
         }
 
-        return $this->viewEngine->render($view, $data);
+        return $this->view->render($view, $data);
     }
 }

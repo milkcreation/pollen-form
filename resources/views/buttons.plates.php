@@ -1,6 +1,6 @@
 <?php
 /**
- * @var Pollen\Form\FormViewLoaderInterface $this
+ * @var Pollen\Form\FormTemplate $this
  * @var Pollen\Form\ButtonDriverInterface[] $buttons
  */
 ?>
