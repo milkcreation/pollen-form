@@ -1,5 +1,5 @@
 <?php
 /**
- * @var Pollen\Form\FormViewLoaderInterface $this
+ * @var Pollen\Form\FormTemplate $this
  */
 $this->insert('buttons', $this->all());

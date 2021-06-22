@@ -5,22 +5,24 @@ declare(strict_types=1);
 namespace Pollen\Form;
 
 use Closure;
-use Pollen\View\FieldAwareViewLoader;
-use Pollen\View\PartialAwareViewLoader;
-use Pollen\View\ViewLoader;
+use Pollen\View\Engines\Plates\PlatesFieldAwareTemplateTrait;
+use Pollen\View\Engines\Plates\PlatesPartialAwareTemplateTrait;
+use Pollen\View\Engines\Plates\PlatesTemplate;
 use RuntimeException;
 
 /**
  * @method bool isSuccessful()
  * @method string tagName()
  */
-class FormViewLoader extends ViewLoader implements FormViewLoaderInterface
+class FormTemplate extends PlatesTemplate
 {
-    use FieldAwareViewLoader;
-    use PartialAwareViewLoader;
+    use PlatesFieldAwareTemplateTrait;
+    use PlatesPartialAwareTemplateTrait;
 
     /**
-     * @inheritDoc
+     * Post-affichage.
+     *
+     * @return string
      */
     public function after(): string
     {
@@ -37,7 +39,9 @@ class FormViewLoader extends ViewLoader implements FormViewLoaderInterface
     }
 
     /**
-     * @inheritDoc
+     * Pré-affichage.
+     *
+     * @return string
      */
     public function before(): string
     {
@@ -63,7 +67,9 @@ class FormViewLoader extends ViewLoader implements FormViewLoaderInterface
     }
 
     /**
-     * @inheritDoc
+     * Récupération de l'instance du formulaire associé.
+     *
+     * @return FormInterface
      */
     public function form(): FormInterface
     {
@@ -72,6 +78,6 @@ class FormViewLoader extends ViewLoader implements FormViewLoaderInterface
         if ($delegate instanceof FormInterface) {
             return $delegate;
         }
-        throw new RuntimeException('FormViewLoader must have a delegation Form instance');
+        throw new RuntimeException('FormTemplate must have a delegation Form instance');
     }
 }

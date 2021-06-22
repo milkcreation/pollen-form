@@ -1,6 +1,6 @@
 <?php
 /**
- * @var Pollen\Form\FormViewLoaderInterface $this
+ * @var Pollen\Form\FormTemplate $this
  */
 if ($errors = $this->get('notices.ERROR', [])) :
     echo $this->partial('notice', [
