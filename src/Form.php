@@ -24,10 +24,9 @@ use Pollen\Support\MessagesBag;
 use Pollen\Support\Proxy\HttpRequestProxy;
 use Pollen\Support\Proxy\FieldProxy;
 use Pollen\Support\Proxy\PartialProxy;
+use Pollen\Support\Proxy\ViewProxy;
 use Pollen\Translation\Concerns\LabelsBagAwareTrait;
-use Pollen\View\View;
 use Pollen\View\Engines\Plates\PlatesViewEngine;
-use Pollen\View\ViewInterface;
 use RuntimeException;
 
 class Form implements FormInterface
@@ -41,6 +40,7 @@ class Form implements FormInterface
     use MessagesBagAwareTrait;
     use ParamsBagAwareTrait;
     use PartialProxy;
+    use ViewProxy;
 
     /**
      * Instance du gestionnaire de formulaire.
@@ -82,11 +82,6 @@ class Form implements FormInterface
      * Nom de qualification du formulaire dans les attributs de balises HTML.
      */
     protected ?string $tagName;
-
-    /**
-     * Instance du moteur des gabarits d'affichage.
-     */
-    protected ViewInterface $view;
 
     /**
      * @inheritDoc
@@ -732,7 +727,7 @@ class Form implements FormInterface
     /**
      * @inheritDoc
      */
-    public function view(?string $view = null, array $data = [])
+    public function view(?string $name = null, array $data = [])
     {
         if ($this->view === null) {
             $default = $this->formManager()->config('default.viewer', []);
@@ -770,43 +765,31 @@ class Form implements FormInterface
                 }
             }
 
-            $this->view = View::createFromPlates(
-                function (PlatesViewEngine $platesViewEngine) use ($directory, $overrideDir) {
-                    $platesViewEngine
-                        ->setDelegate($this)
-                        ->setTemplateClass(FormTemplate::class)
-                        ->setDirectory($directory);
+            $viewEngine = new PlatesViewEngine();
 
-                    if ($overrideDir !== null) {
-                        $platesViewEngine->setOverrideDir($overrideDir);
-                    }
+            $viewEngine->setDelegate($this)
+                ->setTemplateClass(FormTemplate::class)
+                ->setDirectory($directory);
 
-                    if ($container = $this->formManager()->getContainer()) {
-                        $platesViewEngine->setContainer($container);
-                    }
+            if ($overrideDir !== null) {
+                $viewEngine->setOverrideDir($overrideDir);
+            }
 
-                    $mixins = [
-                        'isSuccessful',
-                        'tagName',
-                    ];
+            $mixins = [
+                'isSuccessful',
+                'tagName',
+            ];
+            foreach ($mixins as $mixin) {
+                $viewEngine->setDelegateMixin($mixin);
+            }
 
-                    foreach ($mixins as $mixin) {
-                        $platesViewEngine->setDelegateMixin($mixin);
-                    }
-
-                    return $platesViewEngine;
-                }
-            );
-
-
-
-
+            $this->view = $this->viewManager()->createView($viewEngine);
         }
 
         if (func_num_args() === 0) {
             return $this->view;
         }
 
-        return $this->view->render($view, $data);
+        return $this->view->render($name, $data);
     }
 }

@@ -13,6 +13,7 @@ use Pollen\Support\Concerns\ParamsBagAwareTraitInterface;
 use Pollen\Support\Proxy\FieldProxyInterface;
 use Pollen\Support\Proxy\HttpRequestProxyInterface;
 use Pollen\Support\Proxy\PartialProxyInterface;
+use Pollen\Support\Proxy\ViewProxyInterface;
 use Pollen\Translation\Concerns\LabelsBagAwareTraitInterface;
 use Pollen\View\ViewInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +27,8 @@ interface FormInterface extends
     LabelsBagAwareTraitInterface,
     MessagesBagAwareTraitInterface,
     ParamsBagAwareTraitInterface,
-    PartialProxyInterface
+    PartialProxyInterface,
+    ViewProxyInterface
 {
     /**
      * Résolution de sortie de l'affichage du formulaire.
@@ -313,14 +315,4 @@ interface FormInterface extends
      * @return string
      */
     public function tagName(): string;
-
-    /**
-     * Instance du gestionnaire de gabarits d'affichage ou rendu du gabarit d'affichage.
-     *
-     * @param string|null $view Nom de qualification du gabarit.
-     * @param array $data Liste des variables passées en argument.
-     *
-     * @return ViewInterface|string
-     */
-    public function view(?string $view = null, array $data = []);
 }
