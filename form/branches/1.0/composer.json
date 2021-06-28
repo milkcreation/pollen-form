@@ -7,7 +7,7 @@
     "component",
     "form"
   ],
-  "time": "2021-06-23",
+  "time": "2021-06-28",
   "license": "MIT",
   "authors": [
     {
@@ -34,7 +34,8 @@
     "pollen-solutions/support": "^1.0",
     "pollen-solutions/translation": "^1.0",
     "pollen-solutions/validation": "^1.0",
-    "pollen-solutions/view": "^1.0"
+    "pollen-solutions/view": "^1.0",
+    "pollen-solutions/view-extends": "^1.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^9.0",

@@ -315,4 +315,14 @@ interface FormInterface extends
      * @return string
      */
     public function tagName(): string;
+
+    /**
+     * Resolve view instance or return a particular template render.
+     *
+     * @param string|null $name.
+     * @param array $data
+     *
+     * @return ViewInterface|string
+     */
+    public function view(?string $name = null, array $data = []);
 }

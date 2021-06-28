@@ -1,6 +1,6 @@
 <?php
 /**
- * @var Pollen\Form\FormTemplate $this
+ * @var Pollen\Form\FormTemplateInterface $this
  * @var Pollen\Form\Factory\FormFieldsFactoryInterface $fields
  */
 ?>

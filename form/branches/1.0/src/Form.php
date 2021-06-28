@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pollen\Form;
 
+use Closure;
 use InvalidArgumentException;
 use Pollen\Http\RequestInterface;
 use Pollen\Form\Concerns\FormFactoryBagTrait;
@@ -26,7 +27,7 @@ use Pollen\Support\Proxy\FieldProxy;
 use Pollen\Support\Proxy\PartialProxy;
 use Pollen\Support\Proxy\ViewProxy;
 use Pollen\Translation\Concerns\LabelsBagAwareTrait;
-use Pollen\View\Engines\Plates\PlatesViewEngine;
+use Pollen\View\ViewInterface;
 use RuntimeException;
 
 class Form implements FormInterface
@@ -82,6 +83,11 @@ class Form implements FormInterface
      * Nom de qualification du formulaire dans les attributs de balises HTML.
      */
     protected ?string $tagName;
+
+    /**
+     * Template view instance.
+     */
+    protected ?ViewInterface $view = null;
 
     /**
      * @inheritDoc
@@ -765,25 +771,47 @@ class Form implements FormInterface
                 }
             }
 
-            $viewEngine = new PlatesViewEngine();
-
-            $viewEngine->setDelegate($this)
-                ->setTemplateClass(FormTemplate::class)
+            $this->view = $this->viewManager()->createView('plates')
                 ->setDirectory($directory);
 
             if ($overrideDir !== null) {
-                $viewEngine->setOverrideDir($overrideDir);
+                $this->view->setOverrideDir($overrideDir);
             }
 
-            $mixins = [
+            $functions = [
                 'isSuccessful',
                 'tagName',
             ];
-            foreach ($mixins as $mixin) {
-                $viewEngine->setDelegateMixin($mixin);
+            foreach ($functions as $fn) {
+                $this->view->addExtension($fn, [$this, $fn]);
             }
 
-            $this->view = $this->viewManager()->createView($viewEngine);
+            $this->view
+                ->addExtension('form', $this)
+                ->addExtension('csrf', [$this, 'csrfField'])
+                ->addExtension('before', function () {
+                    if ($content = $this->params('before')) {
+                        if ($content instanceof Closure) {
+                            return $content();
+                        }
+                        if (is_string($content)) {
+                            return $content;
+                        }
+                    }
+                    return '';
+                })
+                ->addExtension('after', function () {
+                    if ($content = $this->params('after')) {
+                        if ($content instanceof Closure) {
+                            return $content();
+                        }
+                        if (is_string($content)) {
+                            return $content;
+                        }
+                    }
+                    return '';
+                });
+
         }
 
         if (func_num_args() === 0) {
