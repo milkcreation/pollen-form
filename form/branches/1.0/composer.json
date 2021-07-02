@@ -7,13 +7,12 @@
     "component",
     "form"
   ],
-  "time": "2021-06-28",
+  "time": "2021-07-02",
   "license": "MIT",
   "authors": [
     {
       "name": "Jordy Manner",
-      "email": "jordy@presstify.com",
-      "role": "Developper"
+      "email": "jordy@presstify.com"
     }
   ],
   "repositories": [
@@ -23,9 +22,7 @@
     }
   ],
   "require": {
-    "php": ">=7.4",
-    "composer/composer": "^2.0",
-    "composer/installers": "~1.0",
+    "php": "^7.4 || ^8.0",
     "pollen-solutions/event": "^1.0",
     "pollen-solutions/field": "^1.0",
     "pollen-solutions/http": "^1.0",

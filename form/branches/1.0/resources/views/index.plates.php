@@ -4,7 +4,7 @@
  */
 
 ?>
-<?php if ($this->form()->params('wrapper')) : ?>
+<?php  if ($this->form()->params('wrapper')) : ?>
     <?php $this->layout('wrapper-form', $this->all()); ?>
 <?php endif; ?>
 
