@@ -72,7 +72,7 @@ class Form implements FormInterface
     /**
      * Instance de la requête de traitement.
      */
-    protected ?RequestInterface $handleRequest;
+    protected ?RequestInterface $handleRequest = null;
 
     /**
      * Indicateur de succès de soumission du formulaire.
@@ -82,7 +82,7 @@ class Form implements FormInterface
     /**
      * Nom de qualification du formulaire dans les attributs de balises HTML.
      */
-    protected ?string $tagName;
+    protected ?string $tagName = null;
 
     /**
      * Template view instance.
@@ -426,7 +426,7 @@ class Form implements FormInterface
      */
     public function getMethod(): string
     {
-        $method = strtolower($this->params('method'));
+        $method = strtolower($this->params('method', 'post'));
 
         return in_array($method, ['get', 'post']) ? $method : 'post';
     }
@@ -812,6 +812,7 @@ class Form implements FormInterface
                     return '';
                 });
 
+            $this->formManager()->setCurrentForm($this);
         }
 
         if (func_num_args() === 0) {
