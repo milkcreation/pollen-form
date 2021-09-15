@@ -1,24 +1,18 @@
 {
   "name": "pollen-solutions/form",
   "description": "Pollen Form Component - Forms generator and processor.",
-  "homepage": "https://www.presstify.com/pollen-solutions/form/",
+  "homepage": "https://github.com/milkcreation/pollen-form.git",
   "keywords": [
     "pollen-solutions",
     "component",
     "form"
   ],
-  "time": "2021-07-02",
+  "time": "2021-09-15",
   "license": "MIT",
   "authors": [
     {
       "name": "Jordy Manner",
       "email": "jordy@presstify.com"
-    }
-  ],
-  "repositories": [
-    {
-      "type": "composer",
-      "url": "https://composer.presstify.com/pollen-solutions/"
     }
   ],
   "require": {
